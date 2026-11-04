@@ -238,6 +238,52 @@ body.tablet.land #title .t2{font-size:92px}body.tablet.land .tb{font-size:22px;p
 .tx{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;grid-column:1/-1}.tx button{font:inherit;font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.75);color:var(--ink2);border:0;box-shadow:0 2px 0 var(--paper2);cursor:pointer}.tx button.hot{background:var(--sun);color:var(--ink)}.tx small{width:100%;text-align:center;font-size:11px;color:var(--ink2);opacity:.8}
 .isapp #fsBtn{display:none!important}
 #appBar{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);transform:translate(-50%,-140%);z-index:200;display:flex;align-items:center;gap:10px;max-width:calc(100% - 24px);padding:8px 8px 8px 16px;border-radius:999px;background:var(--paper);color:var(--ink);box-shadow:0 4px 0 var(--paper2),0 8px 24px rgba(0,0,0,.18);font-size:15px;transition:transform .35s cubic-bezier(.2,1.4,.4,1)}#appBar.on{transform:translate(-50%,0)}#appBar span{flex:1;min-width:0}#appBar button{font:inherit;font-weight:600;font-size:14px;border:0;border-radius:999px;padding:8px 14px;background:var(--paper2);color:var(--ink);cursor:pointer;white-space:nowrap}#appBar button.go{background:var(--leaf);color:#fff}
+#casG{position:fixed;inset:0;z-index:150;display:flex;flex-direction:column;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 6px) calc(env(safe-area-inset-right,0px) + 12px) calc(env(safe-area-inset-bottom,0px) + 8px) calc(env(safe-area-inset-left,0px) + 12px);background:radial-gradient(ellipse 80% 70% at 50% 45%,#23804e,#0f5532 65%,#083620);color:#fff8e6;font-family:var(--disp);touch-action:manipulation;overflow:hidden;-webkit-user-select:none;user-select:none}
+#casG::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-radial-gradient(circle at 30% 40%,rgba(255,255,255,.018) 0 2px,transparent 2px 5px)}
+#casG header{display:flex;align-items:center;gap:10px;position:relative;min-height:42px}
+#casG h2{margin:0;font-size:21px;font-weight:600;color:#f7d77a;letter-spacing:.4px;text-shadow:0 2px 0 rgba(0,0,0,.35);white-space:nowrap}
+.cbones{background:rgba(0,0,0,.28);border-radius:999px;padding:6px 14px;font-weight:600;font-size:15px;white-space:nowrap}
+.cbtn{font:inherit;font-weight:600;font-size:16px;border:0;border-radius:14px;padding:9px 16px;background:linear-gradient(#ffe48a,#f2c14e);color:#4a2a10;box-shadow:0 3px 0 #a87a1c;cursor:pointer;touch-action:manipulation;white-space:nowrap}
+.cbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #a87a1c}.cbtn.alt{background:#fff8e6;color:#5a432c;box-shadow:0 3px 0 #c8b890}.cbtn:disabled{opacity:.4;pointer-events:none}.cbtn.big{font-size:20px;padding:12px 18px}
+.cmain{flex:1;min-height:0;display:flex;gap:16px;align-items:center;justify-content:center;position:relative}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{width:44px;height:44px;flex:none;border-radius:50%;border:3px dashed rgba(255,255,255,.8);font:inherit;font-weight:700;font-size:12px;letter-spacing:-.3px;color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 4px rgba(0,0,0,.15);cursor:pointer;transition:transform .12s;padding:0}
+.chip.on{transform:translateY(-4px);box-shadow:0 0 0 3px #f7d77a,0 5px 0 rgba(0,0,0,.35)}
+.cmsg{font-weight:600;color:#f7d77a;text-align:center;min-height:22px}.cmsg.win{color:#fff;text-shadow:0 0 12px #ffd23a}
+.clabel{font-size:13px;opacity:.85}
+.rtot{font-weight:600;background:rgba(0,0,0,.25);border-radius:999px;padding:6px 12px;white-space:nowrap}
+.clot{flex:1;min-width:0;display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(-6px);transition:opacity .3s,transform .3s;pointer-events:none}.clot.pop{opacity:1;transform:none}
+.clot i{flex:none;width:32px;height:32px;border-radius:50%;background:#b8283c;color:#fff;font-style:normal;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.clot span{background:#fff8e6;color:#5a432c;border-radius:14px;padding:5px 11px;font-size:13px;line-height:1.25;box-shadow:0 3px 0 rgba(0,0,0,.2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ccoin{position:absolute;top:-34px;font-style:normal;font-size:26px;animation:cfall 1.8s ease-in forwards;pointer-events:none;z-index:5}@keyframes cfall{to{transform:translateY(110vh) rotate(540deg)}}
+.smach{position:relative;background:linear-gradient(#b8283c,#7a1424);border-radius:22px;padding:8px 14px 10px;box-shadow:0 0 0 5px #e8c060,0 8px 0 #5a0c18,0 12px 30px rgba(0,0,0,.4)}
+.stop{text-align:center;font-weight:700;color:#ffe07a;letter-spacing:2px;font-size:15px;margin-bottom:6px;text-shadow:0 0 8px rgba(255,210,80,.8)}
+.sreels{display:flex;gap:8px;background:#2a0a10;padding:7px;border-radius:12px;position:relative}
+.sreels::after{content:'';position:absolute;left:4px;right:4px;top:50%;height:3px;margin-top:-1.5px;background:rgba(230,40,60,.8);box-shadow:0 0 6px rgba(255,60,80,.8);pointer-events:none}
+.sreel{--h:min(100px,14vh);width:calc(var(--h)*1.3);height:calc(var(--h)*3);overflow:hidden;background:linear-gradient(#cfc6b4,#fffdf6 32%,#fffdf6 68%,#cfc6b4);border-radius:8px}
+.sstrip{will-change:transform}.ssym{height:var(--h);display:flex;align-items:center;justify-content:center;font-size:calc(var(--h)*.6);line-height:1}
+.sline{display:none}.smsg{margin-top:6px}
+.sside{display:flex;flex-direction:column;gap:8px;align-items:stretch;max-width:270px}
+.spay{display:grid;grid-template-columns:auto auto;gap:1px 12px;font-size:12px;background:rgba(0,0,0,.25);border-radius:12px;padding:6px 10px}.spay b{color:#f7d77a;text-align:right}
+.rwheel{display:flex;flex-direction:column;align-items:center;gap:6px;flex:none}
+.rwheel canvas{width:min(330px,46vh);height:min(330px,46vh);border-radius:50%;box-shadow:0 6px 18px rgba(0,0,0,.45),0 0 0 4px #5a3418}
+.rres{font-size:15px}.rres b{display:inline-block;min-width:32px;padding:1px 8px;border-radius:8px;margin-right:4px;color:#fff}.rres b.red{background:#c8202e}.rres b.black{background:#111}.rres b.green{background:#1a9a4a}
+.rhist{display:flex;gap:4px;min-height:22px}.rhist span{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}.rhist .r{background:#c8202e}.rhist .b{background:#111}.rhist .g{background:#1a9a4a}
+.rright{flex:1;min-width:0;max-width:760px;display:flex;flex-direction:column;gap:10px}
+.rboard{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));grid-template-rows:repeat(3,minmax(28px,1fr)) minmax(26px,auto) minmax(26px,auto);gap:3px;padding:6px;border-radius:10px;background:rgba(0,0,0,.15);box-shadow:inset 0 0 0 2px rgba(242,230,192,.4)}
+.rc{font:inherit;font-weight:600;font-size:14px;border:1.5px solid rgba(242,230,192,.7);border-radius:6px;background:transparent;color:#fff;position:relative;padding:0;cursor:pointer;min-height:26px;touch-action:manipulation}
+.rc.r{background:#c8202e}.rc.b{background:#1a1a1a}.rc.g{background:#1a9a4a}.rc.o{background:rgba(0,0,0,.18);font-size:12px}.rc.rr span{color:#ff3a4a;font-size:17px}.rc.bb span{color:#111;font-size:17px;text-shadow:0 0 2px #fff}
+.rc em{position:absolute;right:-5px;top:-7px;min-width:22px;height:20px;border-radius:10px;font-style:normal;font-size:10px;line-height:16px;border:2px dashed #fff;display:none;padding:0 3px;z-index:2;color:#fff}.rc.has em{display:block}
+.rc.hit{box-shadow:0 0 0 3px #ffe07a,0 0 14px #ffe07a;animation:rhit .6s 3;z-index:3}@keyframes rhit{50%{transform:scale(1.15)}}
+.rbar,.bjbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.bjbar{justify-content:center;min-height:48px}
+.bj{flex-direction:column;gap:4px;justify-content:space-between}.bjrow{display:flex;align-items:center;gap:12px;width:100%;justify-content:center}
+.bjlab{width:80px;text-align:right;font-weight:600;color:#f7d77a}.bjlab b{display:block;color:#fff;font-size:20px}
+.bjcards{display:flex;gap:6px;min-height:calc(min(84px,12vh)*1.42)}
+.bjcard{--w:min(84px,12vh);width:var(--w);height:calc(var(--w)*1.42);border-radius:7px;background:#fffdf8;color:#1a1a1a;position:relative;box-shadow:0 3px 0 rgba(0,0,0,.3);animation:bjin .3s ease-out}.bjcard.red{color:#c8202e}
+.bjcard i{position:absolute;left:4px;top:3px;font-style:normal;font-weight:700;font-size:calc(var(--w)*.27);line-height:1;text-align:center}.bjcard b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--w)*.55);padding-top:8%}
+.bjcard.back{background:repeating-linear-gradient(45deg,#b8283c 0 6px,#9e1f2e 6px 12px);border:3px solid #fff}@keyframes bjin{from{transform:translateY(-30px) rotate(-8deg);opacity:0}}
+.bjhands{display:flex;gap:18px}.bjhand{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px;border-radius:10px}.bjhand.cur{background:rgba(255,224,122,.18);box-shadow:0 0 0 2px #f7d77a}.bjhv{font-size:13px;font-weight:600}.bjmid{font-size:17px}
+@media (max-width:640px){.cmain{flex-direction:column;gap:10px}.rwheel canvas{width:150px;height:150px}.sside{max-width:none;width:100%}#casG h2{font-size:17px}}
 #rotHint{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:16px;z-index:30;display:none;pointer-events:none}
 body.tablet:not(.land).title #rotHint{display:block}
 
@@ -312,7 +358,7 @@ body.redec #acts,body.redec #stick,body.redec #prompt,body.redec #keys,body.rede
 <script>
 // boot loader: show progress, catch errors, then run the game script after the first paint
 addEventListener('error',e=>{if(!window.__ready&&window.BOOT)BOOT.err('Something went wrong while loading: '+e.message)});
-window.APPV='75';
+window.APPV='76';
 // save backup and restore (moves your island between the downloaded file, the app, or a new phone)
 window.SAVEIO={dump(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('maxsworld.')===0)o[k]=localStorage.getItem(k)}return{app:'maxsworld',v:1,ver:window.APPV,at:new Date().toISOString(),data:o}},
  async backup(){try{if(window.save)save()}catch(e){}const d=this.dump();if(!Object.keys(d.data).some(k=>k.indexOf('maxsworld.slot')===0||k==='maxsworld.v1')){alert('There is no saved game to back up yet.');return}
@@ -1646,6 +1692,33 @@ function mkXam(){const g=new THREE.Group(),P2=buildDog(XAMLOOK,g);g.scale.setSca
   for(let i=0;i<16;i++){const a=i/16*Math.PI*2;SPH(lei,.04,M(fc[i%5],{roughness:.6}),Math.cos(a)*.16,Math.sin(a)*.16,0,1,1,.6);if(i%2)SPH(lei,.022,M(0x4aa84a),Math.cos(a+.2)*.19,Math.sin(a+.2)*.19,-.01,1.3,.6,.4)}
   const sg=new THREE.Group();sg.position.set(0,.2,.1);sg.rotation.x=-.6;sg.scale.setScalar(1.25);P2.headG.add(sg);const lens=GLO(0x101418,.08);[-1,1].forEach(s=>{SPH(sg,.05,lens,s*.06,0,0,1,.8,.35);TOR(sg,.05,.007,M(0xff7a3a),s*.06,0,0,false)});RB(sg,.05,.01,.01,M(0xff7a3a),0,.005,0,.003);
   return{g,bd:P2.bodyG,legs:P2.legs,head:P2.headG,tail:P2.tail,jaw:P2.jaw,eyes:P2.eyes}}
+// ================= LOTTIE: a big, fluffy black-and-tan Yorkie with a white topknot, who runs Casino Paw-Yal =================
+const LOTTIELOOK={breed:'yorkie',sex:'f',coat:0xa8682e,coat2:0x17130f,light:0xd59f5c,pattern:'saddle',fur:'fluffy',grain:'fine',sheen:'glossy',eyes:'sparkle',eyeCol:0x3a1e0a,eyeSize:1.1,ears:'prick',nose:'button',snout:'mid',body:'standard',size:1,tail:'plume',collar:0xd4a020};
+FR.lottie={name:'Lottie',color:'#b8283c',pitch:560,home:[0,0],mk:()=>mkLottie(),likes:'flower',gift5:'velvetrope',casino:1};
+const CAS={x:46,z:-49.7};
+function mkLottie(){const g=new THREE.Group(),P2=buildDog(LOTTIELOOK,g);g.scale.setScalar(1.45);
+  const R=rng(7717),lump=dgeo('lump',()=>new THREE.IcosahedronGeometry(1,1)),hd=P2.headG;
+  const wt=furify(M(0xfbf8f2,{roughness:.95,emissive:0x2a2620,emissiveIntensity:.08}),170,.3),wt2=furify(M(0xece6da,{roughness:.95}),170,.3),
+    blk=furify(M(0x17130f,{roughness:.8}),170,.45),blk2=furify(M(0x2a231c,{roughness:.8}),170,.45),tan=furify(M(0xb87634,{roughness:.85}),170,.4);
+  const L=(pr,m,x,y,z,s,sy)=>{const o=new THREE.Mesh(lump,m);o.position.set(x,y,z);o.scale.set(s,sy||s*.85,s);o.rotation.set(R()*3,R()*3,R()*3);pr.add(o);return o};
+  // the white topknot: a soft white crown of fur on top of her head with a tufted fountain in the middle
+  const tk=new THREE.Group();tk.position.set(0,.17,-.02);tk.scale.setScalar(1.3);hd.add(tk);
+  for(let i=0;i<34;i++){const a=R()*6.283,rr=Math.sqrt(R())*.13;L(tk,i%3?wt:wt2,Math.cos(a)*rr*1.15,.03-rr*.28+R()*.025,Math.sin(a)*rr*.95,.04+R()*.03)}
+  for(let i=0;i<12;i++){const a=i/12*6.283+R()*.3;L(tk,wt,Math.cos(a)*.035,.085+R()*.03,Math.sin(a)*.03-.01,.03+R()*.012,.05)}
+  L(tk,wt,0,.12,-.005,.035,.055);
+  // little ruby bow clip holding the topknot
+  {const clip=new THREE.Group();clip.position.set(0,.085,.06);clip.rotation.x=-.35;tk.add(clip);const rm=M(0xc0203a,{roughness:.32,metalness:.15});
+   [-1,1].forEach(s=>{const c=new THREE.Mesh(dgeo('bowC',()=>new THREE.ConeGeometry(.032,.07,12)),rm);c.rotation.z=s*Math.PI/2;c.position.x=s*.034;clip.add(c)});
+   const gem=new THREE.Mesh(dgeo('gemS',()=>new THREE.SphereGeometry(1,14,10)),M(0xff3050,{roughness:.08,metalness:.35,emissive:0x50000c}));gem.scale.setScalar(.02);clip.add(gem)}
+  // long silky Yorkie skirt: black over the back, tan down the legs, so she looks bigger and fluffier
+  const bd=P2.bodyG;for(let i=0;i<7;i++)[-1,1].forEach(s=>{const z=.2-i*.075;L(bd,i%2?blk:blk2,s*.13,.3+R()*.02,z,.05,.085);L(bd,tan,s*.12,.2,z+.01,.045,.07)});
+  for(let i=0;i<10;i++){const z=.16-i*.045;L(bd,i%2?blk:blk2,(R()-.5)*.06,.47,z,.055,.03)}
+  // long tan fringe on her cheeks and chin
+  [-1,1].forEach(s=>{for(let i=0;i<5;i++)L(hd,tan,s*(.15+R()*.04),-.09-R()*.08,.07+R()*.06,.04,.06)});for(let i=0;i<4;i++)L(hd,tan,(R()-.5)*.08,-.16-R()*.03,.15+R()*.04,.035,.05);
+  // a gold necklace with a little diamond heart
+  {const nk=new THREE.Group();nk.position.set(0,.45,.2);nk.rotation.x=1.05;bd.add(nk);const gm=M(0xe8c060,{roughness:.2,metalness:.85});for(let i=0;i<20;i++){const a=i/20*Math.PI*2,b=new THREE.Mesh(dgeo('gemS',()=>new THREE.SphereGeometry(1,14,10)),gm);b.scale.setScalar(.011);b.position.set(Math.cos(a)*.105,Math.sin(a)*.105,0);nk.add(b)}
+   const h=new THREE.Mesh(dgeo('gemS',()=>new THREE.SphereGeometry(1,14,10)),M(0xeaf6ff,{roughness:.05,metalness:.4,emissive:0x203040}));h.scale.set(.024,.024,.014);h.position.set(0,-.12,.01);nk.add(h)}
+  return{g,bd:P2.bodyG,legs:P2.legs,head:P2.headG,tail:P2.tail,jaw:P2.jaw,eyes:P2.eyes}}
 // ---- surfboards (shared shape, painted designs)
 let SBGEO=null;const SBT={};
 function sbGeo(){if(SBGEO)return SBGEO;const s=new THREE.Shape();s.moveTo(0,-.75);s.bezierCurveTo(.2,-.74,.22,-.35,.21,0);s.bezierCurveTo(.2,.42,.1,.68,0,.78);s.bezierCurveTo(-.1,.68,-.2,.42,-.21,0);s.bezierCurveTo(-.22,-.35,-.2,-.74,0,-.75);
@@ -1702,7 +1775,7 @@ function mkSurfShack(){const g=new THREE.Group(),wd=WD(0x9a7448,.8),wdk=WD(0x7a5
   {const cb=new THREE.Group();cb.position.set(1.3,0,3.0);cb.rotation.y=.3;g.add(cb);[-1,1].forEach(s=>{const lg=RB(cb,.05,.95,.05,WD(0x8a6a3a,.8),s*.3,.45,s*.15,.01);lg.rotation.x=s*.25});const bd=new THREE.Mesh(new THREE.PlaneGeometry(.58,.62),new THREE.MeshBasicMaterial({map:boardTex(['SURF','LESSONS','TODAY!'],'#2a3a2e','#ffffff',150,170,'700 30px Fredoka, sans-serif')}));bd.position.set(0,.6,.13);bd.rotation.x=-.25;cb.add(bd)}
   shadowAll(g);return g}
 
-Object.entries(FR).forEach(([k,f])=>{if(f.yacht||f.shack)return;const hs=mkHouse2({w:k==='bella'?3.4:3.2,d:k==='bella'?3.1:3,h:2,wall:f.wall,roof:f.roof,roofTex:f.roofTex,style:f.style,shutter:f.shutter,door:f.door}),g=hs.g;const t=textSprite(f.name+"'s",f.color,'#fff',1.6);t.position.set(0,hs.top+.5,1.7);g.add(t);addBuilding(k,f.home[0]*WK,f.home[1]*WK,g,1.7,1.6)});
+Object.entries(FR).forEach(([k,f])=>{if(f.yacht||f.shack||f.casino)return;const hs=mkHouse2({w:k==='bella'?3.4:3.2,d:k==='bella'?3.1:3,h:2,wall:f.wall,roof:f.roof,roofTex:f.roofTex,style:f.style,shutter:f.shutter,door:f.door}),g=hs.g;const t=textSprite(f.name+"'s",f.color,'#fff',1.6);t.position.set(0,hs.top+.5,1.7);g.add(t);addBuilding(k,f.home[0]*WK,f.home[1]*WK,g,1.7,1.6)});
 // Krug's yacht moored beside the pier
 {const g=mkYacht(),x=PIER.x1+1.95,z=PIER.z0+7.4;g.position.set(x,WL,z);islandG.add(g);const b={key:'krug',x,z,hw:1.75,hd:5,g,door:[PIER.x1-.45,z-2.8]};BLD.push(b);CULL.push({g,x,z,m:6});
  const gw=new THREE.Group();gw.position.set(PIER.x1+.3,0,z-2.8);islandG.add(gw);const pl=RB(gw,.75,.05,.62,WD(0xb08050,.6),0,.48,0,.02);pl.rotation.z=.5;[-1,1].forEach(s2=>{CY(gw,.015,.015,.5,MTL(0xd8dde2,.2),-.2,.5,s2*.3,6);CY(gw,.015,.015,.5,MTL(0xd8dde2,.2),.25,.8,s2*.3,6)});
@@ -1711,6 +1784,92 @@ Object.entries(FR).forEach(([k,f])=>{if(f.yacht||f.shack)return;const hs=mkHouse
 {const g=mkSurfShack();g.position.set(XSH.x,0,XSH.z);islandG.add(g);mergeByMat(g,{skip:o=>!!o.userData.anim});const b={key:'xam',x:XSH.x,z:XSH.z-.05,hw:1.9,hd:1.85,g,door:[XSH.x,XSH.z+2.55]};BLD.push(b);CULL.push({g,x:XSH.x,z:XSH.z,m:6});
  [[XSH.x+3.4,XSH.z+1.4,.35],[XSH.x-3.2,XSH.z+1.8,.15],[XSH.x-2.4,XSH.z-.6,.25],[XSH.x-2.3,XSH.z+2.6,.12],[XSH.x+2.3,XSH.z+2.6,.12],[XSH.x+1.3,XSH.z+3.0,.25]].forEach(([x,z,r])=>OBC.push({x,z,r}));
  PATHS.push([[XSH.x,XSH.z+2.4],[XSH.x-1.5,XSH.z-2.6],[-8,39.5],[-16.8,34]]);const t=textSprite("Xam's Surf Shack",FR.xam.color,'#fff',1.9);t.position.set(0,6.75,-.5);g.add(t)}
+// Casino Paw-Yal in the north-east corner: a cream stone Beaux-Arts casino with copper domes, a lit marquee and a fountain forecourt
+const CASX={bulbs:[],bm:null,bm2:null,t:0,spray:[]};
+{const g=new THREE.Group(),anim=new THREE.Group();anim.userData.anim=1;g.add(anim);g.position.set(CAS.x,0,CAS.z);islandG.add(g);
+ const stone=M(0xf1e5cc,{roughness:.82}),stone2=M(0xe0cfae,{roughness:.88}),trim=M(0xfbf6ea,{roughness:.6}),verd=M(0x5c9c86,{roughness:.5,metalness:.3}),verd2=M(0x4a8672,{roughness:.55,metalness:.3}),
+   gold=MTL(0xd4a83c,.25),red=M(0x9e1f2e,{roughness:.55}),dark=M(0x23160f,{roughness:.6}),marble=M(0xf4efe6,{roughness:.32}),iron=M(0x1e2024,{roughness:.45,metalness:.6}),groove=M(0xcbb894,{roughness:.9});
+ const win=new THREE.MeshStandardMaterial({color:0x23303c,emissive:0xffc070,emissiveIntensity:0,roughness:.12,metalness:.2});winMats.push(win);
+ CASX.bm=new THREE.MeshBasicMaterial({color:0xfff2b0});CASX.bm2=new THREE.MeshBasicMaterial({color:0xb08a40});
+ const bulb=(x,y,z,k)=>{const b=SPH(anim,.035,k%2?CASX.bm2:CASX.bm,x,y,z);CASX.bulbs.push(b);return b};
+ const Y0=.18,FZ=1.95; // top of the terrace, front face of the main block
+ // marble terrace, steps and red carpet
+ RB(g,7.9,Y0,5.6,marble,0,Y0/2,.15,.03);RB(g,8.0,.04,5.7,groove,0,.02,.15,.01);
+ [[3.5,.12,2.98],[3.8,.06,3.3]].forEach(([w,h,z])=>RB(g,w,h,.36,marble,0,h/2,z,.02));
+ RB(g,1.5,.012,2.1,red,0,Y0+.006,2.0,.004);[[.12,3.0],[.06,3.3]].forEach(([h,z])=>RB(g,1.5,.012,.36,red,0,h+.006,z,.004));[-1,1].forEach(s=>RB(g,.04,.014,2.1,gold,s*.77,Y0+.008,2.0,.003));
+ // main block with rusticated base, string course, cornice and roof balustrade
+ const H=3.0;RB(g,6.6,H,4.1,stone,0,Y0+H/2,-.1,.04);RB(g,6.72,.78,4.22,stone2,0,Y0+.39,-.1,.03);
+ for(let k=1;k<4;k++)RB(g,6.74,.02,4.24,groove,0,Y0+k*.19,-.1,.005);
+ RB(g,6.76,.1,4.26,trim,0,Y0+1.62,-.1,.02);RB(g,6.9,.16,4.4,trim,0,Y0+H+.02,-.1,.03);RB(g,6.8,.08,4.3,stone2,0,Y0+H-.1,-.1,.02);
+ for(let i=0;i<26;i++){const x=-3.2+i*.256;CY(g,.035,.045,.32,trim,x,Y0+H+.26,FZ-.02,8)}RB(g,6.7,.06,.14,trim,0,Y0+H+.44,FZ-.02,.02);RB(g,6.7,.06,.14,trim,0,Y0+H+.12,FZ-.02,.02);
+ // windows: tall arched ground-floor windows and balconied upper windows, lit warm at night
+ const winAt=(x,z,ry,w,h,y,arch,bal)=>{const wg=new THREE.Group();wg.position.set(x,y,z);wg.rotation.y=ry;g.add(wg);RB(wg,w+.14,h+.14,.06,trim,0,0,0,.02);RB(wg,w,h,.05,win,0,0,.02,.01);
+   RB(wg,.03,h,.06,trim,0,0,.035,.005);RB(wg,w,.03,.06,trim,0,h*.18,.035,.005);
+   if(arch){const a=new THREE.Mesh(new THREE.CircleGeometry(w/2,20,0,Math.PI),win);a.position.set(0,h/2,.045);wg.add(a);TOR(wg,w/2+.04,.035,trim,0,h/2,.04,false,Math.PI);SPH(wg,.06,trim,0,h/2+w/2+.04,.05,1,1,.5)}
+   else RB(wg,w+.3,.09,.12,trim,0,h/2+.1,.04,.02);
+   RB(wg,w+.26,.06,.14,trim,0,-h/2-.08,.05,.02);
+   if(bal){RB(wg,w+.4,.05,.34,stone2,0,-h/2-.14,.2,.015);for(let i=0;i<7;i++)CY(wg,.012,.012,.26,iron,-w/2-.1+i*(w+.2)/6,-h/2+.02,.35,6);RB(wg,w+.36,.025,.025,gold,0,-h/2+.15,.35,.004)}};
+ [-1,1].forEach(s=>{winAt(s*1.78,FZ+.04,0,.56,1.05,Y0+1.05,true,false);winAt(s*1.78,FZ+.04,0,.5,.72,Y0+2.35,false,true);
+   [-1.3,.2].forEach(z=>{winAt(s*3.34,z,s*Math.PI/2,.5,1.0,Y0+1.05,true,false);winAt(s*3.34,z,s*Math.PI/2,.46,.66,Y0+2.35,false,false)})});
+ // corner towers with copper domes and gold finials
+ [-1,1].forEach(s=>{const tx=s*2.85,tz=1.35,TH=3.9;RB(g,1.36,TH,1.36,stone,tx,Y0+TH/2,tz,.03);RB(g,1.46,.78,1.46,stone2,tx,Y0+.39,tz,.03);RB(g,1.5,.14,1.5,trim,tx,Y0+TH,tz,.03);
+   winAt(tx,tz+.69,0,.42,.9,Y0+1.25,true,false);winAt(tx,tz+.69,0,.38,.55,Y0+2.75,false,false);
+   [-1,1].forEach(u=>RB(g,.1,TH-.9,.1,trim,tx+u*.63,Y0+.78+(TH-.9)/2,tz+.66,.02));
+   CY(g,.5,.54,.42,stone2,tx,Y0+TH+.28,tz,20);CY(g,.56,.56,.06,trim,tx,Y0+TH+.5,tz,20);
+   const d=new THREE.Mesh(new THREE.SphereGeometry(.55,22,12,0,Math.PI*2,0,Math.PI/2),verd);d.scale.y=1.35;d.position.set(tx,Y0+TH+.52,tz);g.add(d);
+   for(let k=0;k<8;k++){const a=k/8*Math.PI*2,r=RB(g,.03,.5,.03,verd2,tx+Math.sin(a)*.47,Y0+TH+.75,tz+Math.cos(a)*.47,.01);r.rotation.set(Math.cos(a)*-.75,0,Math.sin(a)*.75)}
+   CY(g,.04,.06,.22,gold,tx,Y0+TH+1.36,tz,8);SPH(g,.07,gold,tx,Y0+TH+1.52,tz);CY(g,.005,.02,.22,gold,tx,Y0+TH+1.7,tz,6)});
+ // central pavilion: columns, entablature with the lit name board, a clock and the great dome behind
+ const FP=FZ+.31,PZ=FP+.25;RB(g,2.7,3.55,.62,stone,0,Y0+3.55/2,FZ-.0,.03);RB(g,2.82,.16,.74,trim,0,Y0+3.6,FZ,.03);
+ {const pd=new THREE.Shape();pd.moveTo(-1.45,0);pd.lineTo(1.45,0);pd.lineTo(0,.62);pd.lineTo(-1.45,0);const pg=new THREE.ExtrudeGeometry(pd,{depth:.5,bevelEnabled:false});const p=new THREE.Mesh(pg,trim);p.position.set(0,Y0+3.68,FZ-.2);g.add(p);
+  const cl=new THREE.Mesh(new THREE.CircleGeometry(.22,28),new THREE.MeshStandardMaterial({roughness:.4,map:ftex('casclock',(x,s)=>{x.fillStyle='#fbf6e8';x.beginPath();x.arc(s/2,s/2,s/2,0,7);x.fill();x.strokeStyle='#c8a040';x.lineWidth=s*.06;x.stroke();x.fillStyle='#3a2a18';
+    for(let i=0;i<12;i++){const a=i/12*Math.PI*2;x.fillRect(s/2+Math.sin(a)*s*.36-3,s/2-Math.cos(a)*s*.36-3,6,6)}x.strokeStyle='#2a1a10';x.lineWidth=7;x.beginPath();x.moveTo(s/2,s/2);x.lineTo(s/2,s*.22);x.stroke();x.lineWidth=5;x.beginPath();x.moveTo(s/2,s/2);x.lineTo(s*.7,s*.56);x.stroke()},128)}));
+  cl.position.set(0,Y0+3.92,FZ+.31);g.add(cl);TOR(g,.23,.025,gold,0,Y0+3.92,FZ+.31,false)}
+ [-1.12,-.78,.78,1.12].forEach(x=>{CY(g,.1,.11,2.55,trim,x,Y0+.06+1.28,PZ,14);CY(g,.15,.15,.12,trim,x,Y0+.06,PZ,12);RB(g,.3,.1,.3,trim,x,Y0+2.66,PZ,.02);SPH(g,.09,trim,x,Y0+2.58,PZ,1.4,.6,1.4)});
+ RB(g,2.74,.36,.52,trim,0,Y0+2.9,FP+.17,.03);
+ const signT=PIC('casinosign',512,96,(x,w,h)=>{const gr=x.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#8e1424');gr.addColorStop(1,'#5e0c18');x.fillStyle=gr;x.fillRect(0,0,w,h);x.strokeStyle='#e8c060';x.lineWidth=6;x.strokeRect(6,6,w-12,h-12);
+   x.font='700 54px Fredoka, Georgia, serif';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#7a5010';x.fillText('CASINO PAW-YAL',w/2+2,h/2+4);const tg=x.createLinearGradient(0,20,0,76);tg.addColorStop(0,'#fff2b0');tg.addColorStop(.5,'#f2c84a');tg.addColorStop(1,'#c8902a');x.fillStyle=tg;x.fillText('CASINO PAW-YAL',w/2,h/2+2)});
+ {const sm=new THREE.MeshStandardMaterial({map:signT.map||signT,emissive:0xffffff,emissiveMap:signT.map||signT,emissiveIntensity:.35,roughness:.4});const sp=new THREE.Mesh(new THREE.PlaneGeometry(2.6,.48),sm);sp.position.set(0,Y0+2.9,FP+.44);g.add(sp);
+  for(let i=0;i<22;i++){const x=-1.28+i*(2.56/21);bulb(x,Y0+3.13,FP+.45,i);bulb(x,Y0+2.67,FP+.45,i+1)}}
+ // grand arched doorway with glass doors
+ RB(g,1.24,1.78,.04,dark,0,Y0+.89,FP+.01,.01);{const a=new THREE.Mesh(new THREE.CircleGeometry(.62,24,0,Math.PI),dark);a.position.set(0,Y0+1.78,FP+.035);g.add(a)}
+ [-1,1].forEach(s=>{RB(g,.56,1.66,.04,win,s*.3,Y0+.85,FP+.04,.01);RB(g,.04,1.0,.05,gold,s*.08,Y0+.95,FP+.07,.01)});{const fa=new THREE.Mesh(new THREE.CircleGeometry(.56,24,0,Math.PI),win);fa.position.set(0,Y0+1.72,FP+.045);g.add(fa)}
+ TOR(g,.64,.05,gold,0,Y0+1.78,FP+.06,false,Math.PI);[-1,1].forEach(s=>RB(g,.08,1.78,.1,gold,s*.66,Y0+.89,FP+.06,.01));
+ // marquee canopy over the steps, edged with chasing bulbs
+ const CZ=PZ+.62;RB(g,2.5,.12,1.0,red,0,Y0+2.36,CZ,.03);RB(g,2.58,.06,1.05,gold,0,Y0+2.29,CZ+.02,.02);RB(g,2.46,.02,.95,M(0xfff2d0,{roughness:.6}),0,Y0+2.25,CZ,.01);
+ [-1,1].forEach(s=>{CY(g,.04,.05,2.45,gold,s*1.18,1.22,CZ+.45,10);SPH(g,.07,gold,s*1.18,Y0+2.31,CZ+.45)});
+ for(let i=0;i<14;i++)bulb(-1.2+i*(2.4/13),Y0+2.23,CZ+.52,i);
+ for(let i=0;i<5;i++)[-1,1].forEach(s=>bulb(s*1.26,Y0+2.23,CZ-.42+i*.22,i));
+ {const gs=glowSprite(0xffd890,3.2,.7);gs.position.set(0,Y0+2.0,CZ);g.add(gs);lamps.push(gs)}
+ // the great dome
+ CY(g,1.05,1.1,.55,stone2,0,Y0+H+.3,-.6,28);for(let i=0;i<12;i++){const a=i/12*Math.PI*2;RB(g,.12,.36,.1,win,Math.sin(a)*1.08,Y0+H+.3,-.6+Math.cos(a)*1.08,.01).rotation.y=a}
+ CY(g,1.14,1.14,.08,trim,0,Y0+H+.6,-.6,28);{const d=new THREE.Mesh(new THREE.SphereGeometry(1.1,30,14,0,Math.PI*2,0,Math.PI/2),verd);d.scale.y=1.05;d.position.set(0,Y0+H+.62,-.6);g.add(d)}
+ for(let k=0;k<12;k++){const a=k/12*Math.PI*2,r=RB(g,.04,.95,.04,verd2,Math.sin(a)*.82,Y0+H+1.05,-.6+Math.cos(a)*.82,.01);r.rotation.set(Math.cos(a)*-.85,0,Math.sin(a)*.85)}
+ CY(g,.22,.26,.36,trim,0,Y0+H+1.8,-.6,14);const cap=new THREE.Mesh(new THREE.SphereGeometry(.27,16,8,0,Math.PI*2,0,Math.PI/2),verd);cap.position.set(0,Y0+H+1.98,-.6);g.add(cap);
+ SPH(g,.09,gold,0,Y0+H+2.33,-.6);CY(g,.01,.03,.4,gold,0,Y0+H+2.58,-.6,6);
+ // lamp posts, topiaries and velvet ropes on the terrace
+ [-1,1].forEach(s=>{const lx=s*2.45,lz=3.25;CY(g,.14,.18,.22,iron,lx,.11,lz,10);CY(g,.04,.055,1.9,iron,lx,1.15,lz,8);RB(g,.5,.03,.03,iron,lx,2.0,lz,.01);
+   [-1,1].forEach(u=>{SPH(g,.1,new THREE.MeshBasicMaterial({color:0xfff0c0}),lx+u*.24,2.1,lz);const gs=glowSprite(0xffd890,1.4,.85);gs.position.set(lx+u*.24,2.1,lz);g.add(gs);lamps.push(gs)});
+   CY(g,.32,.26,.42,marble,s*3.35,Y0+.21,2.35,14);SPH(g,.32,M(0x3f7a3a,{roughness:.9}),s*3.35,Y0+.68,2.35);SPH(g,.24,M(0x4a8a42,{roughness:.9}),s*3.35,Y0+1.08,2.35);SPH(g,.15,M(0x55963e,{roughness:.9}),s*3.35,Y0+1.38,2.35);
+   });
+ // forecourt paving and a three-tier fountain topped with a golden paw
+ {const pv=new THREE.Mesh(new THREE.PlaneGeometry(9.4,6.4),new THREE.MeshStandardMaterial({roughness:.85,polygonOffset:true,polygonOffsetFactor:-2,map:ftex('caspave',(x,s)=>{x.fillStyle='#d8ccb4';x.fillRect(0,0,s,s);
+   for(let j=0;j<8;j++)for(let i=0;i<8;i++){const v=Math.floor(Math.random()*16);x.fillStyle='rgb('+(222-v)+','+(210-v)+','+(186-v)+')';x.fillRect(i*32+1,j*32+1,30,30);if((i+j)%2){x.fillStyle='rgba(170,140,90,.18)';x.fillRect(i*32+1,j*32+1,30,30)}}},256)}));
+  pv.material.map.wrapS=pv.material.map.wrapT=THREE.RepeatWrapping;pv.material.map.repeat.set(3,2);pv.rotation.x=-Math.PI/2;pv.position.set(1.0,.02,6.35);pv.receiveShadow=true;g.add(pv)}
+ {const fx=4.6,fz=6.0;CY(g,1.05,1.12,.34,marble,fx,.17,fz,32);CY(g,.93,.93,.02,new THREE.MeshStandardMaterial({color:0x5ab4d0,roughness:.08,metalness:.2,transparent:true,opacity:.85}),fx,.3,fz,32);
+  CY(g,.12,.16,.9,marble,fx,.6,fz,12);CY(g,.48,.2,.16,marble,fx,1.02,fz,22);CY(g,.42,.42,.02,M(0x6ac4dc,{roughness:.08}),fx,1.09,fz,22);CY(g,.07,.1,.44,marble,fx,1.3,fz,10);CY(g,.26,.1,.1,marble,fx,1.55,fz,16);
+  const pw=new THREE.Group();pw.position.set(fx,1.72,fz);g.add(pw);SPH(pw,.09,gold,0,0,0,1,.8,1);[-1.2,-.4,.4,1.2].forEach(a=>SPH(pw,.04,gold,Math.sin(a)*.11,.08,Math.cos(a)*.03,1,1.2,1));
+  for(let i=0;i<10;i++){const s=glowSprite(0xdff6ff,.22,.8);s.position.set(fx,1.6,fz);anim.add(s);CASX.spray.push({s,ph:i/10,a:i/10*Math.PI*2,x0:fx,z0:fz})}
+  OBC.push({x:CAS.x+fx,z:CAS.z+fz,r:1.2})}
+ [[-2.45,3.25,.25],[2.45,3.25,.25],[-3.35,2.35,.38],[3.35,2.35,.38],[-1.18,CZ+.45,.12],[1.18,CZ+.45,.12]].forEach(([x,z,r])=>OBC.push({x:CAS.x+x,z:CAS.z+z,r}));
+ shadowAll(g);mergeByMat(g,{skip:o=>{for(let q=o;q;q=q.parent)if(q.userData&&q.userData.anim)return true;return false}});
+ const t=textSprite('Casino Paw-Yal',FR.lottie.color,'#fff',2.2);t.position.set(0,7.3,-.6);g.add(t);
+ const b={key:'lottie',x:CAS.x,z:CAS.z+.1,hw:3.45,hd:2.5,g,door:[CAS.x,CAS.z+3.35],name:'Casino Paw-Yal',mapc:'#b8283c',label:'Go into Casino Paw-Yal',enter:()=>enterRoom('lottie')};BLD.push(b);CULL.push({g,x:CAS.x,z:CAS.z,m:9});
+ PATHS.push([[CAS.x+.4,CAS.z+3.9],[CAS.x+2.4,CAS.z+8.6],[CAS.x+3.6,CAS.z+14],[CAS.x+4.2,CAS.z+24],[CAS.x+4.6,CAS.z+33],[CAS.x+5.3,CAS.z+44],[CAS.x+5.7,CAS.z+53.3]])}
+function casinoStep(dt){CASX.t+=dt;const k=Math.floor(CASX.t*3)%2,on=.55+nightK*.45;if(CASX.k!==k){CASX.k=k;CASX.bm.color.setHex(k?0xfff2b0:0xb08a40);CASX.bm2.color.setHex(k?0xb08a40:0xfff2b0)}
+  CASX.spray.forEach(p=>{const u=(CASX.t*.7+p.ph)%1;p.s.position.set(p.x0+Math.cos(p.a)*u*.42,1.62+u*.35-u*u*1.1,p.z0+Math.sin(p.a)*u*.42);p.s.material.opacity=.8*(1-u)});
+  CASSPIN.forEach(o=>{if(o.parent)o.rotation.y+=dt*.6})}
+const CASSPIN=[];
 // ---- Paw Mart and Museum exteriors
 DRAW.ashlar=(x,s)=>{x.fillStyle='#e2dccf';x.fillRect(0,0,s,s);for(let j=0;j<4;j++)for(let i=-1;i<3;i++){const v=236+Math.floor(Math.random()*16);x.fillStyle='rgb('+v+','+(v-3)+','+(v-10)+')';x.fillRect(i*128+(j%2)*64+3,j*64+3,122,58)}};
 DRAW.awning=(x,s)=>{for(let i=0;i<8;i++){x.fillStyle=i%2?'#ffffff':'#4fae44';x.fillRect(i*32,0,32,s)}x.fillStyle='rgba(0,0,0,.08)';x.fillRect(0,s-20,s,20)};
@@ -2411,7 +2570,7 @@ function syncWorld(){while(dynG.children.length)dynG.remove(dynG.children[0]);co
   S.drops.forEach(s=>{const g=dropModel(s);g.position.set(s.x,gy(s.x,s.z),s.z);dynG.add(g);const fa=DROPFALL.get(s);if(fa)fa.g=g});
   if(collarActive()){const g=new THREE.Group();g.position.set(COLLAR.x,gy(COLLAR.x,COLLAR.z),COLLAR.z);const t=mesh(new THREE.TorusGeometry(.18,.04,8,18),M(0xd0283c),0,.06,0);t.rotation.x=Math.PI/2;g.add(t);const s=glowSprite(0xffe08a,1.4,.8);s.position.y=.3;g.add(s);dynG.add(g)}
   QITEMS.forEach(o=>{if(!qActive(o))return;const g=new THREE.Group();g.position.set(o.x,gy(o.x,o.z),o.z);const it=ITEMS[o.id];if(o.id==='ribbon'){[-1,1].forEach(s=>{const l=sp(g,.12,it.color,s*.11,.1,0,1,.6,.5);l.rotation.z=s*.4});sp(g,.05,it.color,0,.1,0)}else if(o.id==='thimble'){LT(g,[[0,0],[.07,0],[.065,.12],[.04,.15],[0,.16]],MTL(0xd0d4d8,.25),0,0,0,16)}else if(o.id==='brooch'){for(let i=0;i<10;i++){const a=i/10*Math.PI*2;SPH(g,.03,M(0xfdf8ee,{roughness:.15,metalness:.3}),Math.cos(a)*.1,.04,Math.sin(a)*.1)}SPH(g,.045,MTL(0xd4a83c,.25),0,.05,0,1,.5,1)}else if(o.id==='musicbox'){RB(g,.26,.1,.18,GLO(0x8a4a6a,.3),0,.06,0,.012);RB(g,.27,.015,.19,MTL(0xd4a83c,.3),0,.11,0,.004)}else if(o.id==='blueprint'){const r=CY(g,.04,.04,.36,M(0x3a6ad0),0,.05,0,12);r.rotation.z=Math.PI/2;TOR(g,.042,.006,M(0xe0403a),0,.05,0).rotation.y=Math.PI/2}
-    else if(o.id==='mappiece'){const m=RB(g,.28,.01,.22,M(0xe8d8a8,{roughness:1}),0,.02,0,.004);m.rotation.y=.4;SPH(g,.02,M(0xc0303a),.04,.03,.02,1,.3,1)}else if(o.id==='scissors'){[-1,1].forEach(s2=>{const b2=RB(g,.22,.012,.025,MTL(0xf2c14e,.2),.04,.03,s2*.02,.004);b2.rotation.y=s2*.3;TOR(g,.035,.008,MTL(0xf2c14e,.2),-.1,.03,s2*.05,true)})}else{cy(g,.03,.4,0x8a5a32,0,.06,0,8).rotation.z=Math.PI/2;bx(g,.12,.1,.2,0x9aa4ae,.2,.08,0)}const s2=glowSprite(0xffe08a,1.4,.8);s2.position.y=.35;g.add(s2);dynG.add(g)});
+    else if(o.id==='mappiece'){const m=RB(g,.28,.01,.22,M(0xe8d8a8,{roughness:1}),0,.02,0,.004);m.rotation.y=.4;SPH(g,.02,M(0xc0303a),.04,.03,.02,1,.3,1)}else if(o.id==='scissors'){[-1,1].forEach(s2=>{const b2=RB(g,.22,.012,.025,MTL(0xf2c14e,.2),.04,.03,s2*.02,.004);b2.rotation.y=s2*.3;TOR(g,.035,.008,MTL(0xf2c14e,.2),-.1,.03,s2*.05,true)})}else if(o.id==='luckydice'){const gm=MTL(0xf2c14e,.22),dm=M(0x5a1a10);[[-.07,.25,0],[.08,-.4,.06]].forEach(([x,a,z],k)=>{const d=new THREE.Group();d.position.set(x,.06,z);d.rotation.set(k*.3,a,0);g.add(d);RB(d,.12,.12,.12,gm,0,0,0,.025);[[0,0],[.03,.03],[-.03,-.03]].forEach(([u,v])=>SPH(d,.012,dm,u,.061,v,1,.3,1))})}else{cy(g,.03,.4,0x8a5a32,0,.06,0,8).rotation.z=Math.PI/2;bx(g,.12,.1,.2,0x9aa4ae,.2,.08,0)}const s2=glowSprite(0xffe08a,1.4,.8);s2.position.y=.35;g.add(s2);dynG.add(g)});
   if(goldActive()){const g=new THREE.Group();g.position.set(GOLD.x,gy(GOLD.x,GOLD.z)+.035,GOLD.z);for(let i=0;i<3;i++){const b=mesh(box1,gold);b.scale.set(.8,.02,.09);b.rotation.y=i*1.047;g.add(b)}const s=glowSprite(0xffd060,1.8,.9);s.position.y=.3;g.add(s);dynG.add(g)}}
 
 // ================= PLAYER + NPCS =================
@@ -2424,6 +2583,7 @@ Object.entries(FR).forEach(([k,f])=>{const m=f.mk();m.g.traverse(o=>{if(o.isMesh
 // Bella spends her day outside her boutique rather than at home
 {const t=BLD.find(x=>x.key==='tailor'),n=NPC.bella;if(t&&n){n.hx=t.door[0]+3.2;n.hz=t.door[1]+2.4;n.x=t.door[0]+2.2;n.z=t.door[1]+1.2}}
 {const n=NPC.xam;if(n){n.hx=XSH.x+2.6;n.hz=XSH.z+3.6;n.x=XSH.x+1.3;n.z=XSH.z+3.1}}
+{const n=NPC.lottie;if(n){n.hx=CAS.x+1.6;n.hz=CAS.z+6.4;n.x=CAS.x+1;n.z=CAS.z+4.8}}
 {const n=NPC.krug,b=BLD.find(x=>x.key==='krug');if(n&&b){n.hx=(PIER.x0+PIER.x1)/2;n.hz=PIER.z0+3.5;n.x=b.door[0]-.5;n.z=b.door[1]+1.4}}
 function collide(o,r){OBC.forEach(c=>{const dx=o.x-c.x,dz=o.z-c.z,d=Math.hypot(dx,dz),R=r+c.r;if(d<R&&d>1e-4){o.x=c.x+dx/d*R;o.z=c.z+dz/d*R}});
   BLD.forEach(b=>{const hx=b.hw+r,hz=b.hd+r,dx=o.x-b.x,dz=o.z-b.z;if(Math.abs(dx)<hx&&Math.abs(dz)<hz){if(hx-Math.abs(dx)<hz-Math.abs(dz))o.x=b.x+(dx<0?-hx:hx);else o.z=b.z+(dz<0?-hz:hz)}})}
@@ -2721,7 +2881,7 @@ const HOMES={
 HOMES.bella={n:6,wall:'damask',floor:'herringbone',npc:[-.5,.5],items:[['canopybed',0,0],['lamp',1,0],['vanity',2,0],['wardrobe',4,0],['flowerrug',2,2],['chaise',4,2],['dressform',0,3],['fabricshelf',1,3],['sewingtable',0,5],['floorlamp',4,5],['mirrorstand',5,4],['plant',5,5]]};
 const FISH_SLOTS=[],BUG_SLOTS=[],FOSSIL_SLOTS=[[6,8],[7,8],[8,8],[9,8],[10,8],[11,8],[8,10],[10,10]];
 [0,2,4,6,8].forEach(j=>{for(let i=0;i<6;i++)FISH_SLOTS.push([i,j])});[0,2,4,6].forEach(j=>{for(let i=6;i<12;i++)BUG_SLOTS.push([i,j])});
-function roomDef(key){if(key==='home')return S.room;if(key.startsWith('biz_'))return bizRoom(key.slice(4));if(key==='kitchen')return kitchenRoom();
+function roomDef(key){if(key==='home')return S.room;if(key.startsWith('biz_'))return bizRoom(key.slice(4));if(key==='kitchen')return kitchenRoom();if(key==='lottie')return casinoRoom();
   if(HOMES[key]){const h=HOMES[key],n2=h.n+2;return{n:n2,wall:h.wall,floor:h.floor,npc:h.npc,items:spreadList(h.items.map(([id,i,j,item])=>({id,i,j,r:0,item})),h.n,n2)}}
   if(key==='shop')return pmRoom();
   if(key==='tailor'){const it=[{id:'tailorcounter',i:3,j:1,r:0},{id:'plant',i:2,j:0,r:0},{id:'plant',i:5,j:0,r:0},{id:'clothesrack',i:0,j:0,r:0,list:['puffer','raincoat','tartan']},{id:'clothesrack',i:6,j:0,r:0,list:['denim','jumper','wax']},
@@ -3347,7 +3507,7 @@ function buildFurn(id,it){const g=new THREE.Group(),c=FURN[id].c,W=0x9a6a3a;
     const ph=new THREE.Mesh(new THREE.PlaneGeometry(.32,.26),PIC('wed'+sp2,128,104,(x,W2,H2)=>{const gr=x.createLinearGradient(0,0,0,H2);gr.addColorStop(0,'#ffe2ee');gr.addColorStop(1,'#fff8e6');x.fillStyle=gr;x.fillRect(0,0,W2,H2);
       x.strokeStyle='#ffffff';x.lineWidth=8;x.beginPath();x.arc(64,90,52,Math.PI,0);x.stroke();x.fillStyle='#ff8fb8';for(let i=0;i<9;i++){const a=Math.PI+i/8*Math.PI;x.beginPath();x.arc(64+Math.cos(a)*52,90+Math.sin(a)*52,5,0,7);x.fill()}
       x.fillStyle='#8f8d8c';x.beginPath();x.ellipse(44,84,14,11,0,0,7);x.fill();x.fillStyle='#c79a63';x.beginPath();x.arc(44,66,11,0,7);x.fill();x.fillStyle='#222';x.beginPath();x.arc(47,66,2,0,7);x.fill();
-      const col={bonnie:'#26272f',franky:'#9a5e38',alphonso:'#1d1d23',bella:'#f8f4ee'}[sp2]||'#fff';x.fillStyle=col;x.beginPath();x.ellipse(84,84,14,11,0,0,7);x.fill();x.beginPath();x.arc(84,66,11,0,7);x.fill();x.strokeStyle='rgba(0,0,0,.2)';x.lineWidth=1;x.stroke();x.fillStyle='#222';x.beginPath();x.arc(81,66,2,0,7);x.fill();
+      const col={bonnie:'#26272f',franky:'#9a5e38',alphonso:'#1d1d23',bella:'#f8f4ee',lottie:'#3a2a1e',xam:'#6a4220',krug:'#2a4a7a'}[sp2]||'#fff';x.fillStyle=col;x.beginPath();x.ellipse(84,84,14,11,0,0,7);x.fill();x.beginPath();x.arc(84,66,11,0,7);x.fill();x.strokeStyle='rgba(0,0,0,.2)';x.lineWidth=1;x.stroke();x.fillStyle='#222';x.beginPath();x.arc(81,66,2,0,7);x.fill();
       x.fillStyle='#e0577e';x.font='20px sans-serif';x.fillText('♥',57,48)}));ph.position.set(0,.17,.016);fr.add(ph);const leg=RB(fr,.03,.26,.01,MTL(0xd4a83c,.3),0,.12,-.06,.004);leg.rotation.x=.4;break}
   case 'weddingcake':{const w=WD(0xf6f2ee,.4);CY(g,.3,.3,.03,w,0,.66,0,28);LT(g,[[0,0],[.18,0],[.18,.02],[.05,.04],[.035,.3],[.05,.5],[.03,.6],[.06,.645],[0,.645]],w,0,0,0,16);const ck=M(0xfffaf2,{roughness:.6}),rb=GLO(0xff9fc0,.4);
     [[.22,.14,.675],[.16,.13,.815],[.1,.12,.94]].forEach(([r,h,y])=>{CY(g,r,r,h,ck,0,y+h/2,0,28);TOR(g,r,.012,rb,0,y+.025,0,true);for(let i=0;i<6;i++){const a=i/6*Math.PI*2;SPH(g,.022,M([0xff8fb8,0xffffff][i%2],{roughness:.6}),Math.cos(a)*r,y+h,Math.sin(a)*r)}});
@@ -3433,7 +3593,7 @@ function enterRoom(key){inside=true;roomKey=key;CUR=key==='home'?null:roomDef(ke
   const vk=key==='tailor'?'bella':NPC[key]?key:null;
   if(vk&&NPC[vk]){const n=NPC[vk];visitor=n;scene.remove(n.m.g);sceneIn.add(n.m.g);n.x=CUR.npc[0];n.z=CUR.npc[1];n.face=0;n.tgt=null;n.talk=false;n.spd=0}
   else if(key==='home'&&S.married&&NPC[S.married]&&!WED){const n=NPC[S.married],N=RM().n;visitor=n;scene.remove(n.m.g);sceneIn.add(n.m.g);let px=.5,pz=-.5;for(let t=0;t<60;t++){const i=1+Math.floor(Math.random()*(N-2)),j=1+Math.floor(Math.random()*(N-3));if(!itemsAt(i,j).length&&!blockedCells().some(c=>c[0]===i&&c[1]===j)){px=-N/2+i+.5;pz=-N/2+j+.5;break}}n.x=px;n.z=pz;n.face=0;n.tgt=null;n.talk=false;n.spd=0}
-  sfx.door();uiMode();save();const W={xam:'Big bro! Welcome to the shack! Mind the sand, I never sweep.',krug:'Welcome aboard the Sea Dog, matey!',kitchen:'Welcome to Copper Pot Kitchens! Browse the showroom or use the counter.',shop:'Welcome to Paw Mart! Browse the displays or use the counter.',museum:"Welcome to Alphonso's Museum.",tailor:"Bienvenue to Bella's Boutique! Look around, darling.",bella:"Bella's elegant cottage",bonnie:"Bonnie's cosy house",franky:"Franky's workshop house",alphonso:"Alphonso's study"};if(W[key])toast(W[key])}
+  sfx.door();uiMode();save();const W={lottie:'Welcome to Casino Paw-Yal, darling! Try the tables or the slot machines.',xam:'Big bro! Welcome to the shack! Mind the sand, I never sweep.',krug:'Welcome aboard the Sea Dog, matey!',kitchen:'Welcome to Copper Pot Kitchens! Browse the showroom or use the counter.',shop:'Welcome to Paw Mart! Browse the displays or use the counter.',museum:"Welcome to Alphonso's Museum.",tailor:"Bienvenue to Bella's Boutique! Look around, darling.",bella:"Bella's elegant cottage",bonnie:"Bonnie's cosy house",franky:"Franky's workshop house",alphonso:"Alphonso's study"};if(W[key])toast(W[key])}
 function enterHouse(){enterRoom('home')}
 function leaveVisitor(){if(!visitor)return;const n=visitor,b=BLD.find(x=>x.key===(roomKey==='tailor'?'tailor':n.k));sceneIn.remove(n.m.g);scene.add(n.m.g);n.x=b.door[0]+(n.k==='krug'?-.5:1.2);n.z=b.door[1]+(n.k==='krug'?1.4:1);n.tgt=null;n.wait=2;n.talk=false;visitor=null}
 function exitHouse(){if(MIR.on)closeMirror();poseCancel();if(REDEC)redecEnd();cancelPlace();leaveVisitor();const key=roomKey&&roomKey.startsWith('home')?'home':roomKey;inside=false;roomKey=null;CUR=null;sceneIn.remove(max);scene.add(max);const b=BLD.find(x=>x.key===key)||homeB;P.x=b.door[0];P.z=b.door[1]+.5;P.y=gy(P.x,P.z);P.face=0;camSnap=1;sfx.door();uiMode();save()}
@@ -3471,7 +3631,7 @@ function getAction(){
     const[i,j]=frontCell();const its=itemsAt(i,j);const it=its.find(o=>!FURN[o.id].rug)||its[0];
     if(it&&it.fixed)return it.id==='stairs'?{t:'Go upstairs',f:()=>goRoom('home:up','home')}:{t:'Go downstairs',f:()=>goRoom('home','home:up')};
     if(it&&poseOK(it))return{t:poseLabel(it),f:()=>startPose(it)};
-    if(it){if(isHome()&&BOXES[it.id])return{t:'Open the '+FURN[it.id].name,f:()=>openBox(it)};if(isHome())return{t:(COOKERS.has(it.id)?'Cook at the ':MIRRORS.has(it.id)?'Use the ':'Check ')+FURN[it.id].name,f:()=>furnMenu(it)};return{t:lookLabel(it),f:()=>lookAt(it)}}return null}
+    if(it){if(isHome()&&BOXES[it.id])return{t:'Open the '+FURN[it.id].name,f:()=>openBox(it)};if(isHome()&&CASHOME[it.id])return{t:CASHOME[it.id][0],f:()=>casOpen(CASHOME[it.id][1])};if(isHome())return{t:(COOKERS.has(it.id)?'Cook at the ':MIRRORS.has(it.id)?'Use the ':'Check ')+FURN[it.id].name,f:()=>furnMenu(it)};return{t:lookLabel(it),f:()=>lookAt(it)}}return null}
   const fp=front();
   const n=nearestIn(Object.values(NPC),P.x,P.z,2,o=>!o.trip||((o.x-P.x)*Math.sin(P.face)+(o.z-P.z)*Math.cos(P.face))>Math.hypot(o.x-P.x,o.z-P.z)*.7),nd=BLD.reduce((m,b)=>Math.min(m,Math.hypot(P.x-b.door[0],P.z-b.door[1])),9);if(n&&!(nd<1.4&&nd<Math.hypot(P.x-n.o.x,P.z-n.o.z)))return{t:'Talk to '+FR[n.o.k].name,f:()=>talkTo(n.o.k)};
   for(const b of BLD){if(Math.hypot(P.x-b.door[0],P.z-b.door[1])<1.4){if(b.label)return{t:b.label,f:b.enter};if(b.key==='home')return{t:'Go inside',f:enterHouse};if(b.key==='shop')return{t:'Go into Paw Mart',f:()=>enterRoom('shop')};if(b.key==='museum')return{t:'Go into the museum',f:()=>enterRoom('museum')};if(b.key==='tailor')return{t:"Go into Bella's Boutique",f:()=>enterRoom('tailor')};if(b.key==='kitchen')return{t:'Go into Copper Pot Kitchens',f:()=>enterRoom('kitchen')};
@@ -3479,7 +3639,7 @@ function getAction(){
   {const ca=cruAction();if(ca)return ca}
   {const lp=PLOTS.find(p=>p.id!==landS().at&&Math.hypot(P.x-p.sx,P.z-p.sz)<1.8);if(lp)return{t:landS().own[lp.id]?'Read the sign: '+lp.n:'Read the For Sale sign',f:()=>plotTalk(lp)}}
   if(collarActive()&&Math.hypot(fp.x-COLLAR.x,fp.z-COLLAR.z)<1.3)return{t:'Pick up the red collar',f:()=>{if(give('collar')){sfx.pick();toast('Max found Bonnie\'s collar!');syncWorld();save()}else toast('Pockets are full!')}};
-  const qi=QITEMS.find(o=>qActive(o)&&Math.hypot(fp.x-o.x,fp.z-o.z)<1.3);if(qi)return{t:{ribbon:'Pick up the pink ribbon',hammer:"Pick up Franky's hammer",thimble:"Pick up Bella's thimble",brooch:'Pick up the pearl brooch',musicbox:"Pick up Bonnie's music box",blueprint:"Pick up Franky's blueprint",mappiece:'Pick up the map piece',scissors:"Pick up Bella's golden scissors"}[qi.id],f:()=>{if(!give(qi.id))return swapFor(qi.id);S.qf=S.qf||{};S.qf[qi.key]=1;sfx.pick();smileT=2;toast('Max found '+{ribbon:'a pink ribbon!',hammer:"Franky's hammer!",thimble:"Bella's thimble!",brooch:'the pearl brooch!',musicbox:"Bonnie's music box!",blueprint:"Franky's blueprint!",mappiece:'a piece of the treasure map!',scissors:"Bella's golden scissors!"}[qi.id]);syncWorld();save()}};
+  const qi=QITEMS.find(o=>qActive(o)&&Math.hypot(fp.x-o.x,fp.z-o.z)<1.3);if(qi)return{t:{ribbon:'Pick up the pink ribbon',hammer:"Pick up Franky's hammer",thimble:"Pick up Bella's thimble",brooch:'Pick up the pearl brooch',musicbox:"Pick up Bonnie's music box",blueprint:"Pick up Franky's blueprint",mappiece:'Pick up the map piece',scissors:"Pick up Bella's golden scissors",luckydice:"Pick up Lottie's golden dice"}[qi.id]||'Pick up the '+ITEMS[qi.id].name.toLowerCase(),f:()=>{if(!give(qi.id))return swapFor(qi.id);S.qf=S.qf||{};S.qf[qi.key]=1;sfx.pick();smileT=2;toast('Max found '+{ribbon:'a pink ribbon!',hammer:"Franky's hammer!",thimble:"Bella's thimble!",brooch:'the pearl brooch!',musicbox:"Bonnie's music box!",blueprint:"Franky's blueprint!",mappiece:'a piece of the treasure map!',scissors:"Bella's golden scissors!",luckydice:"Lottie's lucky golden dice!"}[qi.id]||'the '+ITEMS[qi.id].name.toLowerCase()+'!');syncWorld();save()}};
   if(S.lookout&&Math.hypot(P.x-LOOK.x,P.z-(LOOK.z+1))<1.8)return{t:'Look through the telescope',f:()=>{lookT=5;if(nightK>.5&&S.q.alphonso===9&&S.qa.alphonso){S.qf=S.qf||{};S.qf.nightscope=1;save();toast('Max spots a cluster of stars shaped just like a bone! Tell Alphonso.')}else toast(nightK>.5?'The stars are beautiful tonight.':'What a view! Max can see the whole island.');sfx.fanfare()}};
   const dr=nearestIn(S.drops,fp.x,fp.z,1.1);if(dr)return{t:'Pick up '+ITEMS[dr.o.id].name+((dr.o.n||1)>1?' x'+dr.o.n:''),f:()=>{if(!give(dr.o.id,dr.o.n||1))return swapFor(dr.o.id,()=>{const i=S.drops.indexOf(dr.o);if(i>=0&&give(dr.o.id,dr.o.n||1)){S.drops.splice(i,1);sfx.pick();syncWorld();save()}});S.drops.splice(dr.i,1);sfx.pick();syncWorld();save()}};
   const sh=nearestIn(S.d.shells,fp.x,fp.z,1.1,o=>!o.t);if(sh)return{t:'Pick up '+ITEMS[sh.o.id].name,f:()=>{if(!give(sh.o.id))return swapFor(sh.o.id);sh.o.t=1;dexMark(sh.o.id);sfx.pick();syncWorld();save()}};
@@ -3525,7 +3685,7 @@ function dlgAdvance(){if(!dlg)return;if(dlg.typing){dlg.acc=1e9;finishLine();ret
 function closeDlg(keep){const who=dlg&&dlg.who;dlg=null;$('dlg').hidden=true;if(!keep&&NPC[who])NPC[who].talk=false;if(!keep&&!placing)unbusy()}
 $('dlg').onclick=dlgAdvance;
 function busy(){document.body.classList.add('busy')}
-function unbusy(){if(!dlg&&$('sheet').hidden)document.body.classList.remove('busy');Object.values(NPC).forEach(n=>{if(!dlg)n.talk=false})}
+function unbusy(){if(!dlg&&$('sheet').hidden&&!window.CASON)document.body.classList.remove('busy');Object.values(NPC).forEach(n=>{if(!dlg)n.talk=false})}
 
 // ================= QUESTS =================
 const Q={
@@ -3651,7 +3811,8 @@ function talkTo(k){const n=NPC[k];n.talk=true;if(F.on)reel();P.face=Math.atan2(n
 function menuFor(k,lines){const o=[],qi=S.q[k],qs=Q[k];
   if(qi<qs.length){const q=qs[qi];o.push({t:S.qa[k]?'About your request...':'Need any help?',f:()=>questTalk(k)})}
   else{const r=S.d.req[k];if(r&&!r.done)o.push({t:'Need anything today?',f:()=>reqTalk(k)})}
-  o.push({t:'Chat',f:()=>{const pool=CHAT[k];say(k,[pool[Math.floor(Math.random()*pool.length)]],null,()=>{emote(k,emoPick(k));menuFor(k,['Anything else?'])})}});if(k==='xam')o.splice(o.length-1,0,{t:'Tell me a story about Mum',f:mumStory});if(TRIP&&TRIP.fr===k)o.unshift({t:'Enjoy the island together',f:()=>{const L=TRIPCHAT[TRIP.k];say(k,[L[Math.floor(Math.random()*L.length)]],null,()=>{emote(k,emoPick(k));menuFor(k,['Anything else?'])})}});
+  o.push({t:'Chat',f:()=>{const pool=CHAT[k];say(k,[pool[Math.floor(Math.random()*pool.length)]],null,()=>{emote(k,emoPick(k));menuFor(k,['Anything else?'])})}});if(k==='xam')o.splice(o.length-1,0,{t:'Tell me a story about Mum',f:mumStory});if(k==='lottie'){o.splice(o.length-1,0,{t:'Tell me one of your stories',f:lottieStory});o.splice(1,0,{t:roomKey==='lottie'?"Let's play a game!":'What games do you have?',f:()=>roomKey==='lottie'?lottieGames():say('lottie',["Roulette, blackjack and the slot machines, darling! Come inside Casino Paw-Yal in the north-east corner of the island and try your luck."],null,()=>menuFor('lottie',['Anything else, darling?']))})}
+  if(k!=='lottie'&&GALA[k]&&galaOn()&&!(S.qf&&S.qf['gala'+k]))o.unshift({t:"Lottie's gala invitation!",f:()=>{S.qf=S.qf||{};S.qf['gala'+k]=1;save();say(k,[GALA[k]],null,()=>{toast('Invited '+FR[k].name+' to the Paw-Yal Gala! ('+galaN()+'/4)');menuFor(k,['Anything else?'])})}});if(TRIP&&TRIP.fr===k)o.unshift({t:'Enjoy the island together',f:()=>{const L=TRIPCHAT[TRIP.k];say(k,[L[Math.floor(Math.random()*L.length)]],null,()=>{emote(k,emoPick(k));menuFor(k,['Anything else?'])})}});
   if(!S.d.gift[k])o.push({t:'Give a gift',f:()=>giftPick(k)});
   if(k==='franky'&&S.house.stage>0){o.push({t:'Add a room',f:extMenu});o.push({t:'Renovate my home',f:()=>{unbusy();openReno()}});o.push({t:'Paint my house',f:paintHouse})}if(k==='franky')o.push({t:'Land and moving house',f:()=>{unbusy();openLand()}});if(k==='franky'&&!SEA.on)o.splice(1,0,{t:'Decorate the island',f:()=>say('franky',[ISLS().items.length?"Back for more? Let's make this island even prettier!":"Ooh, I love a project! Paths, lamps, benches, flower beds... pick what you like and put it anywhere on the island."],null,()=>openIsland('franky'))});
   if(S.q.bella===9&&S.qa.bella&&DELIV[k]&&!(S.qf&&S.qf['par'+k]))o.unshift({t:"Your parcel from Bella!",f:()=>{S.qf=S.qf||{};S.qf['par'+k]=1;save();say(k,[DELIV[k]],null,()=>{toast('Delivered '+FR[k].name+"'s parcel!");menuFor(k,['Anything else?'])})}});
@@ -3664,7 +3825,7 @@ function menuFor(k,lines){const o=[],qi=S.q[k],qs=Q[k];
   say(k,lines,o)}
 function questTalk(k){const q=Q[k][S.q[k]];
   if(!S.qa[k]){if(q.req&&!q.req()){say(k,q.reqMsg,null,()=>menuFor(k,['Anything else?']));return}
-    say(k,q.ask,[{t:"Sure, I'll help!",f:()=>{S.qa[k]=true;q.accept&&q.accept();syncWorld();save();emote(k,'heart');say(k,["Thank you, Max! You're a good friend."+(q.accept?' Here, take this!':'')],null,()=>{toast('New task: '+q.t);unbusy()})}},{t:'Maybe later',f:()=>say(k,['No worries. Come back any time!'])}]);return}
+    say(k,q.ask,[{t:"Sure, I'll help!",f:()=>{S.qa[k]=true;q.accept&&q.accept();syncWorld();save();emote(k,'heart');say(k,["Thank you, Max! You're a good friend."+(q.accept&&!q.quiet?' Here, take this!':'')],null,()=>{toast('New task: '+q.t);unbusy()})}},{t:'Maybe later',f:()=>say(k,['No worries. Come back any time!'])}]);return}
   if(q.can()){q.take();q.reward();S.q[k]++;S.qa[k]=false;addBond(k,BOND.adventure);sfx.fanfare();syncWorld();save();emote(k,'star');say(k,q.done,null,()=>{toast('Task complete: '+q.t);hudBones();unbusy()})}
   else say(k,["Still working on it? Here's where you're at:",q.prog()],null,()=>menuFor(k,['Anything else?']))}
 function reqTalk(k){const r=S.d.req[k];const have=r.id?count(r.id):countCat(r.cat);
@@ -3694,9 +3855,9 @@ function furnMenu(it){const f=FURN[it.id],opts=[];if(MIRRORS.has(it.id))opts.pus
 // ================= LOOKING AROUND OTHER BUILDINGS =================
 const FOSSIL_FACT={amber:'Tree sap from long ago, hardened into a golden gem.',ammonite:'A spiral-shelled sea creature from millions of years ago.',trilobite:'One of the earliest creatures with eyes!',sharktooth:'Sharks lose thousands of teeth in a lifetime.',
  dinotooth:'A tooth from a mighty meat-eating dinosaur.',fern:'A fern leaf pressed into stone, older than the dinosaurs.',skull:'The skull of a huge dinosaur. Max feels very small.',coprolite:"Fossilised dino poo. Max sniffs it anyway."};
-function lookLabel(it){if(it.id==='mcase')return'Look at the '+(it.title||'display case');if(roomKey&&roomKey.startsWith('biz_')){const l=bizLookLabel(it);if(l)return l}if(roomKey==='lighthouse'&&LHLOOK[it.id])return LHLOOK[it.id][0];if(roomKey==='shop'&&PMLOOK[it.id])return PMLOOK[it.id][0];if(roomKey==='tailor'&&it.id==='mirrorstand')return'Try clothes on in the mirror';if(it.id==='kcounterdesk')return'Use the counter';if(it.id==='produce')return'Look at the fresh produce';if(roomKey==='tailor')return it.id==='plant'||it.id==='rug'?'Look at the '+FURN[it.id].name:"Browse Bella's clothes";if(it.buy)return'Look at the '+FURN[it.id].name;if(it.id==='counter')return'Use the counter';if(it.id==='museumdesk')return'Donate at the desk';
+function lookLabel(it){if(roomKey==='lottie'&&CASLOOK[it.id])return CASLOOK[it.id][0];if(it.id==='mcase')return'Look at the '+(it.title||'display case');if(roomKey&&roomKey.startsWith('biz_')){const l=bizLookLabel(it);if(l)return l}if(roomKey==='lighthouse'&&LHLOOK[it.id])return LHLOOK[it.id][0];if(roomKey==='shop'&&PMLOOK[it.id])return PMLOOK[it.id][0];if(roomKey==='tailor'&&it.id==='mirrorstand')return'Try clothes on in the mirror';if(it.id==='kcounterdesk')return'Use the counter';if(it.id==='produce')return'Look at the fresh produce';if(roomKey==='tailor')return it.id==='plant'||it.id==='rug'?'Look at the '+FURN[it.id].name:"Browse Bella's clothes";if(it.buy)return'Look at the '+FURN[it.id].name;if(it.id==='counter')return'Use the counter';if(it.id==='museumdesk')return'Donate at the desk';
   if(it.item)return'Look at the '+ITEMS[it.item].name;if(it.id==='trophy')return'Look at the Golden Bone';return'Look at the '+FURN[it.id].name}
-function lookAt(it){const f=FURN[it.id];if(it.id==='mcase'){const got=(it.list||[]).filter(Boolean),tot=(it.all||[]).length;say('max',[(it.title||'Display case')+': '+got.length+' of '+tot+' donated.',got.length?got.map(x=>ITEMS[x].name).join(', ')+'.':'It is still empty. Donate to Alphonso to fill it!'].concat(got.length<tot?['Still missing '+(tot-got.length)+' more for this case.']:['This case is complete! Alphonso is very proud.']));return}if(roomKey&&roomKey.startsWith('biz_')&&bizLookAt(it))return;if(roomKey==='lighthouse'&&LHLOOK[it.id]){LHLOOK[it.id][1](it);return}if(roomKey==='shop'&&PMLOOK[it.id]){PMLOOK[it.id][1](it);return}if(roomKey==='tailor'&&it.id==='mirrorstand'){openMirror('shop',it);return}if(it.id==='kcounterdesk'){openKitchenShop();return}if(it.id==='produce'){openKitchenShop('p');return}if(roomKey==='tailor'&&it.id!=='plant'&&it.id!=='rug'){openTailor();return}
+function lookAt(it){const f=FURN[it.id];if(roomKey==='lottie'&&CASLOOK[it.id]){CASLOOK[it.id][1](it);return}if(it.id==='mcase'){const got=(it.list||[]).filter(Boolean),tot=(it.all||[]).length;say('max',[(it.title||'Display case')+': '+got.length+' of '+tot+' donated.',got.length?got.map(x=>ITEMS[x].name).join(', ')+'.':'It is still empty. Donate to Alphonso to fill it!'].concat(got.length<tot?['Still missing '+(tot-got.length)+' more for this case.']:['This case is complete! Alphonso is very proud.']));return}if(roomKey&&roomKey.startsWith('biz_')&&bizLookAt(it))return;if(roomKey==='lighthouse'&&LHLOOK[it.id]){LHLOOK[it.id][1](it);return}if(roomKey==='shop'&&PMLOOK[it.id]){PMLOOK[it.id][1](it);return}if(roomKey==='tailor'&&it.id==='mirrorstand'){openMirror('shop',it);return}if(it.id==='kcounterdesk'){openKitchenShop();return}if(it.id==='produce'){openKitchenShop('p');return}if(roomKey==='tailor'&&it.id!=='plant'&&it.id!=='rug'){openTailor();return}
   if(it.id==='counter'){openShop();return}if(it.id==='museumdesk'){openMuseum();return}
   if(it.buy){say('max',[f.name+'. '+f.price.toLocaleString()+' bones.'+(S.furn[it.id]?' Max has '+S.furn[it.id]+' at home.':'')],[{t:'Buy it',f:()=>{if(S.bones<f.price){sfx.no();say('max',["Max doesn't have enough bones yet."]);return}addBones(-f.price);gainFurn(it.id);sfx.coin();save();say('max',['Bought! The '+f.name+' was sent to Max\'s storage.'])}},{t:'Just looking',f:unbusy}]);return}
   if(it.id==='trophy'&&roomKey==='museum'){say('max',['The Golden Bone, star of the museum. Max found it in the Wild Woods!']);return}
@@ -3705,7 +3866,7 @@ function lookAt(it){const f=FURN[it.id];if(it.id==='mcase'){const got=(it.list||
     else if(i.cat==='bug')line+=' You can find it '+{flower:'on flowers',field:'in the fields',river:'near water',tree:'on trees',east:'in the Wild Woods',beach:'on the beach'}[i.where]+'.';
     else line+=' '+(FOSSIL_FACT[i.id]||'');
     say('max',[line,roomKey==='museum'?'Donated by Max.':'It is part of '+FR[roomKey].name+"'s collection."]);return}
-  if(visitor){const k=visitor.k,nm=FR[k].name,L={xam:'It smells of coconut sun cream and surf wax.',krug:'It smells of sea salt and fresh varnish.',bonnie:'It smells like flowers in here.',franky:'Sawdust and wood shavings everywhere!',alphonso:'Everything is labelled so neatly.',bella:'Everything smells of lavender and fresh linen.'};say('max',[nm+"'s "+f.name+'. '+L[k]]);return}
+  if(visitor){const k=visitor.k,nm=FR[k].name,L={lottie:'It smells of roses and very expensive perfume.',xam:'It smells of coconut sun cream and surf wax.',krug:'It smells of sea salt and fresh varnish.',bonnie:'It smells like flowers in here.',franky:'Sawdust and wood shavings everywhere!',alphonso:'Everything is labelled so neatly.',bella:'Everything smells of lavender and fresh linen.'};say('max',[nm+"'s "+f.name+'. '+L[k]]);return}
   say('max',[f.name+'.'])}
 
 // ================= SHEETS / MENUS =================
@@ -3797,7 +3958,7 @@ function bondLabel(k){const h=heartsOf(k);return S.married===k?'Married \u{1F48D
 function openFriends(){openSheet('Friends',[{id:'f',label:'Bonds',render(b){const p=el('p');p.textContent='Chat each day, give gifts, help with requests, share adventures and unlock achievements to grow each bond. At 10 full hearts you can propose!';b.appendChild(p);
    Object.keys(FR).forEach(k=>{const d=el('div','task'),h=heartsOf(k);d.innerHTML='<b></b> <small></small><img alt="" style="width:100%;max-width:260px;display:block;margin:6px 0"><span></span>';
     d.querySelector('b').textContent=FR[k].name;d.querySelector('small').textContent=bondLabel(k)+' · '+(Math.floor(h*10)/10)+'/10 hearts';d.querySelector('img').src=heartsImg(k);
-    d.querySelector('span').textContent='Adventures '+Math.min(S.q[k]||0,Q[k].length)+'/'+Q[k].length+' · Achievements '+achList(k).filter(a=>S.ach[k+':'+a.id]).length+'/'+achList(k).length+' · Loves '+{flower:'flowers',fruit:'fruit',fossil:'fossils',shell:'seashells'}[FR[k].likes];b.appendChild(d)})}},
+    d.querySelector('span').textContent='Adventures '+Math.min(S.q[k]||0,Q[k].length)+'/'+Q[k].length+' · Achievements '+achList(k).filter(a=>S.ach[k+':'+a.id]).length+'/'+achList(k).length+' · Loves '+{flower:'flowers',fruit:'fruit',fossil:'fossils',shell:'seashells',fish:'fish',bug:'bugs'}[FR[k].likes];b.appendChild(d)})}},
   {id:'a',label:'Achievements',render(b){Object.keys(FR).forEach(k=>{const h=el('p');h.innerHTML='<b></b>';h.querySelector('b').textContent=FR[k].name;b.appendChild(h);const g=el('div','grid');
     achList(k).forEach(a=>{const done=S.ach[k+':'+a.id],v=Math.min(a.v(),a.n);g.appendChild(card({c:done?'#5cb64a':'#d8ccb4',t:done?'✓':String(v)},a.t,done?'Unlocked · bond +'+BOND.ach:a.d+' ('+v+'/'+a.n+')'))});b.appendChild(g)})}}])}
 const PROP={bonnie:["Max... are you asking what I think you're asking?","Yes! Yes, yes, YES! I'll marry you, Max!"],franky:["Blimey, Max. I'm not one for soppy stuff, but...","Of course I will! You're my best mate in the whole world."],
@@ -3840,7 +4001,7 @@ function wedParty(){sfx.fanfare();setTimeout(()=>sfx.fanfare(),900);if(!confTex)
 function firework(){const x=VEN.x+(Math.random()-.5)*10,y=hL(VEN.x,VEN.z)+7+Math.random()*3,z=VEN.z-6+(Math.random()-.5)*6,col=[0xff6a9a,0xffd060,0x7ad0ff,0xb48aff,0x8af07a][Math.floor(Math.random()*5)];
   for(let i=0;i<28;i++){const s=glowSprite(col,.6,1);const a=Math.random()*6.28,b=Math.acos(2*Math.random()-1),sp=3+Math.random()*1.5;s.position.set(x,y,z);scene.add(s);fworks.push({s,vx:Math.sin(b)*Math.cos(a)*sp,vy:Math.cos(b)*sp,vz:Math.sin(b)*Math.sin(a)*sp,t:0})}
   if(AC&&AC.state==='running')noise(.5,700,.18)}
-function wedCongrats(){const W2=WED,L={xam:'My big brother got married! Best. Day. EVER!',krug:'Three cheers for the happy couple! Hip hip, hooray!',bonnie:"I'm so happy I could cry! Congratulations!",franky:"Best wedding I've ever been to, mate!",alphonso:'A historic day for the island! I shall write it in the museum records.',bella:'Magnifique! And the outfits were divine!'};
+function wedCongrats(){const W2=WED,L={lottie:'Darling, that was the most glamorous wedding I have ever seen! Free mocktails for everyone!',xam:'My big brother got married! Best. Day. EVER!',krug:'Three cheers for the happy couple! Hip hip, hooray!',bonnie:"I'm so happy I could cry! Congratulations!",franky:"Best wedding I've ever been to, mate!",alphonso:'A historic day for the island! I shall write it in the museum records.',bella:'Magnifique! And the outfits were divine!'};
   const ks=Object.keys(FR).filter(k=>k!==W2.k);const next=i=>{if(i>=ks.length){W2.ph='end';W2.t=0;return}say(ks[i],[L[ks[i]]||'Congratulations!'],null,()=>next(i+1))};next(0)}
 function weddingStep(dt,now){const W2=WED;W2.t+=dt;const fade=$('fade');
   if(W2.ph==='fadeout'){fade.style.opacity=Math.min(1,W2.t/.8);if(W2.t>=.9){wedSetup();W2.ph='fadein';W2.t=0}}
@@ -4137,7 +4298,7 @@ function frame0(t){const dt=Math.min(.1,(t-last)/1000||.016);last=t;const now=t/
   tailSeg.forEach((sg,i)=>sg.rotation.z=Math.sin(t/(bk||sm?60:mvg?85:110)-i*.55)*(.08+i*.015));
   const blk=(t%3600)<130?.12:1;eyes.forEach(e=>e.scale.y=blk*(1-.6*sm));if(show&&show.t<3.2)headG.rotation.x-=.25;ears.forEach(e=>e.eg.rotation.z=-e.s*(e.b+Math.sin(t/900+e.s)*.03+(mvg?e.m:0)));
   tongue.visible=bk>0;jaw.position.y=-.115-(bk>0?Math.abs(Math.sin((now-barkT)*14))*.04:0);if(munchT>0){munchT-=dt;headG.rotation.x+=.2+Math.sin(munchT*15)*.12;jaw.position.y=-.115-Math.abs(Math.sin(munchT*17))*.04}
-  Object.entries(toolG).forEach(([k,g])=>g.visible=!inside&&!POSE&&!SURF&&!PLAY&&(SEA.on?k==='rod':S.tool===k));rodStep(dt);poseStep(dt,now);islStep(dt,now);playStep(dt,now);tripStep(dt,now);lighthouseStep(now);bizStep(dt);gfx63Step(dt,now);try{nightSkyStep(dt);season69()}catch(e){}cruStep(dt);if(SURF){surfStep(dt,now);P.y=WL}redecStep(dt);chStep(dt);elecStep(dt);shellWash(dt);fxStepFX(dt);emoStep(dt);if(!inside)dropFallStep(now);fallStep(dt,now);
+  Object.entries(toolG).forEach(([k,g])=>g.visible=!inside&&!POSE&&!SURF&&!PLAY&&(SEA.on?k==='rod':S.tool===k));rodStep(dt);poseStep(dt,now);islStep(dt,now);playStep(dt,now);tripStep(dt,now);lighthouseStep(now);bizStep(dt);gfx63Step(dt,now);try{nightSkyStep(dt);season69()}catch(e){}cruStep(dt);casinoStep(dt);if(SURF){surfStep(dt,now);P.y=WL}redecStep(dt);chStep(dt);elecStep(dt);shellWash(dt);fxStepFX(dt);emoStep(dt);if(!inside)dropFallStep(now);fallStep(dt,now);
   if(!inside){
     Object.values(NPC).forEach(n=>{const m=n.m;if(n.surf||n.play){m.g.position.set(n.x,n.play?n.sy:(n.sy||WL),n.z);m.g.rotation.y=n.face;return}n.y=(n.y??0)+(gy(n.x,n.z)-(n.y??0))*Math.min(1,dt*12);m.g.position.set(n.x,n.y+(n.hop||0),n.z);m.g.rotation.y=n.face;n.gt+=n.spd*dt*2.4;const mv=n.spd>.3;
       m.legs.forEach(l=>{if(mv){const q=n.gt+l.ph;l.lg.rotation.x=Math.sin(q)*.6;l.lg.position.y=l.y0+Math.max(0,Math.cos(q))*.04}else{l.lg.rotation.x*=.8;l.lg.position.y+=(l.y0-l.lg.position.y)*.3}});
@@ -5419,6 +5580,300 @@ Q.xam.push(
   done:["Best. Holiday. EVER! Just like the old days with Mum.","Here's a trampoline for the park! And 7,000 bones!"],reward:()=>{islInvAdd('trampoline');addBones(7000)}});
 
 
+// ================= CASINO PAW-YAL: the gaming floor, furniture and the things you can do inside =================
+WALLS.casinowall=['Paw-Yal Damask',0];FLOORS.casinofloor=['Paw-Yal Carpet',0];
+WXTRA.casinowall=(x,s)=>{x.fillStyle='#6e1222';x.fillRect(0,0,s,s);x.fillStyle='rgba(255,200,120,.13)';
+  for(let j=0;j<4;j++)for(let i=0;i<4;i++){const cx=i*64+(j%2?32:0),cy=j*64+32;x.beginPath();x.moveTo(cx,cy-24);x.bezierCurveTo(cx+18,cy-16,cx+18,cy+16,cx,cy+24);x.bezierCurveTo(cx-18,cy+16,cx-18,cy-16,cx,cy-24);x.fill();
+    x.beginPath();x.arc(cx,cy,5,0,7);x.fill();for(let k=0;k<4;k++){const a=k*Math.PI/2+Math.PI/4;x.beginPath();x.ellipse(cx+Math.cos(a)*16,cy+Math.sin(a)*16,6,3,a,0,7);x.fill()}}
+  x.fillStyle='#4a2414';x.fillRect(0,s*.7,s,s*.3);x.fillStyle='#d4a840';x.fillRect(0,s*.7-5,s,5);x.fillRect(0,s*.7+6,s,2);for(let i=0;i<4;i++){x.strokeStyle='rgba(212,168,64,.55)';x.lineWidth=2;x.strokeRect(i*64+8,s*.7+16,48,s*.3-26)}};
+FXTRA.casinofloor=(x,s)=>{x.fillStyle='#7a1424';x.fillRect(0,0,s,s);const q=64;for(let j=0;j<4;j++)for(let i=0;i<4;i++){const cx=i*q+q/2,cy=j*q+q/2;
+    x.strokeStyle='rgba(232,184,80,.75)';x.lineWidth=3;x.beginPath();x.moveTo(cx,cy-24);x.lineTo(cx+24,cy);x.lineTo(cx,cy+24);x.lineTo(cx-24,cy);x.closePath();x.stroke();
+    x.fillStyle='#1e5a5a';x.beginPath();x.arc(cx,cy,9,0,7);x.fill();x.fillStyle='#e8b850';x.beginPath();x.arc(cx,cy,4,0,7);x.fill();
+    x.fillStyle='rgba(232,184,80,.55)';[[0,-32],[32,0],[0,32],[-32,0]].forEach(([a,b])=>{x.beginPath();x.arc(cx+a,cy+b,3,0,7);x.fill()})}
+  for(let i=0;i<900;i++){x.fillStyle=Math.random()<.5?'rgba(0,0,0,.07)':'rgba(255,220,180,.05)';x.fillRect(Math.random()*s,Math.random()*s,2,2)}};
+[['slotmach','Lucky Slot Machine',0,1,1,0x9e1f2e],['roulettetbl','Roulette Table',0,3,2,0x5a3420],['bjtable','Blackjack Table',0,3,2,0x5a3420],['cascage',"Cashier's Cage",0,4,1,0x6a3a22],
+ ['casbar','Paw-Yal Bar',0,1,3,0x5a2018],['velvetrope','Velvet Rope',0,1,1,0xb8283c],['candelabra','Gold Candelabra',0,1,1,0xd4a83c],['casinosign','Neon Paw-Yal Sign',0,2,1,0xff4a8a],['goldpaw','Golden Paw Trophy',0,1,1,0xd4a83c]]
+ .forEach(([id,n,p,w,d,c])=>{FURN[id]={id,name:n,price:p,w,d,rug:false,soft:false,gift:true,c}});
+FURN.casrunner={id:'casrunner',name:'Red Carpet',price:0,w:2,d:6,rug:true,soft:true,gift:true,c:0xa01e2e};
+// symbols shared by the slot machines and their little screens
+const SLSYM=[{s:'🦴',w:8,p:6,two:0,n:'Bones'},{s:'🐾',w:6,p:10,two:1,n:'Paws'},{s:'🎾',w:5,p:15,two:1,n:'Balls'},{s:'⭐',w:4,p:25,two:2,n:'Stars'},{s:'💎',w:2,p:60,two:3,n:'Diamonds'},{s:'👑',w:1,p:400,two:6,n:'Paw-Yal Crowns'}];
+const RRED=new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]),RORDER=[0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+{const gold=()=>MTL(0xd4a83c,.25),chrome=()=>MTL(0xd8dde4,.18),felt=c=>M(c,{roughness:.95}),glow=(map,k)=>new THREE.MeshStandardMaterial({map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:k,roughness:.4});
+KBUILD.slotmach=(g,c)=>{const red=M(c,{roughness:.35,metalness:.25}),blk=M(0x1a1416,{roughness:.5});RB(g,.72,.4,.62,blk,0,.2,-.02,.03);RB(g,.66,.92,.54,red,0,.86,-.04,.06);
+  [-1,1].forEach(s=>RB(g,.035,.92,.56,chrome(),s*.335,.86,-.04,.012));RB(g,.54,.4,.05,gold(),0,1.0,.24,.02);
+  const scr=ftex('slotscreen',(x,s)=>{x.fillStyle='#fffdf4';x.fillRect(0,0,s,s);for(let i=0;i<3;i++){x.fillStyle=i%2?'#f2ead6':'#fffaf0';x.fillRect(i*s/3+2,0,s/3-4,s)}x.font=(s*.2)+'px sans-serif';x.textAlign='center';x.textBaseline='middle';
+    ['💎','👑','💎','🦴','⭐','🐾','🎾','🦴','💎'].forEach((e,k)=>x.fillText(e,(k%3+.5)*s/3,(Math.floor(k/3)+.5)*s/3));x.fillStyle='rgba(220,40,60,.8)';x.fillRect(0,s/2-2,s,4)},128);
+  const sc=new THREE.Mesh(new THREE.PlaneGeometry(.46,.32),glow(scr,.3));sc.position.set(0,1.0,.27);g.add(sc);
+  const pnl=RB(g,.58,.06,.2,blk,0,.6,.24,.02);pnl.rotation.x=-.5;[[-.18,0xff3a4a],[0,0xffd23a],[.18,0x3ad06a]].forEach(([x,col])=>SPH(g,.032,M(col,{roughness:.3,emissive:col,emissiveIntensity:.35}),x,.64,.27,1,.5,1));
+  RB(g,.42,.08,.14,gold(),0,.38,.28,.02);RB(g,.36,.03,.1,M(0x111111),0,.42,.29,.01);
+  RB(g,.6,.26,.34,M(0x1a1a22,{roughness:.4}),0,1.45,-.02,.04);const tp=ftex('slottop',(x,s)=>{x.fillStyle='#1a1018';x.fillRect(0,0,s,s);x.font='700 '+(s*.34)+'px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#ffd24a';x.fillText('PAW-YAL',s/2,s*.42);x.font='600 '+(s*.16)+'px Fredoka, sans-serif';x.fillStyle='#ff6a8a';x.fillText('★ JACKPOT ★',s/2,s*.78)},128);
+  const tpm=new THREE.Mesh(new THREE.PlaneGeometry(.54,.22),glow(tp,.6));tpm.position.set(0,1.45,.155);g.add(tpm);RB(g,.64,.03,.36,gold(),0,1.6,-.02,.01);
+  const lv=new THREE.Group();lv.position.set(.37,.95,.0);g.add(lv);CY(lv,.04,.04,.12,chrome(),0,0,0,10).rotation.z=Math.PI/2;const arm=CY(lv,.016,.016,.42,chrome(),.04,.2,0,8);arm.rotation.z=-.15;SPH(lv,.05,M(0xe02a3a,{roughness:.25,metalness:.2}),.07,.42,0)};
+KBUILD.roulettetbl=(g,c)=>{const wd=WD(c,.45);RB(g,2.7,.66,1.5,wd,0,.37,0,.04);RB(g,2.6,.08,1.4,M(0x2a1410),0,.06,0,.02);
+  RB(g,2.92,.09,1.72,M(0x3a1c14,{roughness:.45}),0,.77,0,.04);
+  const lay=ftex('roulay',(x,s)=>{const W=s,H=s/2;x.fillStyle='#1f6e42';x.fillRect(0,0,W,s);const ox=W*.36,cw=(W-ox-8)/13,ch=(H*.62)/3;x.strokeStyle='#f2e6c0';x.lineWidth=2;x.font='600 '+(ch*.5)+'px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';
+    x.fillStyle='#1a8a4a';x.fillRect(ox,8,cw,ch*3);x.strokeRect(ox,8,cw,ch*3);x.fillStyle='#fff';x.fillText('0',ox+cw/2,8+ch*1.5);
+    for(let n=1;n<=36;n++){const col=Math.ceil(n/3),row=2-((n-1)%3),px=ox+col*cw,py=8+row*ch;x.fillStyle=RRED.has(n)?'#c8202e':'#161616';x.fillRect(px+3,py+3,cw-6,ch-6);x.strokeRect(px,py,cw,ch);x.fillStyle='#fff';x.fillText(n,px+cw/2,py+ch/2)}
+    const ly=8+ch*3;['1st 12','2nd 12','3rd 12'].forEach((t,i)=>{x.strokeRect(ox+cw+i*4*cw,ly,4*cw,ch*.8);x.fillStyle='#f2e6c0';x.fillText(t,ox+cw+i*4*cw+2*cw,ly+ch*.4)});
+    ['1-18','EVEN','◆','◆','ODD','19-36'].forEach((t,i)=>{x.strokeRect(ox+cw+i*2*cw,ly+ch*.8,2*cw,ch*.8);x.fillStyle=t==='◆'?(i===2?'#c8202e':'#161616'):'#f2e6c0';x.fillText(t,ox+cw+i*2*cw+cw,ly+ch*1.2)});
+    x.fillStyle='#174f30';x.fillRect(0,H+20,W,H);for(let i=0;i<300;i++){x.fillStyle='rgba(0,0,0,.06)';x.fillRect(Math.random()*W,Math.random()*s,2,2)}},512);
+  const tp=new THREE.Mesh(new THREE.PlaneGeometry(2.66,1.46),new THREE.MeshStandardMaterial({map:lay,roughness:.95}));lay.repeat.set(1,.5);lay.offset.set(0,.5);tp.rotation.x=-Math.PI/2;tp.position.y=.825;g.add(tp);
+  // the wheel: wooden bowl, spinning pocket ring and gold turret
+  const bx=-.86;CY(g,.56,.5,.16,WD(0x3a2010,.35),bx,.88,0,36);CY(g,.5,.5,.02,M(0x2a1608,{roughness:.3}),bx,.965,0,36);
+  const wg=new THREE.Group();wg.position.set(bx,.97,0);wg.userData.keep=1;g.add(wg);CASSPIN.push(wg);
+  const wt=ftex('rwheel',(x,s)=>{const c=s/2;x.fillStyle='#2a1608';x.fillRect(0,0,s,s);const n=37;for(let i=0;i<n;i++){const a0=i/n*Math.PI*2-Math.PI/2,a1=(i+1)/n*Math.PI*2-Math.PI/2,v=RORDER[i];
+    x.fillStyle=v===0?'#1a9a4a':RRED.has(v)?'#c8202e':'#141414';x.beginPath();x.moveTo(c,c);x.arc(c,c,c*.96,a0,a1);x.closePath();x.fill();x.strokeStyle='#d8b050';x.lineWidth=1.5;x.stroke();
+    x.save();x.translate(c,c);x.rotate((a0+a1)/2+Math.PI/2);x.fillStyle='#fff';x.font='600 '+(s*.045)+'px sans-serif';x.textAlign='center';x.fillText(v,0,-c*.8);x.restore()}
+    x.fillStyle='#5a3418';x.beginPath();x.arc(c,c,c*.6,0,7);x.fill();x.strokeStyle='#d8b050';x.lineWidth=4;x.beginPath();x.arc(c,c,c*.6,0,7);x.stroke()},256);
+  const disc=new THREE.Mesh(new THREE.CircleGeometry(.44,40),new THREE.MeshStandardMaterial({map:wt,roughness:.3,metalness:.1}));disc.rotation.x=-Math.PI/2;wg.add(disc);
+  CY(wg,.1,.2,.08,gold(),0,.04,0,16);CY(wg,.02,.03,.12,gold(),0,.14,0,8);for(let k=0;k<4;k++){const a=k*Math.PI/2,ar=CY(wg,.012,.012,.2,gold(),Math.cos(a)*.08,.18,Math.sin(a)*.08,6);ar.rotation.set(Math.sin(a)*1.4,0,-Math.cos(a)*1.4);SPH(wg,.022,gold(),Math.cos(a)*.17,.21,Math.sin(a)*.17)}
+  SPH(g,.022,M(0xfafafa,{roughness:.2}),bx+.4,.99,.1);
+  [[.2,.9,0xc83a3a],[.45,.9,0x2a2a30],[.7,.9,0x3a78d8]].forEach(([x,y,col],k)=>{for(let i=0;i<4+k;i++)CY(g,.05,.05,.018,M(col,{roughness:.4}),x,.84+i*.02,-.5,14)});
+  RB(g,.04,.04,.9,gold(),1.0,.86,-.45,.01).rotation.y=.4};
+KBUILD.bjtable=(g,c)=>{const wd=WD(c,.45),cz=-.86;CY(g,.3,.42,.66,wd,0,.33,cz+.5,16);
+  const top=new THREE.Mesh(new THREE.CylinderGeometry(1.42,1.42,.1,48,1,false,-Math.PI/2,Math.PI),wd);top.position.set(0,.72,cz);g.add(top);
+  const ft=ftex('bjfelt',(x,s)=>{x.fillStyle='#1f6e42';x.fillRect(0,0,s,s);x.strokeStyle='rgba(242,230,192,.8)';x.lineWidth=3;x.beginPath();x.arc(s/2,0,s*.42,0,Math.PI);x.stroke();x.beginPath();x.arc(s/2,0,s*.3,0,Math.PI);x.stroke();
+    x.fillStyle='#f2e6c0';x.font='600 '+(s*.045)+'px Fredoka, sans-serif';x.textAlign='center';x.fillText('BLACKJACK PAYS 3 TO 2',s/2,s*.2);x.font='500 '+(s*.03)+'px Fredoka, sans-serif';x.fillText('Dealer stands on all 17s',s/2,s*.26);
+    for(let k=0;k<3;k++){const a=Math.PI*(.25+k*.25),px=s/2+Math.cos(a)*s*.36,py=Math.sin(a)*s*.36;x.strokeRect(px-14,py-18,28,36)}},256);
+  const fm=new THREE.Mesh(new THREE.CircleGeometry(1.3,48,Math.PI,Math.PI),new THREE.MeshStandardMaterial({map:ft,roughness:.95}));fm.rotation.x=-Math.PI/2;fm.position.set(0,.776,cz);g.add(fm);
+  ft.repeat.set(1,1);ft.offset.set(0,.5);
+  const rail=new THREE.Mesh(new THREE.TorusGeometry(1.36,.07,10,48,Math.PI),M(0x2a1410,{roughness:.4}));rail.rotation.x=Math.PI/2;rail.position.set(0,.79,cz);g.add(rail);
+  RB(g,2.84,.12,.18,wd,0,.74,cz-.04,.02);RB(g,.9,.05,.16,M(0x2a2a30,{roughness:.4}),0,.8,cz+.08,.01);[0xc83a3a,0x2a2a30,0x3a78d8,0x8a4ad8,0xf2f2f2].forEach((col,i)=>{for(let k=0;k<5;k++)CY(g,.035,.035,.016,M(col,{roughness:.4}),-.32+i*.16,.83+k*.017,cz+.08,12)});
+  RB(g,.24,.12,.16,M(0x5a1a1a,{roughness:.5}),-1.0,.84,cz+.12,.02);
+  [[-.35,.35],[.2,.42],[.55,.3]].forEach(([x,z],k)=>{const cd=RB(g,.1,.006,.14,M(0xfbfbf6,{roughness:.5}),x,.785,cz+z+.3,.004);cd.rotation.y=k*.3-.3;SPH(g,.012,M(k%2?0xc8202e:0x151515),x,.79,cz+z+.3)});
+  [-0.9,0,.9].forEach(a=>{const sx=Math.sin(a)*1.72,sz=cz+Math.cos(a)*1.72;CY(g,.03,.05,.5,gold(),sx,.27,sz,8);CY(g,.2,.18,.08,M(0x9e1f2e,{roughness:.6}),sx,.56,sz,16);TOR(g,.17,.02,gold(),sx,.12,sz,true)})};
+KBUILD.cascage=(g,c)=>{const wd=WD(c,.45);RB(g,3.8,1.0,.7,wd,0,.5,.0,.03);RB(g,3.9,.06,.78,M(0xf2eee4,{roughness:.25}),0,1.03,0,.02);for(let i=0;i<6;i++)RB(g,.5,.7,.03,WD(lighten(c,.12),.45),-1.55+i*.62,.5,.36,.02);
+  for(let i=0;i<33;i++){const x=-1.85+i*.115;if(Math.abs(x+.95)<.32||Math.abs(x-.95)<.32)continue;CY(g,.012,.012,.86,gold(),x,1.5,.3,6)}RB(g,3.86,.06,.06,gold(),0,1.93,.3,.01);RB(g,3.86,.04,.04,gold(),0,1.09,.3,.01);
+  const sg=ftex('cashier',(x,s)=>{x.fillStyle='#5e0c18';x.fillRect(0,0,s,s/4);x.strokeStyle='#e8c060';x.lineWidth=4;x.strokeRect(4,4,s-8,s/4-8);x.font='700 '+(s*.12)+'px Fredoka, serif';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#f6d070';x.fillText('CASHIER',s/2,s/8)},256);
+  sg.repeat.set(1,.25);sg.offset.set(0,.75);const sm=new THREE.Mesh(new THREE.PlaneGeometry(1.6,.4),glow(sg,.25));sm.position.set(0,2.18,.3);g.add(sm);RB(g,1.7,.5,.06,wd,0,2.18,.26,.02);
+  RB(g,3.8,.08,.4,wd,0,1.6,-.3,.02);[0xc83a3a,0x2a2a30,0x3a78d8,0xd4a83c].forEach((col,i)=>{for(let k=0;k<3;k++)RB(g,.3,.06,.16,M(col,{roughness:.4}),-1.4+i*.9+k*.12,1.68+k*.0,-.3,.01)})};
+KBUILD.casbar=(g,c)=>{const wd=WD(c,.4),lea=M(0x8e1a26,{roughness:.55});RB(g,.7,1.0,2.9,wd,0,.5,0,.03);RB(g,.12,.8,2.8,lea,.32,.5,0,.04);for(let i=0;i<7;i++)for(let j=0;j<2;j++)SPH(g,.018,gold(),.39,.3+j*.4,-1.2+i*.4);
+  RB(g,.86,.06,3.0,M(0x2a2a2e,{roughness:.2,metalness:.2}),.05,1.03,0,.02);RB(g,.04,.04,2.9,gold(),.47,.92,0,.01);
+  const bc=[0xff8a3a,0x3ad07a,0xff4a7a,0xffd23a,0x4ab4ff,0xb04aff];for(let i=0;i<9;i++){const col=bc[i%6],z=-1.2+i*.3;CY(g,.035,.04,.2,new THREE.MeshStandardMaterial({color:col,transparent:true,opacity:.8,roughness:.1}),-.2,1.16,z,10);CY(g,.012,.012,.07,gold(),-.2,1.29,z,6)}
+  [-.9,0,.9].forEach(z=>{CY(g,.05,.03,.12,GLS(0xeaf6ff,.45),.25,1.12,z,10);SPH(g,.02,M(0xff4a6a),.27,1.18,z)})};
+KBUILD.velvetrope=(g,c)=>{[-1,1].forEach(s=>{CY(g,.13,.15,.04,gold(),s*.4,.02,0,14);CY(g,.025,.025,.86,gold(),s*.4,.45,0,8);SPH(g,.05,gold(),s*.4,.9,0)});
+  const cur=new THREE.CatmullRomCurve3([V3(-.4,.84,0),V3(-.2,.68,0),V3(0,.64,0),V3(.2,.68,0),V3(.4,.84,0)]);g.add(new THREE.Mesh(new THREE.TubeGeometry(cur,20,.03,8),M(c,{roughness:.7})))};
+KBUILD.candelabra=(g,c)=>{CY(g,.18,.24,.08,gold(),0,.04,0,16);CY(g,.035,.05,1.6,gold(),0,.85,0,10);SPH(g,.07,gold(),0,.5,0);
+  const bm=new THREE.MeshBasicMaterial({color:0xfff0c0});for(let k=0;k<5;k++){const a=k/5*Math.PI*2,r=k?.22:0,y=k?1.6:1.78;if(k){const ar=RB(g,.22,.02,.02,gold(),Math.cos(a)*.11,1.55,Math.sin(a)*.11,.005);ar.rotation.y=-a}
+    CY(g,.03,.04,.06,gold(),Math.cos(a)*r,y,Math.sin(a)*r,8);const b=SPH(g,.045,bm,Math.cos(a)*r,y+.07,Math.sin(a)*r,1,1.3,1)}const gs=glowSprite(0xffd890,1.3,.75);gs.position.y=1.68;g.add(gs);g.userData.keep=1};
+KBUILD.casinosign=(g,c)=>{RB(g,1.8,.06,.4,M(0x1a1a22),0,.03,0,.02);[-1,1].forEach(s=>CY(g,.02,.02,.9,M(0x2a2a30,{metalness:.6,roughness:.3}),s*.7,.48,-.05,6));
+  const nt=ftex('neonpaw',(x,s)=>{x.fillStyle='#0c0a14';x.fillRect(0,0,s,s/2);x.shadowColor='#ff4a8a';x.shadowBlur=14;x.strokeStyle='#ff7ab0';x.lineWidth=5;x.font='700 '+(s*.17)+'px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.strokeText('Paw-Yal',s/2,s*.24);x.fillStyle='#fff0f6';x.fillText('Paw-Yal',s/2,s*.24);
+    x.shadowColor='#ffd23a';x.fillStyle='#ffe07a';[[.14,.2],[.86,.2]].forEach(([a,b])=>{x.beginPath();x.arc(s*a,s*b,8,0,7);x.fill()})},256);nt.repeat.set(1,.5);nt.offset.set(0,.5);
+  const p=new THREE.Mesh(new THREE.PlaneGeometry(1.6,.8),glow(nt,.9));p.position.set(0,1.0,-.04);g.add(p);RB(g,1.66,.86,.04,M(0x15121c),0,1.0,-.08,.02);g.userData.keep=1};
+KBUILD.goldpaw=(g,c)=>{RB(g,.5,.5,.5,M(0x1a1a22,{roughness:.3}),0,.25,0,.03);RB(g,.56,.05,.56,gold(),0,.52,0,.01);RB(g,.3,.06,.02,gold(),0,.28,.26,.005);
+  const pw=new THREE.Group();pw.position.set(0,.78,0);pw.rotation.x=-.25;g.add(pw);SPH(pw,.13,gold(),0,0,0,1,.85,.6);[-.95,-.32,.32,.95].forEach(a=>SPH(pw,.06,gold(),Math.sin(a)*.15,.15+Math.cos(a)*.03,0,1,1.2,.7));
+  const gs=glowSprite(0xffe07a,1,.5);gs.position.y=.8;g.add(gs)};
+KBUILD.casrunner=(g,c)=>{const t=ftex('casrun',(x,s)=>{x.fillStyle='#a01e2e';x.fillRect(0,0,s,s);x.strokeStyle='#e0b850';x.lineWidth=8;x.strokeRect(10,-10,s-20,s+20);x.lineWidth=2;x.strokeRect(22,-10,s-44,s+20);
+   for(let i=0;i<4;i++){x.fillStyle='rgba(224,184,80,.4)';x.beginPath();x.moveTo(s/2,i*64+12);x.lineTo(s/2+16,i*64+32);x.lineTo(s/2,i*64+52);x.lineTo(s/2-16,i*64+32);x.fill()}},128);t.wrapT=THREE.RepeatWrapping;t.repeat.set(1,3);
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(1.7,5.8),new THREE.MeshStandardMaterial({map:t,roughness:1}));m.rotation.x=-Math.PI/2;m.position.y=.012;g.add(m)}}
+function casinoRoom(){const it=[],A=(id,i,j,r=0,o)=>it.push(Object.assign({id,i,j,r},o||{}));
+  [0,1,2,3,10,11,12,13].forEach(i=>A('slotmach',i,0));A('cascage',5,0);A('candelabra',4,0);A('candelabra',9,0);
+  A('roulettetbl',1,3);A('bjtable',10,3);A('bjtable',1,7);A('roulettetbl',10,7);
+  A('casbar',0,10,0);A('slotmach',13,10,1);A('slotmach',13,11,1);A('velvetrope',4,11);A('velvetrope',9,11);A('tallplant',0,13);A('tallplant',13,13);A('candelabra',4,6);A('candelabra',9,6);
+  A('casrunner',6,1);A('casrunner',6,7);
+  return{n:14,wall:'casinowall',floor:'casinofloor',npc:[0,-5.1],items:it}}
+// what you can do with each thing inside the casino
+function casCage(){const c=CS();say('lottie',["Your Paw-Yal card, darling: "+c.plays+" game"+(c.plays===1?'':'s')+" played, "+c.prof.toLocaleString()+" bones won on winning rounds"+(c.best?", and your best win was "+c.best.toLocaleString()+" bones":'')+".",
+  c.ret>=c.bet?"You're ahead of the house! Don't tell my accountant.":"Remember, the house always has a teeny edge. Only play with bones you're happy to lose!"])}
+function casBar(){say('lottie',["A Paw-Yal Mocktail? Fresh fruit, crushed ice and a little umbrella. 150 bones, darling."],[{t:'Yes please! (150 bones)',f:()=>{if(S.bones<150){sfx.no();say('lottie',["Oh dear, not quite enough bones. Maybe a little win at the tables first?"]);return}if(!give('smoothie')){say('lottie',["Your pockets are full, sweetie!"]);return}addBones(-150);sfx.coin();save();say('lottie',["Shaken, not stirred. Enjoy!"])}},{t:'No thanks',f:unbusy}])}
+const CASLOOK={slotmach:['Play the slot machine',()=>casOpen('slots')],roulettetbl:['Play roulette',()=>casOpen('roulette')],bjtable:['Play blackjack',()=>casOpen('blackjack')],cascage:["Check your Paw-Yal card",casCage],casbar:['Order a mocktail',casBar],
+ velvetrope:['Look at the velvet rope',()=>say('max',["A plush red velvet rope. Very fancy! Max feels like a VIP."])],candelabra:['Look at the candelabra',()=>say('max',["A gold candelabra, polished till it sparkles."])],tallplant:['Look at the plant',()=>say('max',["A big leafy palm in a gold pot."])],casrunner:['Look at the red carpet',()=>say('max',["A red carpet all the way to the cashier. Max does his best catwalk strut."])]};
+const CASHOME={slotmach:['Play the slot machine','slots'],roulettetbl:['Play roulette','roulette'],bjtable:['Play blackjack','blackjack']};
+// ================= CASINO GAMES: slots, roulette and blackjack, played with bones =================
+function CS(){if(!S.cas)S.cas={plays:0,bjw:0,rw:0,s3:0,jack:0,prof:0,bet:0,ret:0,best:0,seen:0};return S.cas}
+let CASON=false,CASM=null,CASLOCK=false;window.CASON=false;
+const CCHIP={10:'#3a78d8',25:'#2fa86a',50:'#d83a4a',100:'#2a2a30',200:'#e07a20',500:'#8a4ad8',1000:'#c8a030'};
+const LQ={win:["Ooh, look at you go, darling!","Winner winner, biscuit dinner!","The luck of the Paw-Yal is with you!","Fabulous! Shall we go again?","Now THAT'S how it's done!"],
+ lose:["Ooh, so close, sweetie.","Not this time, darling. Chin up!","The house wins this round. Next time!","Never mind, it's all just for fun.","Oh, paws and whiskers! Unlucky."],
+ push:["A tie! Your bones are safe, darling."],big:["JACKPOT! Oh my whiskers, I need to sit down!","Hold onto your collar, that's a BIG win!"]};
+const lq=k=>LQ[k][Math.floor(Math.random()*LQ[k].length)];
+function casEl(t,c,h){const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+function casOpen(mode){if(CASON)return;CASON=true;window.CASON=true;CASM=mode;busy();sfx.tick&&sfx.tick();
+  const o=casEl('div','',null);o.id='casG';o.innerHTML='<header><h2></h2><div class="clot"><i>L</i><span></span></div><span class="cbones"></span><button class="cbtn alt" id="casX">Leave</button></header><div class="cmain"></div>';document.body.appendChild(o);
+  o.querySelector('#casX').onclick=casClose;casHud();({slots:slotUI,roulette:rouUI,blackjack:bjUI})[mode](o.querySelector('.cmain'),o.querySelector('h2'));
+  const c=CS();if(!c.seen){c.seen=1;save();casSay("Welcome to Casino Paw-Yal, darling! It's all just for fun, so only bet bones you're happy to lose. The house always has a teeny edge!")}}
+function casClose(){if(CASLOCK){casSay("Let's finish this round first, darling!");return}const o=$('casG');if(o)o.remove();CASON=false;window.CASON=false;CASM=null;clearInterval(SLX.tick);unbusy();hudBones();save()}
+function casHud(){const b=document.querySelector('#casG .cbones');if(b)b.textContent=S.bones.toLocaleString()+' bones'}
+function casSay(t){const e=document.querySelector('#casG .clot span');if(e){e.textContent=t;const w=e.parentNode;w.classList.remove('pop');void w.offsetWidth;w.classList.add('pop')}}
+// every finished round goes through here, for Lottie's tasks and your Paw-Yal card
+function casRound(stake,ret){const c=CS();c.plays++;c.bet+=stake;c.ret+=ret;if(ret>stake){c.prof+=ret-stake;c.best=Math.max(c.best,ret-stake)}casHud();save()}
+function casChips(vals,cur,on){const w=casEl('div','chips');vals.forEach(v=>{const b=casEl('button','chip'+(v===cur?' on':''),v>=1000?(v/1000)+'k':v);b.style.background=CCHIP[v];b.onclick=()=>{w.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');on(v)};w.appendChild(b)});return w}
+function casTone(f,d,v){try{tone(f,d||.05,'square',v||.03)}catch(e){}}
+function casWinFx(big){sfx.coin();setTimeout(()=>sfx.coin(),140);if(big)sfx.fanfare();const o=$('casG');if(!o)return;for(let i=0;i<(big?40:14);i++){const c=casEl('i','ccoin','🦴');c.style.left=(10+Math.random()*80)+'%';c.style.animationDelay=(Math.random()*.5)+'s';o.appendChild(c);setTimeout(()=>c.remove(),2200)}}
+
+// ---------- SLOT MACHINE ----------
+const SLX={bet:10,busy:false,tick:0};
+function slPick(){const tot=SLSYM.reduce((a,s)=>a+s.w,0);let r=Math.random()*tot;for(let i=0;i<SLSYM.length;i++){r-=SLSYM[i].w;if(r<0)return i}return 0}
+// pays: three of a kind pays the symbol's price, two of a kind pays a little (about 95% comes back over time; the house keeps a teeny edge)
+function slPay(r){const [a,b,c]=r;if(a===b&&b===c)return SLSYM[a].p;const cnt={};r.forEach(i=>cnt[i]=(cnt[i]||0)+1);for(const k in cnt)if(cnt[k]===2)return SLSYM[+k].two;return 0}
+function slotUI(m,h){h.textContent=roomKey==='lottie'?'Paw-Yal Slots':'Lucky Slot Machine';m.classList.add('slots');
+  const mc=casEl('div','smach','<div class="stop">★ PAW-YAL ★</div><div class="sreels"></div><div class="sline"></div><div class="smsg cmsg">Pull the lever!</div>');m.appendChild(mc);
+  const rs=mc.querySelector('.sreels'),reels=[];for(let i=0;i<3;i++){const r=casEl('div','sreel');const st=casEl('div','sstrip');r.appendChild(st);rs.appendChild(r);reels.push({r,st,cur:[slPick(),slPick(),slPick()]});slFill(reels[i],reels[i].cur)}
+  const side=casEl('div','sside');m.appendChild(side);side.appendChild(casEl('div','clabel','Bet per spin'));side.appendChild(casChips([10,25,50,100,200],SLX.bet,v=>{SLX.bet=v;sp.textContent='SPIN · '+v}));
+  const sp=casEl('button','cbtn big','SPIN · '+SLX.bet);side.appendChild(sp);const pt=casEl('div','spay');side.appendChild(pt);
+  pt.innerHTML=SLSYM.map(s=>'<span>'+s.s+s.s+s.s+'</span><b>×'+s.p+'</b>').join('')+SLSYM.filter(s=>s.two).map(s=>'<span>Two '+s.s+'</span><b>×'+s.two+'</b>').join('');
+  sp.onclick=()=>slSpin(reels,sp,mc.querySelector('.smsg'))}
+function slFill(R,syms,pre){R.st.innerHTML='';(pre||[]).concat(syms).forEach(i=>{const d=casEl('div','ssym',SLSYM[i].s);R.st.appendChild(d)});R.st.style.transition='none';R.st.style.transform='translateY(0)'}
+function slSpin(reels,btn,msg){if(SLX.busy)return;const bet=SLX.bet;if(S.bones<bet){sfx.no();casSay("You need "+bet+" bones for that spin, darling.");return}
+  addBones(-bet);casHud();SLX.busy=true;CASLOCK=true;btn.disabled=true;msg.textContent='Spinning...';msg.classList.remove('win');
+  const res=[slPick(),slPick(),slPick()];
+  reels.forEach((R,k)=>{const extra=[];for(let i=0;i<18+k*7;i++)extra.push(slPick());const top=slPick(),bot=slPick();slFill(R,[top,res[k],bot],R.cur.concat(extra));R.cur=[top,res[k],bot];
+    const H=R.st.firstChild.offsetHeight||56,n=R.st.children.length;void R.st.offsetWidth;R.st.style.transition='transform '+(1.1+k*.45)+'s cubic-bezier(.12,.82,.25,1.04)';R.st.style.transform='translateY('+(-(n-3)*H)+'px)';
+    setTimeout(()=>casTone(260+k*80,.08,.05),1100+k*450)});
+  clearInterval(SLX.tick);SLX.tick=setInterval(()=>casTone(500+Math.random()*300,.02,.015),80);
+  setTimeout(()=>{clearInterval(SLX.tick);const mult=slPay(res),win=bet*mult;SLX.busy=false;CASLOCK=false;btn.disabled=false;
+    if(res[0]===res[1]&&res[1]===res[2]){CS().s3++;if(res[0]===5)CS().jack++}
+    if(win){addBones(win);msg.textContent=mult===1?'A pair! Your '+bet+' bones back':'You win '+win.toLocaleString()+' bones!';msg.classList.add('win');casWinFx(mult>=25);casSay(mult>=60?lq('big'):mult>1?lq('win'):"A pair! Your bones come back, darling.")}
+    else{msg.textContent='No luck this time';if(Math.random()<.35)casSay(lq('lose'))}
+    casRound(bet,win)},1100+2*450+120)}
+
+// ---------- ROULETTE (single zero, European wheel) ----------
+const RLX={chip:10,bets:{},busy:false,last:[]};
+function rWins(key,n){if(key.startsWith('n'))return +key.slice(1)===n?35:-1;if(n===0)return -1;
+  return({red:RRED.has(n),black:!RRED.has(n),odd:n%2===1,even:n%2===0,low:n<=18,high:n>18}[key]?1:({d1:n<=12,d2:n>12&&n<=24,d3:n>24,c1:n%3===1,c2:n%3===2,c3:n%3===0}[key]?2:-1))}
+function rouUI(m,h){h.textContent='Roulette';m.classList.add('rou');RLX.bets={};
+  const wl=casEl('div','rwheel');const cv=casEl('canvas');wl.appendChild(cv);const res=casEl('div','rres cmsg','Place your bets!');wl.appendChild(res);const hist=casEl('div','rhist');wl.appendChild(hist);m.appendChild(wl);
+  const right=casEl('div','rright');m.appendChild(right);const bd=casEl('div','rboard');right.appendChild(bd);
+  const cell=(key,label,cls,css)=>{const c=casEl('button','rc '+(cls||''),'<span>'+label+'</span><em></em>');c.dataset.k=key;if(css)c.style.cssText=css;c.onclick=()=>rBet(key,c,tot);bd.appendChild(c);return c};
+  cell('n0','0','g','grid-column:1;grid-row:1/span 3');for(let n=1;n<=36;n++){const col=Math.ceil(n/3)+1,row=3-((n-1)%3);cell('n'+n,n,RRED.has(n)?'r':'b','grid-column:'+col+';grid-row:'+row)}
+  [3,2,1].forEach((c,i)=>cell('c'+c,'2:1','o','grid-column:14;grid-row:'+(i+1)));
+  ['d1','d2','d3'].forEach((k,i)=>cell(k,['1st 12','2nd 12','3rd 12'][i],'o','grid-column:'+(2+i*4)+'/span 4;grid-row:4'));
+  [['low','1-18'],['even','Even'],['red','◆'],['black','◆'],['odd','Odd'],['high','19-36']].forEach(([k,l],i)=>cell(k,l,'o'+(k==='red'?' rr':k==='black'?' bb':''),'grid-column:'+(2+i*2)+'/span 2;grid-row:5'));
+  const bar=casEl('div','rbar');right.appendChild(bar);bar.appendChild(casChips([10,50,100,500],RLX.chip,v=>RLX.chip=v));const tot=casEl('span','rtot','Bet: 0');bar.appendChild(tot);
+  const clr=casEl('button','cbtn alt','Clear');bar.appendChild(clr);const go=casEl('button','cbtn','Spin');bar.appendChild(go);
+  clr.onclick=()=>{if(RLX.busy)return;RLX.bets={};bd.querySelectorAll('.rc em').forEach(e=>{e.textContent='';e.parentNode.classList.remove('has')});tot.textContent='Bet: 0'};
+  go.onclick=()=>rSpin(cv,res,hist,bd,tot,go,clr);RLX.ang=0;RLX.ball=null;requestAnimationFrame(()=>rDraw(cv,0,null));RLX.last.forEach(n=>rHist(hist,n,true))}
+function rTotal(){return Object.values(RLX.bets).reduce((a,b)=>a+b,0)}
+function rBet(key,c,tot){if(RLX.busy)return;const add=RLX.chip;if(rTotal()+add>2000){sfx.no();casSay("The table limit is 2,000 bones a spin, darling.");return}
+  if(rTotal()+add>S.bones){sfx.no();casSay("You haven't got enough bones for that chip.");return}RLX.bets[key]=(RLX.bets[key]||0)+add;const e=c.querySelector('em');e.textContent=RLX.bets[key]>=1000?(RLX.bets[key]/1000).toFixed(1)+'k':RLX.bets[key];e.style.background=CCHIP[add];c.classList.add('has');casTone(900,.03,.03);tot.textContent='Bet: '+rTotal().toLocaleString()}
+function rHist(hist,n,quiet){const s=casEl('span',n===0?'g':RRED.has(n)?'r':'b',n);hist.prepend(s);while(hist.children.length>8)hist.lastChild.remove();if(!quiet){RLX.last.unshift(n);RLX.last.length=Math.min(8,RLX.last.length)}}
+function rDraw(cv,ang,ball){const r=cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1),W=Math.round(r.width*dpr);if(!W)return;if(cv.width!==W){cv.width=cv.height=W}const x=cv.getContext('2d'),c=W/2,R=c*.96;
+  x.clearRect(0,0,W,W);const gr=x.createRadialGradient(c,c,R*.5,c,c,R);gr.addColorStop(0,'#6a3a1a');gr.addColorStop(1,'#2a1408');x.fillStyle=gr;x.beginPath();x.arc(c,c,R,0,7);x.fill();
+  x.strokeStyle='#d8b050';x.lineWidth=W*.012;x.beginPath();x.arc(c,c,R*.98,0,7);x.stroke();
+  const n=37,seg=Math.PI*2/n;for(let i=0;i<n;i++){const a0=ang+i*seg-Math.PI/2-seg/2,v=RORDER[i];x.fillStyle=v===0?'#1a9a4a':RRED.has(v)?'#c8202e':'#161616';x.beginPath();x.arc(c,c,R*.8,a0,a0+seg);x.arc(c,c,R*.56,a0+seg,a0,true);x.closePath();x.fill();
+    x.strokeStyle='#d8b050';x.lineWidth=1;x.stroke();x.save();x.translate(c,c);x.rotate(a0+seg/2+Math.PI/2);x.fillStyle='#fff';x.font='600 '+Math.round(W*.04)+'px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(v,0,-R*.71);x.restore()}
+  const g2=x.createRadialGradient(c,c,0,c,c,R*.56);g2.addColorStop(0,'#9a6a2a');g2.addColorStop(1,'#4a2a10');x.fillStyle=g2;x.beginPath();x.arc(c,c,R*.56,0,7);x.fill();
+  x.save();x.translate(c,c);x.rotate(ang);x.fillStyle='#e8c060';for(let k=0;k<4;k++){x.rotate(Math.PI/2);x.fillRect(-W*.012,0,W*.024,R*.36);x.beginPath();x.arc(0,R*.38,W*.03,0,7);x.fill()}x.beginPath();x.arc(0,0,W*.06,0,7);x.fill();x.restore();
+  if(ball){x.fillStyle='#fff';x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=W*.02;x.beginPath();x.arc(c+Math.cos(ball.a)*ball.r*R,c+Math.sin(ball.a)*ball.r*R,W*.025,0,7);x.fill();x.shadowBlur=0}}
+function rSpin(cv,res,hist,bd,tot,go,clr){if(RLX.busy)return;const stake=rTotal();if(!stake){casSay("Tap the board to place your chips first, darling!");return}if(stake>S.bones){casSay("Not enough bones for those bets.");return}
+  addBones(-stake);casHud();RLX.busy=true;CASLOCK=true;go.disabled=clr.disabled=true;res.textContent='No more bets!';bd.querySelectorAll('.rc').forEach(c=>c.classList.remove('hit'));
+  const k=Math.floor(Math.random()*37),num=RORDER[k],T=5200,seg=Math.PI*2/37,a0=RLX.ang,wTot=Math.PI*2*(2+Math.random()),aEnd=a0+wTot,pocket=aEnd+k*seg-Math.PI/2,b0=Math.random()*Math.PI*2,
+    bTot=((b0-pocket)%(Math.PI*2)+Math.PI*2)%(Math.PI*2)+Math.PI*2*5,t0=performance.now();let lastTick=0;
+  const step=now=>{if(!$('casG'))return;const t=Math.min(1,(now-t0)/T),ew=1-Math.pow(1-t,3),eb=1-Math.pow(1-t,2.4),ang=a0+wTot*ew,ba=b0-bTot*eb;
+    let br=.9;if(t>.62){const u=(t-.62)/.38;br=.9-.22*Math.min(1,u*1.4)+Math.abs(Math.sin(u*14))*.05*(1-u)}const ball={a:t>=1?ang+k*seg-Math.PI/2:ba,r:t>=1?.68:br};rDraw(cv,ang,ball);
+    if(t>.62&&now-lastTick>90*(1+t*3)){lastTick=now;casTone(1400+Math.random()*400,.015,.02)}
+    if(t<1)requestAnimationFrame(step);else{RLX.ang=ang%(Math.PI*2);rSettle(num,stake,res,hist,bd,tot,go,clr)}};requestAnimationFrame(step)}
+function rSettle(n,stake,res,hist,bd,tot,go,clr){let ret=0;for(const k in RLX.bets){const m=rWins(k,n);if(m>0)ret+=RLX.bets[k]*(m+1)}
+  const cls=n===0?'green':RRED.has(n)?'red':'black';res.innerHTML='<b class="'+cls+'">'+n+'</b> '+(n===0?'Green':RRED.has(n)?'Red':'Black');rHist(hist,n);
+  const hc=bd.querySelector('[data-k="n'+n+'"]');if(hc)hc.classList.add('hit');
+  if(ret){addBones(ret);casWinFx(ret-stake>=1000);res.innerHTML+=' · You win '+ret.toLocaleString()+'!';casSay(ret>stake?(ret-stake>=2000?lq('big'):lq('win')):"You won some back, darling!");if(ret>stake)CS().rw++}
+  else{res.innerHTML+=' · House wins';if(Math.random()<.5)casSay(lq('lose'))}
+  casRound(stake,ret);RLX.busy=false;CASLOCK=false;go.disabled=clr.disabled=false;
+  const keep=Object.assign({},RLX.bets);if(Object.values(keep).reduce((a,b)=>a+b,0)<=S.bones){/* bets stay on the board for the next spin */}else{RLX.bets={};bd.querySelectorAll('.rc em').forEach(e=>{e.textContent='';e.parentNode.classList.remove('has')});tot.textContent='Bet: 0'}}
+
+// ---------- BLACKJACK (six decks, dealer stands on all 17s, blackjack pays 3 to 2) ----------
+const BJX={shoe:[],bet:0,chip:10,hands:[],dealer:[],cur:0,st:'bet',hole:true};
+function bjShoe(){const s=[];for(let d=0;d<6;d++)for(const su of ['♠','♥','♦','♣'])for(const r of ['A','2','3','4','5','6','7','8','9','10','J','Q','K'])s.push({r,su});for(let i=s.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[s[i],s[j]]=[s[j],s[i]]}BJX.shoe=s}
+function bjDraw(){if(BJX.shoe.length<52)bjShoe();return BJX.shoe.pop()}
+function bjVal(cs){let t=0,a=0;cs.forEach(c=>{if(c.r==='A'){t+=11;a++}else t+=('JQK'.includes(c.r)||c.r==='10')?10:+c.r});while(t>21&&a){t-=10;a--}return{t,soft:a>0}}
+const bjBJ=cs=>cs.length===2&&bjVal(cs).t===21;
+function bjUI(m,h){h.textContent='Blackjack';m.classList.add('bj');BJX.st='bet';BJX.hands=[];BJX.dealer=[];
+  m.innerHTML='<div class="bjrow"><div class="bjlab">Lottie <b class="bjdv"></b></div><div class="bjcards bjd"></div></div><div class="bjmid cmsg">Place your bet</div><div class="bjrow"><div class="bjlab">Max <b class="bjpv"></b></div><div class="bjhands"></div></div><div class="bjbar"></div>';bjBar(m)}
+function bjCard(c,down){const d=casEl('div','bjcard'+(down?' back':'')+(c&&(c.su==='♥'||c.su==='♦')?' red':''));if(!down)d.innerHTML='<i>'+c.r+'<br>'+c.su+'</i><b>'+c.su+'</b>';return d}
+function bjRender(m){const dv=m.querySelector('.bjd');dv.innerHTML='';BJX.dealer.forEach((c,i)=>dv.appendChild(bjCard(c,i===1&&BJX.hole)));
+  m.querySelector('.bjdv').textContent=BJX.dealer.length?(BJX.hole?bjVal([BJX.dealer[0]]).t:bjVal(BJX.dealer).t):'';
+  const hs=m.querySelector('.bjhands');hs.innerHTML='';BJX.hands.forEach((h,i)=>{const w=casEl('div','bjhand'+(i===BJX.cur&&BJX.st==='play'&&BJX.hands.length>1?' cur':''));const cs=casEl('div','bjcards');h.cards.forEach(c=>cs.appendChild(bjCard(c)));w.appendChild(cs);
+    const v=bjVal(h.cards);w.appendChild(casEl('div','bjhv',(bjBJ(h.cards)&&!h.split?'Blackjack!':v.t>21?'Bust ('+v.t+')':(v.soft&&v.t<21?'Soft ':'')+v.t)+' · Bet '+h.bet+(h.res?' · '+h.res:'')));hs.appendChild(w)});
+  const cur=BJX.hands[BJX.cur];m.querySelector('.bjpv').textContent=BJX.hands.length===1&&cur?'':''}
+function bjBar(m){const bar=m.querySelector('.bjbar');bar.innerHTML='';
+  if(BJX.st==='bet'||BJX.st==='done'){bar.appendChild(casChips([10,50,100,500],BJX.chip,v=>BJX.chip=v));const amt=casEl('span','rtot','Bet: '+BJX.bet);bar.appendChild(amt);
+    const add=casEl('button','cbtn alt','+ Chip');add.onclick=()=>{if(BJX.bet+BJX.chip>1000){casSay("The limit at this table is 1,000 bones, darling.");return}if(BJX.bet+BJX.chip>S.bones){sfx.no();casSay("Not enough bones for that chip.");return}BJX.bet+=BJX.chip;casTone(900,.03,.03);amt.textContent='Bet: '+BJX.bet};
+    const clr=casEl('button','cbtn alt','Clear');clr.onclick=()=>{BJX.bet=0;amt.textContent='Bet: 0'};const deal=casEl('button','cbtn','Deal');deal.onclick=()=>bjDeal(m);[add,clr,deal].forEach(b=>bar.appendChild(b));return}
+  if(BJX.st!=='play')return;const h=BJX.hands[BJX.cur],two=h.cards.length===2;
+  const B=(t,f,ok)=>{const b=casEl('button','cbtn','');b.textContent=t;b.disabled=!ok;b.onclick=f;bar.appendChild(b)};
+  B('Hit',()=>bjHit(m),true);B('Stand',()=>bjNext(m),true);B('Double',()=>bjDouble(m),two&&!h.splitAce&&S.bones>=h.bet);
+  const v=c=>('JQK'.includes(c.r)||c.r==='10')?10:c.r;B('Split',()=>bjSplit(m),two&&BJX.hands.length===1&&v(h.cards[0])===v(h.cards[1])&&S.bones>=h.bet)}
+function bjDeal(m){if(BJX.bet<10){casSay("Add a chip or two first, darling. Minimum bet is 10 bones.");return}if(BJX.bet>S.bones){BJX.bet=0;bjBar(m);casSay("You don't have enough bones for that bet.");return}
+  addBones(-BJX.bet);casHud();CASLOCK=true;BJX.st='deal';BJX.hole=true;BJX.cur=0;BJX.hands=[{cards:[],bet:BJX.bet}];BJX.dealer=[];bjBar(m);m.querySelector('.bjmid').textContent='Dealing...';
+  const seq=[()=>BJX.hands[0].cards.push(bjDraw()),()=>BJX.dealer.push(bjDraw()),()=>BJX.hands[0].cards.push(bjDraw()),()=>BJX.dealer.push(bjDraw())];
+  seq.forEach((f,i)=>setTimeout(()=>{if(!$('casG'))return;f();casTone(700,.03,.03);bjRender(m);if(i===3)bjAfterDeal(m)},250+i*330))}
+function bjAfterDeal(m){const up=BJX.dealer[0],ten=('JQK'.includes(up.r)||up.r==='10'||up.r==='A'),dBJ=bjBJ(BJX.dealer),pBJ=bjBJ(BJX.hands[0].cards);
+  if(ten&&dBJ){BJX.hole=false;bjRender(m);bjSettle(m,"Lottie has blackjack!");return}
+  if(pBJ){BJX.hole=false;bjRender(m);bjSettle(m,'Blackjack!');return}
+  BJX.st='play';m.querySelector('.bjmid').textContent='Hit or stand?';bjBar(m)}
+function bjHit(m){const h=BJX.hands[BJX.cur];h.cards.push(bjDraw());casTone(700,.03,.03);bjRender(m);const v=bjVal(h.cards).t;if(v>=21)setTimeout(()=>bjNext(m),v>21?500:300);else bjBar(m)}
+function bjDouble(m){const h=BJX.hands[BJX.cur];addBones(-h.bet);h.bet*=2;casHud();h.cards.push(bjDraw());casTone(700,.03,.03);bjRender(m);setTimeout(()=>bjNext(m),450)}
+function bjSplit(m){const h=BJX.hands[0];addBones(-h.bet);casHud();const ace=h.cards[0].r==='A',h2={cards:[h.cards.pop()],bet:h.bet,split:1,splitAce:ace};h.split=1;h.splitAce=ace;BJX.hands.push(h2);
+  h.cards.push(bjDraw());h2.cards.push(bjDraw());bjRender(m);if(ace){BJX.cur=1;setTimeout(()=>bjNext(m),400);return}bjBar(m)}
+function bjNext(m){if(BJX.cur<BJX.hands.length-1){BJX.cur++;const h=BJX.hands[BJX.cur];if(h.splitAce){setTimeout(()=>bjNext(m),300);return}bjRender(m);bjBar(m);return}
+  BJX.st='dealer';bjBar(m);BJX.hole=false;bjRender(m);const live=BJX.hands.some(h=>bjVal(h.cards).t<=21);m.querySelector('.bjmid').textContent="Lottie's turn...";
+  const go=()=>{if(!$('casG'))return;if(live&&bjVal(BJX.dealer).t<17){BJX.dealer.push(bjDraw());casTone(600,.03,.03);bjRender(m);setTimeout(go,520)}else bjSettle(m)};setTimeout(go,520)}
+function bjSettle(m,head){const d=bjVal(BJX.dealer).t,dBJ=bjBJ(BJX.dealer);let ret=0,stake=0,won=0,lost=0;
+  BJX.hands.forEach(h=>{stake+=h.bet;const v=bjVal(h.cards).t,pBJ=bjBJ(h.cards)&&!h.split;let r=0;
+    if(v>21){h.res='Bust';lost++}else if(pBJ&&!dBJ){r=h.bet*2.5;h.res='Blackjack! +'+(h.bet*1.5);won++}else if(dBJ&&!pBJ){h.res='Lose';lost++}else if(d>21||v>d){r=h.bet*2;h.res='Win +'+h.bet;won++}else if(v===d){r=h.bet;h.res='Push'}else{h.res='Lose';lost++}
+    ret+=Math.floor(r)});
+  if(ret)addBones(ret);CS().bjw+=won;BJX.st='done';CASLOCK=false;bjRender(m);
+  m.querySelector('.bjmid').textContent=(head?head+' ':'')+(d>21?'Lottie busts! ':'')+(ret>stake?'You win '+(ret-stake).toLocaleString()+' bones!':ret===stake?'Push, bones returned.':'Lottie wins this hand.');
+  if(ret>stake){casWinFx(ret-stake>=1000);casSay(lq('win'))}else if(ret===stake)casSay(lq('push'));else if(Math.random()<.5)casSay(lq('lose'));
+  casRound(stake,ret);if(BJX.bet>S.bones)BJX.bet=0;bjBar(m)}
+// ================= LOTTIE: chats, stories, daily requests and adventures =================
+CHAT.lottie=["Darling! Have you seen my topknot today? Fluffed to perfection, if I say so myself.","The secret to a happy casino? Free biscuits and a very soft carpet.","I polish every single chandelier myself. Well... I supervise.",
+ "Max, sweetie, you look like a dog who's feeling lucky today!","My Nana Pearl always said: 'Bet with your head, not over it.' Wise lady.","I named the roulette wheel Gerald. Don't tell anyone.",
+ "Some dogs chase their tails. I chase jackpots. Same amount of spinning, really.","The waterfall next door is wonderful. Nature's own slot machine, but it only pays out splashes.",
+ "I'm terribly big and terribly fluffy. It takes me an hour to brush and two hours to admire.","Bella says my style is 'very Monte Carlo'. I said thank you, darling. I've never been. I just like the hats.",
+ "Krug tried to pay for a drink with a seashell. I accepted it. It was a very nice shell.","Remember, it's all just for fun! The real treasure is friends... and also the treasure.",
+ "Xam asked if he could surf down the red carpet. I said no. He's asked eleven times.","Franky built my cashier's cage. He says it's 'unbreakable'. Bonnie leaned on it and it squeaked."];
+REQS.lottie=[{cat:'flower',n:3,t:'3 flowers'},{cat:'fish',n:2,t:'2 fish'},{cat:'fruit',n:3,t:'3 pieces of fruit'}];
+ACH_SPECIAL.lottie={id:'highroller',t:'High roller',d:'Win 5,000 bones in total on winning rounds at the casino',v:()=>(S.cas&&S.cas.prof)||0,n:5000};
+PROP.lottie=["Oh, Max! My darling Max! Is that... a ring?","YES! Oh, I'll throw the biggest party Casino Paw-Yal has ever seen! Free mocktails for everyone!"];
+// a quest item: Lottie's lucky golden dice
+defI('luckydice','Lucky Golden Dice','quest',0,0xf2c14e);
+ICONS.luckydice=(()=>{const c=document.createElement('canvas');c.width=c.height=72;const x=c.getContext('2d'),die=(cx,cy,r,a,dots)=>{x.save();x.translate(cx,cy);x.rotate(a);const g=x.createLinearGradient(-r,-r,r,r);g.addColorStop(0,'#fff0a0');g.addColorStop(1,'#d8a020');x.fillStyle=g;x.strokeStyle='#8a5a10';x.lineWidth=2.5;
+  x.beginPath();if(x.roundRect)x.roundRect(-r,-r,r*2,r*2,r*.35);else x.rect(-r,-r,r*2,r*2);x.fill();x.stroke();x.fillStyle='#5a1a10';dots.forEach(([u,v])=>{x.beginPath();x.arc(u*r*.55,v*r*.55,r*.17,0,7);x.fill()});x.restore()};
+  die(26,40,15,-.3,[[-1,-1],[0,0],[1,1]]);die(47,30,15,.25,[[-1,-1],[1,-1],[-1,1],[1,1],[0,0]]);return c.toDataURL()})();
+QITEMS.push({id:'luckydice',k:'lottie',q:1,key:'ldice',x:66.4,z:57.4});
+// stories Lottie tells about her life before the island
+const LOTTIESTORIES=[
+ ["Did I ever tell you how I got my white topknot, darling?","Nana Pearl said that when I was a tiny puppy, the moon leaned down and kissed me on the head.","Mum said it was because I fell asleep in a bowl of flour. I prefer Nana's version."],
+ ["Max, do you remember the day we met? At Pampered Paws, the fancy groomers?","You were getting a bath and you shook so hard you soaked the whole waiting room.","I'd just had my hair done. I was FURIOUS. Then you gave me your biscuit, and we've been friends ever since."],
+ ["When I was young I was a show dog. Best in Breed, three years running!","At my last show the judge asked me to trot in a circle.","I trotted straight out of the hall, into the bakery next door, and came back with a croissant. They still gave me a rosette. For 'confidence'."],
+ ["I learned card tricks from a ship's magician called The Great Barkini.","He could pull a sausage out of anybody's ear. ANYBODY'S.","I've been practising for years. So far I can pull a sausage out of my own ear, but only if I put it there first."],
+ ["The Great Seagull Heist! Oh, it was dreadful, darling.","On opening night a seagull swooped through the window and stole the roulette ball right off the wheel!","We played the whole evening with a blueberry. Krug won six times. He says it was skill."],
+ ["Nana Pearl ran a little tea room by the seaside. Every Sunday was bingo night.","The tortoises from the garden centre came every week. Very slow at calling 'Bingo!'","One of them shouted it so late that the next game had already finished. He won anyway. Nobody had the heart to say no."],
+ ["Once I entered a yacht race by mistake. I thought it was a queue for ice cream.","I was in a pedalo shaped like a swan. Everyone else had sails.","I came third! Two of the yachts stopped to buy ice cream."],
+ ["Do you know why I called it Casino Paw-Yal?","Because my Nana said I acted like royalty. Fluffy, fabulous and always first to the biscuit tin.","Also 'Casino Roy-Paw' sounded like a sneeze."],
+ ["I had a very posh doggy coat once, made of gold sequins.","I wore it to the beach and it reflected so much sunshine that a lighthouse keeper thought I was a ship.","He waved a lantern at me for an hour. I waved back. Lovely chap."],
+ ["Before the casino I ran a lemonade stand with my little brother, Biscuit.","He drank all the lemonade before anyone came. Every. Single. Day.","We made zero bones. But we made a lot of trips to the toilet."],
+ ["Sometimes when the casino closes I put on soft music and dance across the empty floor.","The candelabras twinkle and the slot machines go 'ding' like they're clapping.","If you ever see me twirling through the window, darling, pretend you didn't. Or join in!"],
+ ["Here's a secret: I'm terrible at blackjack.","I once said 'hit me' and Franky gently tapped me on the nose. I said, 'Not like that!'","Now I let the cards do the work and just look fabulous behind the table."]];
+function lottieStory(){S.ls=S.ls||0;const st=LOTTIESTORIES[S.ls%LOTTIESTORIES.length];S.ls++;save();emote('lottie','laugh');
+  say('lottie',st,null,()=>{emote('lottie',Math.random()<.5?'heart':'smile');say('lottie',[["I've got loads more where that came from, darling.","Oh, I do love a good natter with you, Max.","Now, where was I? Oh yes, being fabulous."][Math.floor(Math.random()*3)]],null,()=>menuFor('lottie',['Anything else, darling?']))})}
+function lottieGames(){say('lottie',["Which game takes your fancy, darling?"],[{t:'Roulette',f:()=>casOpen('roulette')},{t:'Blackjack',f:()=>casOpen('blackjack')},{t:'Slot machines',f:()=>casOpen('slots')},{t:'Not right now',f:()=>menuFor('lottie',['Anything else, darling?'])}])}
+// the Paw-Yal Gala: what each friend says when Max hands over Lottie's invitation
+const GALA={bonnie:"A gala? With dancing? I'll wear my sparkliest bow!",franky:"A posh do, eh? I'll dust off my best hat. And maybe have a bath.",alphonso:"A gala! I shall prepare a short lecture on the history of dice. Just twenty minutes.",
+ bella:"Finally, an event worthy of my evening gowns! I'll be there, darling.",krug:"Arr, a party! I'll bring the sea shanties!",xam:"A PARTY? At the CASINO? Big bro, this is the best day of my life!"};
+// counts at the moment a task starts, so only new games count towards it
+const casBase=k=>{const c=CS();S.qf=S.qf||{};S.qf['cb_'+k]=c[k]||0;save()},casSince=k=>Math.max(0,(CS()[k]||0)-((S.qf&&S.qf['cb_'+k])||0));
+Q.lottie=[
+ {t:'Grand opening',ask:["Max, darling! It's me, Lottie! Can you believe I've opened a casino on your island?","The grand opening is tonight and the entrance vases are EMPTY. Could you bring me 4 flowers?"],prog:()=>'Flowers: '+Math.min(4,countCat('flower'))+'/4',
+  can:()=>countCat('flower')>=4,take:()=>takeCat('flower',4),done:["Gorgeous! The entrance looks simply divine.","Have my neon Paw-Yal sign for your home, and 2,000 bones. Mwah!"],reward:()=>{gainFurn('casinosign');addBones(2000)}},
+ {t:'The lucky dice',ask:["Disaster, darling! A seagull snatched my lucky golden dice right off the craps table.","It flew off towards the lighthouse. I simply can't open the tables without them!"],prog:()=>has('luckydice')?'Bring the golden dice back to Lottie!':'Search near the lighthouse for the golden dice (it\'s marked on your map).',
+  can:()=>has('luckydice'),take:()=>take('luckydice'),done:["My lucky dice! I could kiss you. Well, I could kiss your nose.","Take one of my Lucky Slot Machines home. You can play it in your living room! And 2,500 bones."],reward:()=>{gainFurn('slotmach');addBones(2500)}},
+ {t:"Beginner's luck",ask:["Now that the tables are open, I need someone to try everything out.","Play 5 games in the casino, darling. Any game you like! Slots, roulette or blackjack."],prog:()=>'Casino games played: '+Math.min(5,casSince('plays'))+'/5',accept:()=>casBase('plays'),quiet:1,
+  can:()=>casSince('plays')>=5,take:()=>{},done:["A natural! You've got the paws of a professional.","Here's a roll of my Paw-Yal Damask wallpaper and 1,500 bones."],reward:()=>{gainWall('casinowall');addBones(1500)}},
+ {t:'Twenty-one!',ask:["Blackjack is my favourite. It's all about knowing when to stop, darling.","Win 3 hands of blackjack against me and I'll give you my spare table."],prog:()=>'Blackjack hands won: '+Math.min(3,casSince('bjw'))+'/3',accept:()=>casBase('bjw'),quiet:1,
+  can:()=>casSince('bjw')>=3,take:()=>{},done:["Three wins! You beat me fair and square. I'm only a LITTLE bit grumpy.","Here's a Blackjack Table for your home, and 3,000 bones."],reward:()=>{gainFurn('bjtable');addBones(3000)}},
+ {t:'Supper for the staff',ask:["My croupiers have been working so hard. They're starving!","Could you cook 2 home-cooked meals for them? Something warm and tasty."],prog:()=>'Home-cooked food: '+Math.min(2,countCat('food'))+'/2 (cook recipes on your cooker)',
+  can:()=>countCat('food')>=2,take:()=>takeCat('food',2),done:["They're wagging so hard the chandeliers are shaking!","Have some Paw-Yal Carpet for your floors, and 3,000 bones."],reward:()=>{gainFloor('casinofloor');addBones(3000)}},
+ {t:'Red or black?',ask:["Roulette is so glamorous, darling. Round and round goes Gerald the wheel!","Win 3 spins at the roulette table and the spare wheel is yours."],prog:()=>'Roulette spins won: '+Math.min(3,casSince('rw'))+'/3',accept:()=>casBase('rw'),quiet:1,
+  can:()=>casSince('rw')>=3,take:()=>{},done:["Rien ne va plus! That means 'no more bets', but I just like saying it.","A Roulette Table for your home, and 4,000 bones!"],reward:()=>{gainFurn('roulettetbl');addBones(4000)}},
+ {t:'The Paw-Yal Gala',ask:["I'm throwing a gala, darling! Music, dancing and the fanciest mocktails on the island.","Could you hand out my invitations? Invite 4 friends: just talk to them and give them their invitation."],prog:()=>'Gala invitations given: '+galaN()+'/4',
+  can:()=>galaN()>=4,take:()=>{},done:["Everyone's coming! I'm so excited my topknot is wobbling.","You'll need something smart to wear. Here's a tuxedo, and 5,000 bones!"],reward:()=>{giveCloth('tux');addBones(5000)}},
+ {t:'Jackpot!',ask:["Every proper casino needs a big winner on the wall of fame, darling.","Get three of a kind on a slot machine. Any three!"],prog:()=>'Three of a kind on the slots: '+Math.min(1,casSince('s3'))+'/1',accept:()=>casBase('s3'),quiet:1,
+  can:()=>casSince('s3')>=1,take:()=>{},done:["DING DING DING! Your picture is going on the wall of fame!","Take this Gold Candelabra for your home. And 5,000 bones!"],reward:()=>{gainFurn('candelabra');addBones(5000)}},
+ {t:'The high roller',ask:["One last thing, darling. Only true high rollers get the Golden Paw.","Come and see me when you've got 25,000 bones saved up. I won't take them! I just want to see you've been sensible with your winnings."],prog:()=>'Bones saved: '+Math.min(S.bones,25000).toLocaleString()+'/25,000',
+  can:()=>S.bones>=25000,take:()=>{},done:["Look at all those bones! You're the most sensible high roller I've ever met.","The Golden Paw Trophy is yours, and here's 10,000 bones on top. You're a true Paw-Yal, Max!"],reward:()=>{gainFurn('goldpaw');addBones(10000)}}];
+const galaOn=()=>S.q.lottie===6&&S.qa.lottie,galaN=()=>Object.keys(GALA).filter(k=>S.qf&&S.qf['gala'+k]).length;
 // ================= MAIN ISLAND EXPANSION: new land, plots, nature and a lighthouse =================
 // new land is added to the island shape (see ISL); this fills it with trees, flowers, grass, rocks and palms
 function lobeSpot(x,z,m){if(!walkable(x,z)||ISL(x,z)>-7.5||hL(x,z)!==0||waterSdf(x,z)<2)return false;if(nearBld(x,z,m+.6)||pathD(x,z)<1.4+m||plotNear(x,z,6.5))return false;if(TREES.some(t=>Math.hypot(t.x-x,t.z-z)<2.4+m))return false;if(ROCKS.some(r=>Math.hypot(r.x-x,r.z-z)<2.4))return false;if(LIGHT&&Math.hypot(x-LIGHT.x,z-LIGHT.z+1)<6.8)return false;return true}
@@ -5790,6 +6245,9 @@ function cruGraph(){if(CRU.graph)return CRU.graph;const N=[],E=[],add=(x,z,pi)=>
   const link=(i,j)=>{const d=Math.hypot(N[i].x-N[j].x,N[i].z-N[j].z);E[i].push([j,d]);E[j].push([i,d])};
   PATHS.forEach((p,pi)=>{let prev=-1;for(let s=0;s<p.length-1;s++){const a=p[s],b=p[s+1],d=Math.hypot(b[0]-a[0],b[1]-a[1]),n=Math.max(1,Math.ceil(d/2.5));for(let k=(s?1:0);k<=n;k++){const i=add(a[0]+(b[0]-a[0])*k/n,a[1]+(b[1]-a[1])*k/n,pi);if(prev>=0&&ok(N[prev],N[i]))link(prev,i);prev=i}}});
   for(let i=0;i<N.length;i++)for(let j=i+1;j<N.length;j++){if(N[i].pi===N[j].pi)continue;const d=Math.hypot(N[i].x-N[j].x,N[i].z-N[j].z);if(d<3.2&&ok(N[i],N[j]))link(i,j)}
+  // bridges join the west and east path networks, so visitors can reach the lighthouse, Alphonso and the casino
+  const P0=N.length,bridge=(ax,az,bx,bz)=>{const i=add(ax,az,-1),j=add(bx,bz,-1);if(!ok(N[i],N[j]))return;link(i,j);[i,j].forEach(k=>{for(let m=0;m<P0;m++){const d=Math.hypot(N[m].x-N[k].x,N[m].z-N[k].z);if(d<7&&ok(N[k],N[m]))link(k,m)}})};
+  try{xbList().forEach(z0=>bridge(rxAt(z0)-4.4,z0,rxAt(z0)+4.4,z0));if(S.bridge)bridge(RX-3.4,0,RX+3.4,0);fbList().forEach(z0=>bridge(sxAt(z0)-3.6,z0,sxAt(z0)+3.6,z0))}catch(e){}
   return CRU.graph={N,E}}
 function cruNearest(x,z){const G=cruGraph();let b=-1,bd=1e9;G.N.forEach((n,i)=>{if(!G.E[i].length)return;const d=Math.hypot(n.x-x,n.z-z);if(d<bd){bd=d;b=i}});return b}
 function cruRoute(fx,fz,tx,tz){const G=cruGraph(),s=cruNearest(fx,fz),t=cruNearest(tx,tz);if(s<0||t<0)return[[tx,tz]];const dist=new Float64Array(G.N.length).fill(1e9),prev=new Int32Array(G.N.length).fill(-1),done=new Uint8Array(G.N.length);dist[s]=0;
@@ -5798,7 +6256,7 @@ function cruRoute(fx,fz,tx,tz){const G=cruGraph(),s=cruNearest(fx,fz),t=cruNeare
 const TOURN=['Coco','Ruby','Maple','Oscar','Pickle','Daisy','Ziggy','Nala','Bramble','Waffles','Juno','Pip','Tilly','Barnaby','Saffy','Rolo','Hazel','Monty','Fern','Bertie'],TOURC=[0xc8843a,0xf2e6c8,0x2a2a30,0xd8d8e0,0x8a5a3a,0xe8b878,0x5a4a3a,0xb06a3a,0xf6f0e6];
 const TOURL=[['I came all the way from Barkington! This island is lovely.','Have you tried the shops here? I love a souvenir.'],['Ahoy! First time on a cruise. My sea legs are wobbly!','The captain says we only have a little while ashore.'],['What a view! I could stay here forever.','Is that a lighthouse over there? So pretty!'],
  ['I am hunting for the best snacks on the island.','A little bird told me the local shops are fantastic.'],['My grandpup told me to bring back a present.','Where would you recommend for shopping?'],['The cruise buffet is nice, but nothing beats fresh island food!','I hope I get back before the ship toots its horn.']];
-function cruDest(tr){const biz=BLD.filter(b=>b.key&&b.key.startsWith('biz_')),pub=BLD.filter(b=>['shop','museum','kitchen','tailor','xam','lighthouse','home'].includes(b.key));
+function cruDest(tr){const biz=BLD.filter(b=>b.key&&b.key.startsWith('biz_')),pub=BLD.filter(b=>['shop','museum','kitchen','tailor','xam','lighthouse','home','lottie'].includes(b.key));
   const pickB=biz.length&&(tr.buys||0)<2&&Math.random()<.65,b=pickB?biz[Math.floor(Math.random()*biz.length)]:pub[Math.floor(Math.random()*pub.length)];if(!b)return null;const fx=b.door[0]+(Math.random()-.5)*1.4,fz=b.door[1]+1+Math.random()*.8;return{b,x:fx,z:fz}}
 function cruGo(tr,x,z){tr.route=cruRoute(tr.x,tr.z,x,z);tr.wi=0}
 function cruSpawn(){const pm=(PIER.x0+PIER.x1)/2,id='tour'+(CRU.spawned++),c=TOURC[Math.floor(Math.random()*TOURC.length)],nm=TOURN[Math.floor(Math.random()*TOURN.length)];
@@ -5920,9 +6378,10 @@ function newGame(){ac();for(let n=1;n<=SLOTS;n++)if(!readSlot(n)){heroPick(n);re
 function resetRuntime(){if(typeof TRIP!=='undefined')tripEnd();if(typeof IPL!=='undefined'){if(PLAY)playFinish();DIZ=0;if(IPL)islEnd();if(IED)iedEnd()}poseCancel();if(REDEC)redecEnd();if(SURF){[SURF.bm,SURF.bx].forEach(b=>b&&scene.remove(b));if(SURF.w)scene.remove(SURF.w.g);CAMO.yaw=SURF.cam;if(NPC.xam)NPC.xam.surf=false;max.rotation.set(0,0,0);SURF=null}DROPFALL.clear();if(SEA.on){SEA={on:false};if(seaG)seaG.visible=false;if(NPC.krug)NPC.krug.sea=false;moving=false;$('fade').hidden=true}if(MIR.on)closeMirror();EATB={until:0,k:1};munchT=0;if(WED){WED=null;$('fade').hidden=true;if(wedG){islandG.remove(wedG);wedG=null}confetti.forEach(c=>scene.remove(c));confetti.length=0;Object.values(NPC).forEach(n=>{n.wed=false;n.hop=0})}if(show){scene.remove(show.g);show=null}lookT=0;if(placing)cancelPlace();if(inside){leaveVisitor();inside=false;roomKey=null;CUR=null;sceneIn.remove(max);scene.add(max)}reel();while(shadows.length)removeShadow(shadows[0]);while(bugs.length)removeBug(bugs[0]);
   if(dlg)closeDlg();if(!$('sheet').hidden)closeSheet();$('catch').hidden=true;catchT=0;tapTgt=null;smileT=0}
 function startGame(n,st){ac();resetRuntime();slot=n;S=st;if(S.d&&!S.d.digs)S.d=null;if((S.wk||1)!==WK){const f=WK/(S.wk||1);S.px*=f;S.pz*=f;S.d=null;S.day='';S.drops=[];S.wk=WK}
-  S.ext=S.ext||{};S.rooms=S.rooms||{};S.q.bella=S.q.bella||0;S.q.krug=S.q.krug||0;S.q.xam=S.q.xam||0;S.hearts=S.hearts||{};if(!S.fp){S.fp={};Object.keys(FR).forEach(k=>S.fp[k]=Math.max(100,(S.hearts[k]||1)*100))}Object.keys(FR).forEach(k=>{if(S.fp[k]==null)S.fp[k]=100});
+  S.ext=S.ext||{};S.rooms=S.rooms||{};S.q.bella=S.q.bella||0;S.q.krug=S.q.krug||0;S.q.xam=S.q.xam||0;S.q.lottie=S.q.lottie||0;S.hearts=S.hearts||{};if(!S.fp){S.fp={};Object.keys(FR).forEach(k=>S.fp[k]=Math.max(100,(S.hearts[k]||1)*100))}Object.keys(FR).forEach(k=>{if(S.fp[k]==null)S.fp[k]=100});
   S.st=S.st||{cat:{},id:{},chat:{},gift:{},req:{}};S.ach=S.ach||{};S.wd=S.wd||{own:{},jacket:null,hat:null};S.wd.own=S.wd.own||{};setPlayerLook(S.look);wearRefresh();buildArch();
   if(!S.adv2){S.adv2=1;if(S.intro)setTimeout(()=>toast('Your friends have new adventures for you! Check the Tasks app.'),6500)}
+  if(!S.lotNews){S.lotNews=1;if(S.intro)setTimeout(()=>toast('A new friend, Lottie the Yorkie, has opened Casino Paw-Yal in the north-east corner of the island!'),4600)}
   if(!S.bellaNews){S.bellaNews=1;if(S.intro)setTimeout(()=>toast('A new friend, Bella the poodle, has moved to the island! Visit her boutique.'),3800)}
   landS();setHomePlot();migrateRooms();ownRecipes();if(!S.mirGift){S.mirGift=1;gainFurn('wardrobemirror');if(S.intro)setTimeout(()=>toast('Bella sent you a Mirrored Wardrobe! Place it with Decorate at home.'),5200)}tidyHome();buildHome();buildPlots();bizBuildAll();buildBldAO();buildBridge();buildLookout();ensureDay();syncWorld();islBuild();bizTickAll(true);if(!S.econ65){S.econ65=1;if(S.intro)setTimeout(()=>toast('A cruise ship now visits the pier! Its passengers shop at your businesses. Selling lots of the same item on one day now lowers its price.'),15000)}if(!S.bizNews){S.bizNews=1;if(S.intro)setTimeout(()=>toast('New! Open your own business on land you buy from Franky. Wild fruit, veg, wheat and honey now grow around the island.'),11000)}
   P.x=S.px;P.z=S.pz;P.face=Math.PI;if(!walkable(P.x,P.z)){P.x=HX;P.z=HZ+5}
