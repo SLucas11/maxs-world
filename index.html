@@ -353,12 +353,12 @@ body.redec #acts,body.redec #stick,body.redec #prompt,body.redec #keys,body.rede
 <div id="sheet" hidden><header><h2 id="shTitle"></h2><button id="shClose">Close</button></header><nav id="shTabs"></nav><div id="shBody"></div></div>
 <div id="catch" hidden><img id="cImg" alt=""><div><em id="cNew">New!</em><b id="cName"></b><span id="cSub"></span></div></div>
 
-<script src="lib/three.min.js"></script>
-<script src="app.js"></script>
+<script src="lib/three.min.js" crossorigin="anonymous"></script>
+<script src="app.js" crossorigin="anonymous"></script>
 <script>
 // boot loader: show progress, catch errors, then run the game script after the first paint
 addEventListener('error',e=>{if(!window.__ready&&window.BOOT)BOOT.err('Something went wrong while loading: '+e.message)});
-window.APPV='76';
+window.APPV='77';
 // save backup and restore (moves your island between the downloaded file, the app, or a new phone)
 window.SAVEIO={dump(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('maxsworld.')===0)o[k]=localStorage.getItem(k)}return{app:'maxsworld',v:1,ver:window.APPV,at:new Date().toISOString(),data:o}},
  async backup(){try{if(window.save)save()}catch(e){}const d=this.dump();if(!Object.keys(d.data).some(k=>k.indexOf('maxsworld.slot')===0||k==='maxsworld.v1')){alert('There is no saved game to back up yet.');return}
@@ -382,8 +382,10 @@ window.BOOT={set(f,t){const b=document.getElementById('bootBar'),x=document.getE
 </script>
 <script type="text/plain" id="gameMain">
 const $=id=>document.getElementById(id);
-function fail(m){let e=$('err');if(!e){e=document.createElement('pre');e.id='err';document.body.appendChild(e)}e.textContent+=m+'\n'}
-addEventListener('error',ev=>fail('Error: '+ev.message+' (line '+(ev.lineno||'?')+')'));
+function fail(m){let e=$('err');if(!e){e=document.createElement('pre');e.id='err';e.title='Tap to hide';e.onclick=()=>{e.remove()};document.body.appendChild(e)}if(e.textContent.split('\n').length>4)return;e.textContent+=m+'\n';clearTimeout(fail.t);fail.t=setTimeout(()=>{const x=$('err');if(x)x.remove()},12000)}
+// "Script error." with no line number comes from scripts the browser won't let us see (extensions, in-app browsers, other sites), so it isn't shown
+addEventListener('error',ev=>{const m=ev.message||'';if(/^Script error\.?$/i.test(m)&&!ev.lineno){console.warn('Hidden external script error',ev.filename||'');return}
+  const st=ev.error&&ev.error.stack?String(ev.error.stack).split('\n').slice(0,2).join(' | '):'';fail('Error: '+m+' (line '+(ev.lineno||'?')+(ev.colno?':'+ev.colno:'')+')'+(st?' '+st.slice(0,160):''))});
 const TABLET=/iPad|Android(?!.*Mobile)|Tablet/i.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
 const LOW=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent)||TABLET||(matchMedia('(pointer:coarse)').matches&&!matchMedia('(any-pointer:fine)').matches);const ANDROID=/Android/i.test(navigator.userAgent);
 function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
