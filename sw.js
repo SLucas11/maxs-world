@@ -1,5 +1,5 @@
 // Max's World offline cache. The version below changes with every release, which tells phones an update is ready.
-const V='77',C='maxsworld-'+V;
+const V='78',C='maxsworld-'+V;
 const FILES=['./','index.html','app.js','manifest.webmanifest','lib/three.min.js','lib/fredoka.ttf','icons/icon-192.png','icons/icon-512.png','icons/maskable-512.png','icons/apple-touch-icon.png','icons/favicon-32.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(FILES.map(u=>new Request(u,{cache:'reload'})))))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('maxsworld-')&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});

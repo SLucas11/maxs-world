@@ -358,7 +358,7 @@ body.redec #acts,body.redec #stick,body.redec #prompt,body.redec #keys,body.rede
 <script>
 // boot loader: show progress, catch errors, then run the game script after the first paint
 addEventListener('error',e=>{if(!window.__ready&&window.BOOT)BOOT.err('Something went wrong while loading: '+e.message)});
-window.APPV='77';
+window.APPV='78';
 // save backup and restore (moves your island between the downloaded file, the app, or a new phone)
 window.SAVEIO={dump(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('maxsworld.')===0)o[k]=localStorage.getItem(k)}return{app:'maxsworld',v:1,ver:window.APPV,at:new Date().toISOString(),data:o}},
  async backup(){try{if(window.save)save()}catch(e){}const d=this.dump();if(!Object.keys(d.data).some(k=>k.indexOf('maxsworld.slot')===0||k==='maxsworld.v1')){alert('There is no saved game to back up yet.');return}
@@ -1074,7 +1074,7 @@ const PLOTS=[
  {id:'sunrise',n:'Sunrise Meadows',x:64,z:-2,price:35000,east:1,d:'Over the footbridge on the new east coast. First to see the sunrise every morning!',path:[[64,2.7],[54,4],[47,4],[37,4],[31.8,8.6]]},
  {id:'lighthouse',n:'Lighthouse Point',x:58,z:48,price:45000,east:1,d:'The far south-east point, right beside the lighthouse. Sea views on three sides.',path:[[58,52.7],[55,40],[56,22],[54,4]]}];
 PLOTS.forEach(p=>{p.sx=p.x-2.6;p.sz=p.z+4.7;if(p.path)PATHS.push(p.path)});
-const plotNear=(x,z,r)=>PLOTS.some(p=>Math.hypot(x-p.x,z-p.z)<r);
+const plotNear=(x,z,r)=>PLOTS.some(p=>Math.hypot(x-p.x,z-p.z)<r)||RIOP.some(p=>Math.hypot(x-p.x,z-p.z)<r);
 function landS(){if(!S.land)S.land={own:{home:1},at:'home'};return S.land}
 function plotOf(id){return PLOTS.find(p=>p.id===id)||PLOTS[0]}
 function setHomePlot(){const p=plotOf(landS().at);HX=p.x;HZ=p.z}
@@ -1721,6 +1721,26 @@ function mkLottie(){const g=new THREE.Group(),P2=buildDog(LOTTIELOOK,g);g.scale.
   {const nk=new THREE.Group();nk.position.set(0,.45,.2);nk.rotation.x=1.05;bd.add(nk);const gm=M(0xe8c060,{roughness:.2,metalness:.85});for(let i=0;i<20;i++){const a=i/20*Math.PI*2,b=new THREE.Mesh(dgeo('gemS',()=>new THREE.SphereGeometry(1,14,10)),gm);b.scale.setScalar(.011);b.position.set(Math.cos(a)*.105,Math.sin(a)*.105,0);nk.add(b)}
    const h=new THREE.Mesh(dgeo('gemS',()=>new THREE.SphereGeometry(1,14,10)),M(0xeaf6ff,{roughness:.05,metalness:.4,emissive:0x203040}));h.scale.set(.024,.024,.014);h.position.set(0,-.12,.01);nk.add(h)}
   return{g,bd:P2.bodyG,legs:P2.legs,head:P2.headG,tail:P2.tail,jaw:P2.jaw,eyes:P2.eyes}}
+// ================= RIO: a big gentle Akita with an orange coat and a yellow underbelly, newly arrived by boat =================
+const RIOLOOK={breed:'custom',sex:'m',coat:0xe8802a,coat2:0xe8802a,light:0xf8d85a,pattern:'solid',fur:'fluffy',grain:'soft',sheen:'soft',eyes:'almond',eyeCol:0x3a2010,eyeSize:.95,ears:'prick',nose:'big',snout:'mid',body:'stocky',size:1,tail:'curl',collar:0x2a9d8f};
+FR.rio={name:'Rio',color:'#2a9d8f',pitch:300,home:[0,0],mk:()=>mkRio(),likes:'fish',gift5:'telescope',dyn:1};
+// three plots Franky keeps for newcomers; Rio picks one with your help
+const RIOP=[{id:'harbour',n:'Harbour View',x:-43,z:40,d:["Harbour View. You can smell the sea from here and hear the boats at the dock.","Flat, sunny, and only a short trot from the pier. Handy if Rio likes fishing!"]},
+ {id:'bluebell',n:'Bluebell Meadow',x:-40,z:-14,d:["Bluebell Meadow. Soft grass, butterflies, and so quiet you can hear the bees.","A peaceful spot out west. Lots of room for a garden."]},
+ {id:'skylark',n:'Skylark Hill',x:26,z:-24,d:["Skylark Hill. Up on the high ground in the east, with the whole island spread out below.","A bit of a climb, but what a view! You can hear the waterfall from here."]}];
+function mkRio(){const g=new THREE.Group(),P2=buildDog(RIOLOOK,g);g.scale.setScalar(1.62);
+  const R=rng(5511),lump=dgeo('lump',()=>new THREE.IcosahedronGeometry(1,1)),hd=P2.headG,bd=P2.bodyG;
+  const yel=furify(M(0xf8d85a,{roughness:.9}),170,.3),yel2=furify(M(0xfbe488,{roughness:.9}),170,.3),org=furify(M(0xe8802a,{roughness:.88}),170,.35),org2=furify(M(0xd66e1e,{roughness:.88}),170,.35);
+  const L=(pr,m,x,y,z,s,sy,sz)=>{const o=new THREE.Mesh(lump,m);o.position.set(x,y,z);o.scale.set(s,sy||s*.85,sz||s);o.rotation.set(R()*3,R()*3,R()*3);pr.add(o);return o};
+  // yellow underbelly and chest bib, running from the chin down between the front legs and along the tummy
+  for(let i=0;i<9;i++){const z=.24-i*.065;L(bd,i%2?yel:yel2,(R()-.5)*.05,.185+Math.abs(i-4)*.004,z,.085,.05,.075)}
+  for(let i=0;i<10;i++){const a=(i/9-.5)*1.5;L(bd,i%2?yel:yel2,Math.sin(a)*.1,.3+R()*.1,.26+Math.cos(a)*.03,.06,.07,.045)}
+  // thick Akita ruff around the neck and cheeks, pale yellow on the muzzle and cheeks
+  for(let i=0;i<14;i++){const a=i/14*Math.PI*2;L(bd,i%2?org:org2,Math.cos(a)*.15,.42+Math.sin(a)*.1,.19,.07,.07,.06)}
+  [-1,1].forEach(s=>{for(let i=0;i<4;i++)L(hd,i%2?yel:yel2,s*(.12+R()*.04),-.07-R()*.05,.1+R()*.05,.045,.05)});for(let i=0;i<4;i++)L(hd,yel2,(R()-.5)*.08,-.13-R()*.02,.16+R()*.03,.04,.04);
+  // little yellow eyebrow dots, an Akita trademark
+  [-1,1].forEach(s=>L(hd,yel2,s*.075,.115,.185,.022,.016,.014));
+  return{g,bd:P2.bodyG,legs:P2.legs,head:P2.headG,tail:P2.tail,jaw:P2.jaw,eyes:P2.eyes}}
 // ---- surfboards (shared shape, painted designs)
 let SBGEO=null;const SBT={};
 function sbGeo(){if(SBGEO)return SBGEO;const s=new THREE.Shape();s.moveTo(0,-.75);s.bezierCurveTo(.2,-.74,.22,-.35,.21,0);s.bezierCurveTo(.2,.42,.1,.68,0,.78);s.bezierCurveTo(-.1,.68,-.2,.42,-.21,0);s.bezierCurveTo(-.22,-.35,-.2,-.74,0,-.75);
@@ -1777,7 +1797,7 @@ function mkSurfShack(){const g=new THREE.Group(),wd=WD(0x9a7448,.8),wdk=WD(0x7a5
   {const cb=new THREE.Group();cb.position.set(1.3,0,3.0);cb.rotation.y=.3;g.add(cb);[-1,1].forEach(s=>{const lg=RB(cb,.05,.95,.05,WD(0x8a6a3a,.8),s*.3,.45,s*.15,.01);lg.rotation.x=s*.25});const bd=new THREE.Mesh(new THREE.PlaneGeometry(.58,.62),new THREE.MeshBasicMaterial({map:boardTex(['SURF','LESSONS','TODAY!'],'#2a3a2e','#ffffff',150,170,'700 30px Fredoka, sans-serif')}));bd.position.set(0,.6,.13);bd.rotation.x=-.25;cb.add(bd)}
   shadowAll(g);return g}
 
-Object.entries(FR).forEach(([k,f])=>{if(f.yacht||f.shack||f.casino)return;const hs=mkHouse2({w:k==='bella'?3.4:3.2,d:k==='bella'?3.1:3,h:2,wall:f.wall,roof:f.roof,roofTex:f.roofTex,style:f.style,shutter:f.shutter,door:f.door}),g=hs.g;const t=textSprite(f.name+"'s",f.color,'#fff',1.6);t.position.set(0,hs.top+.5,1.7);g.add(t);addBuilding(k,f.home[0]*WK,f.home[1]*WK,g,1.7,1.6)});
+Object.entries(FR).forEach(([k,f])=>{if(f.yacht||f.shack||f.casino||f.dyn)return;const hs=mkHouse2({w:k==='bella'?3.4:3.2,d:k==='bella'?3.1:3,h:2,wall:f.wall,roof:f.roof,roofTex:f.roofTex,style:f.style,shutter:f.shutter,door:f.door}),g=hs.g;const t=textSprite(f.name+"'s",f.color,'#fff',1.6);t.position.set(0,hs.top+.5,1.7);g.add(t);addBuilding(k,f.home[0]*WK,f.home[1]*WK,g,1.7,1.6)});
 // Krug's yacht moored beside the pier
 {const g=mkYacht(),x=PIER.x1+1.95,z=PIER.z0+7.4;g.position.set(x,WL,z);islandG.add(g);const b={key:'krug',x,z,hw:1.75,hd:5,g,door:[PIER.x1-.45,z-2.8]};BLD.push(b);CULL.push({g,x,z,m:6});
  const gw=new THREE.Group();gw.position.set(PIER.x1+.3,0,z-2.8);islandG.add(gw);const pl=RB(gw,.75,.05,.62,WD(0xb08050,.6),0,.48,0,.02);pl.rotation.z=.5;[-1,1].forEach(s2=>{CY(gw,.015,.015,.5,MTL(0xd8dde2,.2),-.2,.5,s2*.3,6);CY(gw,.015,.015,.5,MTL(0xd8dde2,.2),.25,.8,s2*.3,6)});
@@ -2209,7 +2229,7 @@ const TREES=[],ROCKS=[],FLW=[];
 function nearBld(x,z,m){return BLD.some(b=>b.key!=='home'&&Math.abs(x-b.x)<b.hw+m&&Math.abs(z-b.z)<b.hd+m+1.2)}
 function goodSpot(x,z,m){if(rrd(x,z,33*WK,7*WK)>-1)return false;if(Math.abs(x-rxAt(z))<3.7)return false;if(!walkable(x,z))return false;
   const h=hL(x,z),R=m+.9;for(let a=0;a<8;a++){const dx=Math.cos(a*.785)*R,dz=Math.sin(a*.785)*R;if(Math.abs(hL(x+dx,z+dz)-h)>.01||waterSdf(x+dx,z+dz)<.4)return false}
-  if(pathD(x,z)<1.1+m*.4)return false;if(nearBld(x,z,m+.5))return false;if(PLOTS.some(p=>Math.hypot(x-p.x,z-p.z)<6.4+m||Math.hypot(x-p.x,z-p.z-6)<2.5))return false;if(Math.hypot(x-VEN.x,z-VEN.z)<6.5+m)return false;
+  if(pathD(x,z)<1.1+m*.4)return false;if(nearBld(x,z,m+.5))return false;if(PLOTS.some(p=>Math.hypot(x-p.x,z-p.z)<6.4+m||Math.hypot(x-p.x,z-p.z-6)<2.5))return false;if(RIOP.some(p=>Math.hypot(x-p.x,z-p.z)<6.6+m))return false;if(Math.hypot(x-VEN.x,z-VEN.z)<6.5+m)return false;
   if(Math.hypot(x-COLLAR.x,z-COLLAR.z)<2.2||Math.hypot(x-GOLD.x,z-GOLD.z)<2.2||Math.hypot(x-LOOK.x,z-LOOK.z)<3.5||QITEMS.some(o=>Math.hypot(x-o.x,z-o.z)<2.2))return false;if(TREES.some(t=>Math.hypot(t.x-x,t.z-z)<m+1.4))return false;if(ROCKS.some(t=>Math.hypot(t.x-x,t.z-z)<m+1.4))return false;return true}
 const sphMid=new THREE.SphereGeometry(1,16,12);
 const leafM=[M(0x5fb848),M(0x74c858),M(0x4ea640),M(0x88d468)],trunkM=M(0x8a5a3a),pineM=[M(0x2f8a4a),M(0x3c9a52),M(0x4aa85c)],palmLeaf=M(0x52b04a),palmTrunk=M(0xb08a5a);
@@ -2581,7 +2601,7 @@ let inside=false;const OUT={x:0,z:0};
 let gaitPh=0,smileT=0,barkT=-9,toolAnim=0;
 const NPC={};
 Object.entries(FR).forEach(([k,f])=>{const m=f.mk();m.g.traverse(o=>{if(o.isMesh)o.castShadow=true});if(k!=='krug')mergeDog(m.g,[m.jaw]);scene.add(m.g);const tag=textSprite(f.name,f.color,'#fff',1.3);tag.position.y=1.55/m.g.scale.x+.3;m.g.add(tag);
-  const b=BLD.find(x=>x.key===k);NPC[k]={k,m,x:b.door[0]+1,z:b.door[1]+1.5,face:0,tx:0,tz:0,wait:Math.random()*2,spd:0,gt:0,talk:false,hx:b.door[0],hz:b.door[1]+3};if(window.__g69)addBlob(m.g,.42/m.g.scale.x)});
+  const b=BLD.find(x=>x.key===k)||{door:[-17.2,43.9]};NPC[k]={k,m,x:b.door[0]+1,z:b.door[1]+1.5,face:0,tx:0,tz:0,wait:Math.random()*2,spd:0,gt:0,talk:false,hx:b.door[0],hz:b.door[1]+3};if(window.__g69)addBlob(m.g,.42/m.g.scale.x)});
 // Bella spends her day outside her boutique rather than at home
 {const t=BLD.find(x=>x.key==='tailor'),n=NPC.bella;if(t&&n){n.hx=t.door[0]+3.2;n.hz=t.door[1]+2.4;n.x=t.door[0]+2.2;n.z=t.door[1]+1.2}}
 {const n=NPC.xam;if(n){n.hx=XSH.x+2.6;n.hz=XSH.z+3.6;n.x=XSH.x+1.3;n.z=XSH.z+3.1}}
@@ -3509,7 +3529,7 @@ function buildFurn(id,it){const g=new THREE.Group(),c=FURN[id].c,W=0x9a6a3a;
     const ph=new THREE.Mesh(new THREE.PlaneGeometry(.32,.26),PIC('wed'+sp2,128,104,(x,W2,H2)=>{const gr=x.createLinearGradient(0,0,0,H2);gr.addColorStop(0,'#ffe2ee');gr.addColorStop(1,'#fff8e6');x.fillStyle=gr;x.fillRect(0,0,W2,H2);
       x.strokeStyle='#ffffff';x.lineWidth=8;x.beginPath();x.arc(64,90,52,Math.PI,0);x.stroke();x.fillStyle='#ff8fb8';for(let i=0;i<9;i++){const a=Math.PI+i/8*Math.PI;x.beginPath();x.arc(64+Math.cos(a)*52,90+Math.sin(a)*52,5,0,7);x.fill()}
       x.fillStyle='#8f8d8c';x.beginPath();x.ellipse(44,84,14,11,0,0,7);x.fill();x.fillStyle='#c79a63';x.beginPath();x.arc(44,66,11,0,7);x.fill();x.fillStyle='#222';x.beginPath();x.arc(47,66,2,0,7);x.fill();
-      const col={bonnie:'#26272f',franky:'#9a5e38',alphonso:'#1d1d23',bella:'#f8f4ee',lottie:'#3a2a1e',xam:'#6a4220',krug:'#2a4a7a'}[sp2]||'#fff';x.fillStyle=col;x.beginPath();x.ellipse(84,84,14,11,0,0,7);x.fill();x.beginPath();x.arc(84,66,11,0,7);x.fill();x.strokeStyle='rgba(0,0,0,.2)';x.lineWidth=1;x.stroke();x.fillStyle='#222';x.beginPath();x.arc(81,66,2,0,7);x.fill();
+      const col={bonnie:'#26272f',franky:'#9a5e38',alphonso:'#1d1d23',bella:'#f8f4ee',lottie:'#3a2a1e',xam:'#6a4220',krug:'#2a4a7a',rio:'#e8802a'}[sp2]||'#fff';x.fillStyle=col;x.beginPath();x.ellipse(84,84,14,11,0,0,7);x.fill();x.beginPath();x.arc(84,66,11,0,7);x.fill();x.strokeStyle='rgba(0,0,0,.2)';x.lineWidth=1;x.stroke();x.fillStyle='#222';x.beginPath();x.arc(81,66,2,0,7);x.fill();
       x.fillStyle='#e0577e';x.font='20px sans-serif';x.fillText('♥',57,48)}));ph.position.set(0,.17,.016);fr.add(ph);const leg=RB(fr,.03,.26,.01,MTL(0xd4a83c,.3),0,.12,-.06,.004);leg.rotation.x=.4;break}
   case 'weddingcake':{const w=WD(0xf6f2ee,.4);CY(g,.3,.3,.03,w,0,.66,0,28);LT(g,[[0,0],[.18,0],[.18,.02],[.05,.04],[.035,.3],[.05,.5],[.03,.6],[.06,.645],[0,.645]],w,0,0,0,16);const ck=M(0xfffaf2,{roughness:.6}),rb=GLO(0xff9fc0,.4);
     [[.22,.14,.675],[.16,.13,.815],[.1,.12,.94]].forEach(([r,h,y])=>{CY(g,r,r,h,ck,0,y+h/2,0,28);TOR(g,r,.012,rb,0,y+.025,0,true);for(let i=0;i<6;i++){const a=i/6*Math.PI*2;SPH(g,.022,M([0xff8fb8,0xffffff][i%2],{roughness:.6}),Math.cos(a)*r,y+h,Math.sin(a)*r)}});
@@ -3595,7 +3615,7 @@ function enterRoom(key){inside=true;roomKey=key;CUR=key==='home'?null:roomDef(ke
   const vk=key==='tailor'?'bella':NPC[key]?key:null;
   if(vk&&NPC[vk]){const n=NPC[vk];visitor=n;scene.remove(n.m.g);sceneIn.add(n.m.g);n.x=CUR.npc[0];n.z=CUR.npc[1];n.face=0;n.tgt=null;n.talk=false;n.spd=0}
   else if(key==='home'&&S.married&&NPC[S.married]&&!WED){const n=NPC[S.married],N=RM().n;visitor=n;scene.remove(n.m.g);sceneIn.add(n.m.g);let px=.5,pz=-.5;for(let t=0;t<60;t++){const i=1+Math.floor(Math.random()*(N-2)),j=1+Math.floor(Math.random()*(N-3));if(!itemsAt(i,j).length&&!blockedCells().some(c=>c[0]===i&&c[1]===j)){px=-N/2+i+.5;pz=-N/2+j+.5;break}}n.x=px;n.z=pz;n.face=0;n.tgt=null;n.talk=false;n.spd=0}
-  sfx.door();uiMode();save();const W={lottie:'Welcome to Casino Paw-Yal, darling! Try the tables or the slot machines.',xam:'Big bro! Welcome to the shack! Mind the sand, I never sweep.',krug:'Welcome aboard the Sea Dog, matey!',kitchen:'Welcome to Copper Pot Kitchens! Browse the showroom or use the counter.',shop:'Welcome to Paw Mart! Browse the displays or use the counter.',museum:"Welcome to Alphonso's Museum.",tailor:"Bienvenue to Bella's Boutique! Look around, darling.",bella:"Bella's elegant cottage",bonnie:"Bonnie's cosy house",franky:"Franky's workshop house",alphonso:"Alphonso's study"};if(W[key])toast(W[key])}
+  sfx.door();uiMode();save();const W={rio:'Welcome to my home, my friend. Please, sit. I will make tea.',lottie:'Welcome to Casino Paw-Yal, darling! Try the tables or the slot machines.',xam:'Big bro! Welcome to the shack! Mind the sand, I never sweep.',krug:'Welcome aboard the Sea Dog, matey!',kitchen:'Welcome to Copper Pot Kitchens! Browse the showroom or use the counter.',shop:'Welcome to Paw Mart! Browse the displays or use the counter.',museum:"Welcome to Alphonso's Museum.",tailor:"Bienvenue to Bella's Boutique! Look around, darling.",bella:"Bella's elegant cottage",bonnie:"Bonnie's cosy house",franky:"Franky's workshop house",alphonso:"Alphonso's study"};if(W[key])toast(W[key])}
 function enterHouse(){enterRoom('home')}
 function leaveVisitor(){if(!visitor)return;const n=visitor,b=BLD.find(x=>x.key===(roomKey==='tailor'?'tailor':n.k));sceneIn.remove(n.m.g);scene.add(n.m.g);n.x=b.door[0]+(n.k==='krug'?-.5:1.2);n.z=b.door[1]+(n.k==='krug'?1.4:1);n.tgt=null;n.wait=2;n.talk=false;visitor=null}
 function exitHouse(){if(MIR.on)closeMirror();poseCancel();if(REDEC)redecEnd();cancelPlace();leaveVisitor();const key=roomKey&&roomKey.startsWith('home')?'home':roomKey;inside=false;roomKey=null;CUR=null;sceneIn.remove(max);scene.add(max);const b=BLD.find(x=>x.key===key)||homeB;P.x=b.door[0];P.z=b.door[1]+.5;P.y=gy(P.x,P.z);P.face=0;camSnap=1;sfx.door();uiMode();save()}
@@ -3609,7 +3629,7 @@ function startPlace(id,fromItem){if(!inside||!isHome())return;closeSheet();placi
   roomG.add(ghost);roomG.add(ind);$('placeBar').hidden=false;uiMode()}
 function placeTarget(){const f=fpOf(placing.id,placing.r);const[ti,tj]=frontCell();return{i:ti-Math.floor((f.w-1)/2),j:tj-Math.floor((f.d-1)/2),f}}
 function placeStep(){if(!placing||!ghost)return;const N=S.room.n,{i,j,f}=placeTarget();const ok=canPlace(placing.id,i,j,placing.r,null);
-  ghost.position.set(-N/2+i+f.w/2,0,-N/2+j+f.d/2);ghost.rotation.y=-placing.r*Math.PI/2;const ind=ghost.userData.ind;ind.position.set(ghost.position.x,.03,ghost.position.z);ind.scale.set(f.w,f.d,1);ind.material.color.setHex(ok?0x5cb64a:0xe8577a)}
+  const top=ok||FURN[placing.id].rug?0:furnTopUnder(placing.id,i,j,placing.r);ghost.position.set(-N/2+i+f.w/2,top?top+.1:0,-N/2+j+f.d/2);ghost.rotation.y=-placing.r*Math.PI/2;const ind=ghost.userData.ind;ind.position.set(ghost.position.x,top?top+.05:.03,ghost.position.z);ind.scale.set(f.w,f.d,1);ind.material.color.setHex(ok?0x5cb64a:0xe8577a)}
 function doPlace(){const{i,j}=placeTarget();if(!canPlace(placing.id,i,j,placing.r,null)){toast("It won't fit there.");sfx.no();return}
   const it=Object.assign({},placing.from||{},{id:placing.id,i,j,r:placing.r});RM().items.push(it);addFurnMesh(it);endGhost();sfx.place();save()}
 function cancelPlace(){if(!placing)return;if(placing.from){RM().items.push(placing.from);if(inside)addFurnMesh(placing.from)}else gainFurn(placing.id);endGhost()}
@@ -3639,6 +3659,7 @@ function getAction(){
   for(const b of BLD){if(Math.hypot(P.x-b.door[0],P.z-b.door[1])<1.4){if(b.label)return{t:b.label,f:b.enter};if(b.key==='home')return{t:'Go inside',f:enterHouse};if(b.key==='shop')return{t:'Go into Paw Mart',f:()=>enterRoom('shop')};if(b.key==='museum')return{t:'Go into the museum',f:()=>enterRoom('museum')};if(b.key==='tailor')return{t:"Go into Bella's Boutique",f:()=>enterRoom('tailor')};if(b.key==='kitchen')return{t:'Go into Copper Pot Kitchens',f:()=>enterRoom('kitchen')};
     return{t:b.key==='krug'?"Board Krug's yacht":b.key==='xam'?"Go into Xam's surf shack":'Visit '+FR[b.key].name+"'s house",f:()=>enterRoom(b.key)}}}
   {const ca=cruAction();if(ca)return ca}
+  {const ra=rioAction();if(ra)return ra}
   {const lp=PLOTS.find(p=>p.id!==landS().at&&Math.hypot(P.x-p.sx,P.z-p.sz)<1.8);if(lp)return{t:landS().own[lp.id]?'Read the sign: '+lp.n:'Read the For Sale sign',f:()=>plotTalk(lp)}}
   if(collarActive()&&Math.hypot(fp.x-COLLAR.x,fp.z-COLLAR.z)<1.3)return{t:'Pick up the red collar',f:()=>{if(give('collar')){sfx.pick();toast('Max found Bonnie\'s collar!');syncWorld();save()}else toast('Pockets are full!')}};
   const qi=QITEMS.find(o=>qActive(o)&&Math.hypot(fp.x-o.x,fp.z-o.z)<1.3);if(qi)return{t:{ribbon:'Pick up the pink ribbon',hammer:"Pick up Franky's hammer",thimble:"Pick up Bella's thimble",brooch:'Pick up the pearl brooch',musicbox:"Pick up Bonnie's music box",blueprint:"Pick up Franky's blueprint",mappiece:'Pick up the map piece',scissors:"Pick up Bella's golden scissors",luckydice:"Pick up Lottie's golden dice"}[qi.id]||'Pick up the '+ITEMS[qi.id].name.toLowerCase(),f:()=>{if(!give(qi.id))return swapFor(qi.id);S.qf=S.qf||{};S.qf[qi.key]=1;sfx.pick();smileT=2;toast('Max found '+{ribbon:'a pink ribbon!',hammer:"Franky's hammer!",thimble:"Bella's thimble!",brooch:'the pearl brooch!',musicbox:"Bonnie's music box!",blueprint:"Franky's blueprint!",mappiece:'a piece of the treasure map!',scissors:"Bella's golden scissors!",luckydice:"Lottie's lucky golden dice!"}[qi.id]||'the '+ITEMS[qi.id].name.toLowerCase()+'!');syncWorld();save()}};
@@ -3813,7 +3834,8 @@ function talkTo(k){const n=NPC[k];n.talk=true;if(F.on)reel();P.face=Math.atan2(n
 function menuFor(k,lines){const o=[],qi=S.q[k],qs=Q[k];
   if(qi<qs.length){const q=qs[qi];o.push({t:S.qa[k]?'About your request...':'Need any help?',f:()=>questTalk(k)})}
   else{const r=S.d.req[k];if(r&&!r.done)o.push({t:'Need anything today?',f:()=>reqTalk(k)})}
-  o.push({t:'Chat',f:()=>{const pool=CHAT[k];say(k,[pool[Math.floor(Math.random()*pool.length)]],null,()=>{emote(k,emoPick(k));menuFor(k,['Anything else?'])})}});if(k==='xam')o.splice(o.length-1,0,{t:'Tell me a story about Mum',f:mumStory});if(k==='lottie'){o.splice(o.length-1,0,{t:'Tell me one of your stories',f:lottieStory});o.splice(1,0,{t:roomKey==='lottie'?"Let's play a game!":'What games do you have?',f:()=>roomKey==='lottie'?lottieGames():say('lottie',["Roulette, blackjack and the slot machines, darling! Come inside Casino Paw-Yal in the north-east corner of the island and try your luck."],null,()=>menuFor('lottie',['Anything else, darling?']))})}
+  o.push({t:'Chat',f:()=>{const pool=CHAT[k];say(k,[pool[Math.floor(Math.random()*pool.length)]],null,()=>{emote(k,emoPick(k));menuFor(k,['Anything else?'])})}});if(k==='xam')o.splice(o.length-1,0,{t:'Tell me a story about Mum',f:mumStory});if(k==='rio'){if((S.q.rio||0)===1&&S.qa.rio&&!rioPlot())o.unshift({t:'Help Rio choose his plot',f:rioChoose});if((S.q.rio||0)>=5)o.splice(o.length-1,0,{t:'Choose the colour of your house',f:rioPaint})}
+  if(k==='lottie'){o.splice(o.length-1,0,{t:'Tell me one of your stories',f:lottieStory});o.splice(1,0,{t:roomKey==='lottie'?"Let's play a game!":'What games do you have?',f:()=>roomKey==='lottie'?lottieGames():say('lottie',["Roulette, blackjack and the slot machines, darling! Come inside Casino Paw-Yal in the north-east corner of the island and try your luck."],null,()=>menuFor('lottie',['Anything else, darling?']))})}
   if(k!=='lottie'&&GALA[k]&&galaOn()&&!(S.qf&&S.qf['gala'+k]))o.unshift({t:"Lottie's gala invitation!",f:()=>{S.qf=S.qf||{};S.qf['gala'+k]=1;save();say(k,[GALA[k]],null,()=>{toast('Invited '+FR[k].name+' to the Paw-Yal Gala! ('+galaN()+'/4)');menuFor(k,['Anything else?'])})}});if(TRIP&&TRIP.fr===k)o.unshift({t:'Enjoy the island together',f:()=>{const L=TRIPCHAT[TRIP.k];say(k,[L[Math.floor(Math.random()*L.length)]],null,()=>{emote(k,emoPick(k));menuFor(k,['Anything else?'])})}});
   if(!S.d.gift[k])o.push({t:'Give a gift',f:()=>giftPick(k)});
   if(k==='franky'&&S.house.stage>0){o.push({t:'Add a room',f:extMenu});o.push({t:'Renovate my home',f:()=>{unbusy();openReno()}});o.push({t:'Paint my house',f:paintHouse})}if(k==='franky')o.push({t:'Land and moving house',f:()=>{unbusy();openLand()}});if(k==='franky'&&!SEA.on)o.splice(1,0,{t:'Decorate the island',f:()=>say('franky',[ISLS().items.length?"Back for more? Let's make this island even prettier!":"Ooh, I love a project! Paths, lamps, benches, flower beds... pick what you like and put it anywhere on the island."],null,()=>openIsland('franky'))});
@@ -3868,7 +3890,7 @@ function lookAt(it){const f=FURN[it.id];if(roomKey==='lottie'&&CASLOOK[it.id]){C
     else if(i.cat==='bug')line+=' You can find it '+{flower:'on flowers',field:'in the fields',river:'near water',tree:'on trees',east:'in the Wild Woods',beach:'on the beach'}[i.where]+'.';
     else line+=' '+(FOSSIL_FACT[i.id]||'');
     say('max',[line,roomKey==='museum'?'Donated by Max.':'It is part of '+FR[roomKey].name+"'s collection."]);return}
-  if(visitor){const k=visitor.k,nm=FR[k].name,L={lottie:'It smells of roses and very expensive perfume.',xam:'It smells of coconut sun cream and surf wax.',krug:'It smells of sea salt and fresh varnish.',bonnie:'It smells like flowers in here.',franky:'Sawdust and wood shavings everywhere!',alphonso:'Everything is labelled so neatly.',bella:'Everything smells of lavender and fresh linen.'};say('max',[nm+"'s "+f.name+'. '+L[k]]);return}
+  if(visitor){const k=visitor.k,nm=FR[k].name,L={rio:'It smells of fresh timber, green tea and a little bit of fish.',lottie:'It smells of roses and very expensive perfume.',xam:'It smells of coconut sun cream and surf wax.',krug:'It smells of sea salt and fresh varnish.',bonnie:'It smells like flowers in here.',franky:'Sawdust and wood shavings everywhere!',alphonso:'Everything is labelled so neatly.',bella:'Everything smells of lavender and fresh linen.'};say('max',[nm+"'s "+f.name+'. '+L[k]]);return}
   say('max',[f.name+'.'])}
 
 // ================= SHEETS / MENUS =================
@@ -3915,7 +3937,7 @@ function drawMap(cv){const W=cv.width,x=cv.getContext('2d');x.imageSmoothingEnab
   drawPlots(x,P2,sc,lab);if(S.lookout){const[a,b]=P2(LOOK.x,LOOK.z);lab('★ Lookout',a,b)}{const[a,b]=P2(FALL.x,FALL.z-2.2);lab('Waterfall',a,b)}if(S.married){const[a,b]=P2(VEN.x,VEN.z-3.8);lab('♥ Wedding arch',a,b)}
   {const[a,b]=P2(POND.x,POND.z);lab('Pond',a,b,'rgba(220,245,255,.85)')}{const[a,b]=P2((PIER.x0+PIER.x1)/2,PIER.z1-2);lab('Pier',a,b,'rgba(220,245,255,.85)')}
   const mark=(px,pz,ch,c1)=>{const[a,b]=P2(px,pz);x.fillStyle=c1;x.strokeStyle='#fff';x.lineWidth=2.5;x.beginPath();x.arc(a,b,W/52,0,7);x.fill();x.stroke();x.fillStyle='#fff';x.font='700 '+Math.round(W/44)+'px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(ch,a,b+1)};
-  QITEMS.forEach(o=>{if(qActive(o))mark(o.x,o.z,'!',FR[o.k].color)});if(LIGHT.top&&lhCur()&&(!LH().a||lhReady()))mark(LIGHT.x+3.4,LIGHT.z-1,'!','#d83a2a');if(CRU.g&&CRU.g.visible){const[a,b]=P2(CRU.g.position.x-9,CRU.z-2.5),[c3,d3]=P2(CRU.g.position.x+9,CRU.z+2.5);x.fillStyle='#fbfbf6';x.strokeStyle='#2a8ac8';x.lineWidth=2;x.fillRect(a,b,c3-a,d3-b);x.strokeRect(a,b,c3-a,d3-b);const[la,lb]=P2(CRU.g.position.x,CRU.z+4.2);lab('Cruise ship',la,lb,'rgba(220,240,255,.95)')}CRU.tour.forEach(tr=>{const[a,b]=P2(tr.x,tr.z);x.fillStyle='#2a8ac8';x.strokeStyle='#fff';x.lineWidth=1.5;x.beginPath();x.arc(a,b,W/110,0,7);x.fill();x.stroke()});if(collarActive())mark(COLLAR.x,COLLAR.z,'!',FR.bonnie.color);if(goldActive())mark(GOLD.x,GOLD.z,'★','#d4a020');
+  QITEMS.forEach(o=>{if(qActive(o))mark(o.x,o.z,'!',FR[o.k].color)});if(S.q&&rioStage()===0){RIOP.forEach(p=>{if((S.q.rio||0)===0&&S.qa.rio&&!RIOS().seen[p.id])mark(p.x,p.z,'!',FR.rio.color);const[a,b]=P2(p.x,p.z-2.6);lab(p.n,a,b)})}if(LIGHT.top&&lhCur()&&(!LH().a||lhReady()))mark(LIGHT.x+3.4,LIGHT.z-1,'!','#d83a2a');if(CRU.g&&CRU.g.visible){const[a,b]=P2(CRU.g.position.x-9,CRU.z-2.5),[c3,d3]=P2(CRU.g.position.x+9,CRU.z+2.5);x.fillStyle='#fbfbf6';x.strokeStyle='#2a8ac8';x.lineWidth=2;x.fillRect(a,b,c3-a,d3-b);x.strokeRect(a,b,c3-a,d3-b);const[la,lb]=P2(CRU.g.position.x,CRU.z+4.2);lab('Cruise ship',la,lb,'rgba(220,240,255,.95)')}CRU.tour.forEach(tr=>{const[a,b]=P2(tr.x,tr.z);x.fillStyle='#2a8ac8';x.strokeStyle='#fff';x.lineWidth=1.5;x.beginPath();x.arc(a,b,W/110,0,7);x.fill();x.stroke()});if(collarActive())mark(COLLAR.x,COLLAR.z,'!',FR.bonnie.color);if(goldActive())mark(GOLD.x,GOLD.z,'★','#d4a020');
   Object.values(NPC).forEach(n=>{if(n===visitor)return;const[a,b]=P2(n.x,n.z);x.fillStyle=FR[n.k].color;x.strokeStyle='#fff';x.lineWidth=2.5;x.beginPath();x.arc(a,b,W/62,0,7);x.fill();x.stroke();x.fillStyle='#fff';x.font='700 '+Math.round(W/56)+'px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(FR[n.k].name[0],a,b+1)});
   const kb=BLD.find(x=>x.key==='krug'),mx=SEA.on?kb.door[0]:inside?OUT.x:P.x,mz=SEA.on?kb.door[1]+6:inside?OUT.z:P.z,f=inside?Math.PI:P.face,[a,b]=P2(mx,mz),r=W/36;x.save();x.translate(a,b);x.rotate(Math.PI-f);x.fillStyle='#f5c542';x.strokeStyle='#5a432c';x.lineWidth=2.5;x.beginPath();x.moveTo(0,-r);x.lineTo(r*.75,r*.75);x.lineTo(0,r*.35);x.lineTo(-r*.75,r*.75);x.closePath();x.fill();x.stroke();x.restore();
   x.fillStyle='rgba(255,251,241,.9)';x.beginPath();x.arc(W-W/14,W/14,W/22,0,7);x.fill();x.fillStyle='#5a432c';x.font='700 '+Math.round(W/30)+'px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('N',W-W/14,W/14+1)}
@@ -3984,7 +4006,7 @@ function wedSet(){const g=new THREE.Group();g.position.set(VEN.x,hL(VEN.x,VEN.z)
   shadowAll(g);islandG.add(g);return g}
 function startWedding(k){if(WED)return;if(!$('sheet').hidden)closeSheet();WED={k,t:0,ph:'fadeout',off:k==='alphonso'?'franky':'alphonso',fw:0};busy();const f=$('fade');f.style.opacity=0;f.hidden=false}
 function wedSetup(){const W2=WED;if(dlg)closeDlg(true);if(inside)exitHouse();reel();if(archG){islandG.remove(archG);archG=null}wedG=wedSet();
-  const guests=Object.keys(FR).filter(k=>k!==W2.k&&k!==W2.off),seats=[[-1.6,-1.3],[1.6,-1.3],[-1.6,.1],[1.6,.1],[-1.6,1.5],[1.6,1.5]];
+  const guests=Object.keys(FR).filter(k=>k!==W2.k&&k!==W2.off),seats=[[-1.6,-1.3],[1.6,-1.3],[-1.6,.1],[1.6,.1],[-1.6,1.5],[1.6,1.5],[-1.6,2.9],[1.6,2.9],[-3,.1],[3,.1]];
   Object.values(NPC).forEach(n=>{n.wed=true;n.tgt=null;n.talk=false;n.hop=0;n.spd=0});
   const sp=NPC[W2.k],of=NPC[W2.off];sp.x=VEN.x+.65;sp.z=VEN.z-3.1;sp.face=-Math.PI/2;of.x=VEN.x;of.z=VEN.z-4.35;of.face=0;guests.forEach((k,i)=>{const n=NPC[k];n.x=VEN.x+seats[i][0];n.z=VEN.z+seats[i][1];n.face=Math.PI});
   Object.values(NPC).forEach(n=>{n.y=gy(n.x,n.z)});
@@ -4003,7 +4025,7 @@ function wedParty(){sfx.fanfare();setTimeout(()=>sfx.fanfare(),900);if(!confTex)
 function firework(){const x=VEN.x+(Math.random()-.5)*10,y=hL(VEN.x,VEN.z)+7+Math.random()*3,z=VEN.z-6+(Math.random()-.5)*6,col=[0xff6a9a,0xffd060,0x7ad0ff,0xb48aff,0x8af07a][Math.floor(Math.random()*5)];
   for(let i=0;i<28;i++){const s=glowSprite(col,.6,1);const a=Math.random()*6.28,b=Math.acos(2*Math.random()-1),sp=3+Math.random()*1.5;s.position.set(x,y,z);scene.add(s);fworks.push({s,vx:Math.sin(b)*Math.cos(a)*sp,vy:Math.cos(b)*sp,vz:Math.sin(b)*Math.sin(a)*sp,t:0})}
   if(AC&&AC.state==='running')noise(.5,700,.18)}
-function wedCongrats(){const W2=WED,L={lottie:'Darling, that was the most glamorous wedding I have ever seen! Free mocktails for everyone!',xam:'My big brother got married! Best. Day. EVER!',krug:'Three cheers for the happy couple! Hip hip, hooray!',bonnie:"I'm so happy I could cry! Congratulations!",franky:"Best wedding I've ever been to, mate!",alphonso:'A historic day for the island! I shall write it in the museum records.',bella:'Magnifique! And the outfits were divine!'};
+function wedCongrats(){const W2=WED,L={rio:'I have never been to a wedding before. I cried a little. Do not tell Xam.',lottie:'Darling, that was the most glamorous wedding I have ever seen! Free mocktails for everyone!',xam:'My big brother got married! Best. Day. EVER!',krug:'Three cheers for the happy couple! Hip hip, hooray!',bonnie:"I'm so happy I could cry! Congratulations!",franky:"Best wedding I've ever been to, mate!",alphonso:'A historic day for the island! I shall write it in the museum records.',bella:'Magnifique! And the outfits were divine!'};
   const ks=Object.keys(FR).filter(k=>k!==W2.k);const next=i=>{if(i>=ks.length){W2.ph='end';W2.t=0;return}say(ks[i],[L[ks[i]]||'Congratulations!'],null,()=>next(i+1))};next(0)}
 function weddingStep(dt,now){const W2=WED;W2.t+=dt;const fade=$('fade');
   if(W2.ph==='fadeout'){fade.style.opacity=Math.min(1,W2.t/.8);if(W2.t>=.9){wedSetup();W2.ph='fadein';W2.t=0}}
@@ -4216,17 +4238,21 @@ function rdItemAt(e){rdRay(e);const RR=RM(),gs=[],map=new Map();FM.forEach((g,it
 function rdFloor(e){rdRay(e);return RD_RAY.ray.intersectPlane(RD_PL,_rdp)?{x:_rdp.x,z:_rdp.z}:null}
 function rdSelect(it,isNew){const g=FM.get(it);if(!g)return;const RR=RM();const k=RR.items.indexOf(it);if(k>=0)RR.items.splice(k,1);
   REDEC.sel={it,g,isNew:!!isNew,orig:{i:it.i,j:it.j,r:it.r},i:it.i,j:it.j,r:it.r};sfx.pick();rdShow();redecHint()}
-function rdShow(){const s=REDEC.sel,ind=REDEC.ind;if(!s){ind.visible=false;return}const N=RM().n,f=fpOf(s.it.id,s.r);s.g.position.set(-N/2+s.i+f.w/2,.28,-N/2+s.j+f.d/2);s.g.rotation.y=-s.r*Math.PI/2;
-  const ok=canPlace(s.it.id,s.i,s.j,s.r,null);ind.visible=true;ind.position.set(s.g.position.x,.04,s.g.position.z);ind.scale.set(f.w,f.d,1);ind.material.color.setHex(ok?0x5cb64a:0xe8577a);s.ok=ok}
+function furnTopUnder(id,i,j,r){const f=fpOf(id,r),seen=new Set();let top=0;for(let a=i;a<i+f.w;a++)for(let b=j;b<j+f.d;b++)itemsAt(a,b).forEach(o=>{if(seen.has(o)||FURN[o.id].rug)return;seen.add(o);const g=FM.get(o);if(!g)return;
+    if(g.userData.topY==null){let t=0;try{g.updateMatrixWorld(true);g.traverse(m=>{if(!m.isMesh||!m.geometry)return;if(!m.geometry.boundingBox)m.geometry.computeBoundingBox();const bb=m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld);if(isFinite(bb.max.y))t=Math.max(t,bb.max.y)})}catch(e){t=1.2}g.userData.topY=Math.min(3,t||1.2)}top=Math.max(top,g.userData.topY)});return top}
+function rdShow(){const s=REDEC.sel,ind=REDEC.ind;if(!s){ind.visible=false;return}const N=RM().n,f=fpOf(s.it.id,s.r);const ok=canPlace(s.it.id,s.i,s.j,s.r,null),top=ok||FURN[s.it.id].rug?0:furnTopUnder(s.it.id,s.i,s.j,s.r);s.over=top>0;
+  s.g.position.set(-N/2+s.i+f.w/2,top?top+.12:.28,-N/2+s.j+f.d/2);s.g.rotation.y=-s.r*Math.PI/2;
+  ind.visible=true;ind.position.set(s.g.position.x,top?top+.06:.04,s.g.position.z);ind.scale.set(f.w,f.d,1);ind.material.color.setHex(ok?0x5cb64a:0xe8577a);s.ok=ok}
 function rdMoveTo(x,z){const s=REDEC.sel;if(!s)return;const N=RM().n,f=fpOf(s.it.id,s.r);const i=Math.max(0,Math.min(N-f.w,Math.round(x+N/2-f.w/2))),j=Math.max(0,Math.min(N-f.d,Math.round(z+N/2-f.d/2)));if(i!==s.i||j!==s.j){s.i=i;s.j=j;REDEC.moved=true;rdShow()}}
-function rdPlace(quiet){const s=REDEC.sel;if(!s)return true;rdShow();if(!s.ok){if(!quiet){toast("It won't fit there.");sfx.no()}return false}
+function rdPlace(quiet){const s=REDEC.sel;if(!s)return true;rdShow();if(!s.ok){if(!quiet){toast(s.over?'Something is already there. Drag it to a free space.':"It won't fit there.");sfx.no()}return false}
   Object.assign(s.it,{i:s.i,j:s.j,r:s.r});RM().items.push(s.it);roomG.remove(s.g);FM.delete(s.it);addFurnMesh(s.it);REDEC.sel=null;rdShow();sfx.place();redecHint();return true}
 function rdRotate(){const s=REDEC&&REDEC.sel;if(!s)return;s.r=(s.r+1)%4;const N=RM().n,f=fpOf(s.it.id,s.r);s.i=Math.max(0,Math.min(N-f.w,s.i));s.j=Math.max(0,Math.min(N-f.d,s.j));sfx.tick();rdShow()}
 function rdStore(){const s=REDEC&&REDEC.sel;if(!s)return;roomG.remove(s.g);FM.delete(s.it);boxStash(s.it);gainFurn(s.it.id);REDEC.sel=null;rdShow();sfx.pick();toast(FURN[s.it.id].name+' went back into storage.');redecHint()}
 function rdDrop(){const s=REDEC&&REDEC.sel;if(!s)return;if(rdPlace(true))return;if(s.isNew){roomG.remove(s.g);FM.delete(s.it);gainFurn(s.it.id)}else{s.i=s.orig.i;s.j=s.orig.j;s.r=s.orig.r;rdShow();if(!rdPlace(true)){roomG.remove(s.g);FM.delete(s.it);gainFurn(s.it.id)}}REDEC.sel=null;rdShow()}
 function rdAdd(){rdDrop();const ks=Object.keys(S.furn);openSheet('Add from storage',[{id:'s',label:'Storage',render(b){const p=el('p');p.textContent=ks.length?'Pick something to place in the room.':'Storage is empty. Buy furniture at Paw Mart or Copper Pot Kitchens.';b.appendChild(p);
   const g=el('div','grid');Object.keys(S.furn).forEach(k=>g.appendChild(card(swF(k),FURN[k].name+(S.furn[k]>1?' x'+S.furn[k]:''),FURN[k].w+'×'+FURN[k].d+(FURN[k].rug?' rug':''),()=>{closeSheet();S.furn[k]--;if(!S.furn[k])delete S.furn[k];
-    const N=RM().n,it={id:k,i:Math.floor(N/2)-1,j:Math.floor(N/2)-1,r:0},gr=buildFurn(k,it);gr.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});roomG.add(gr);FM.set(it,gr);rdSelect(it,true);rdMoveTo(0,0)})));b.appendChild(g)}}])}
+    const N=RM().n,c0=Math.floor(N/2)-1;let bi=c0,bj=c0,bd=1e9;for(let i=0;i<N;i++)for(let j=0;j<N;j++){if(!canPlace(k,i,j,0,null))continue;const d=Math.hypot(i-c0,j-c0);if(d<bd){bd=d;bi=i;bj=j}}
+    const it={id:k,i:bi,j:bj,r:0},gr=buildFurn(k,it);gr.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});roomG.add(gr);FM.set(it,gr);rdSelect(it,true)})));b.appendChild(g)}}])}
 function rdUndo(){if(!REDEC)return;REDEC.sel=null;const RR=RM();RR.items.splice(0,RR.items.length,...JSON.parse(REDEC.snap));S.furn=JSON.parse(REDEC.furn);buildRoom();redecDecor();rdShow();redecHint();sfx.swish();toast('Back to how the room was.')}
 function redecEnd(){if(!REDEC)return;rdDrop();if(REDEC.grid&&REDEC.grid.parent)REDEC.grid.parent.remove(REDEC.grid);if(REDEC.ind&&REDEC.ind.parent)REDEC.ind.parent.remove(REDEC.ind);REDEC=null;cam.clearViewOffset();
   max.visible=true;document.body.classList.remove('redec');$('redecBar').hidden=true;
@@ -4238,7 +4264,8 @@ function redecStep(dt){if(!REDEC)return;const s=REDEC.sel;if(!s||REDEC.drag)retu
 // pointer handling in plan view (runs before the normal camera / tap-to-walk handlers)
 addEventListener('pointerdown',e=>{if(!REDEC||e.target!==canvas||!$('sheet').hidden)return;e.stopImmediatePropagation();e.preventDefault();
   const s=REDEC.sel;REDEC.moved=false;const it=rdItemAt(e);
-  if(s){if(it&&!s.isNew&&it!==s.it){rdDrop();rdSelect(it);REDEC.drag=true;return}const p=rdFloor(e);if(p){rdMoveTo(p.x,p.z);REDEC.drag=true;REDEC.tapPlace=true}return}
+  if(s){let own=false;try{rdRay(e);own=RD_RAY.intersectObject(s.g,true).length>0}catch(err){}if(own){REDEC.drag=true;REDEC.tapPlace=false;return}
+    if(it&&!s.isNew&&it!==s.it){rdDrop();rdSelect(it);REDEC.drag=true;return}const p=rdFloor(e);if(p){rdMoveTo(p.x,p.z);REDEC.drag=true;REDEC.tapPlace=true}return}
   if(it){rdSelect(it);REDEC.drag=true;REDEC.tapPlace=false}},true);
 addEventListener('pointermove',e=>{if(!REDEC||!REDEC.drag||!REDEC.sel)return;e.stopImmediatePropagation();const p=rdFloor(e);if(p)rdMoveTo(p.x,p.z)},true);
 addEventListener('pointerup',e=>{if(!REDEC||!REDEC.drag)return;e.stopImmediatePropagation();REDEC.drag=false;if(REDEC.sel&&(REDEC.moved||REDEC.tapPlace))rdPlace()},true);
@@ -5876,6 +5903,113 @@ Q.lottie=[
  {t:'The high roller',ask:["One last thing, darling. Only true high rollers get the Golden Paw.","Come and see me when you've got 25,000 bones saved up. I won't take them! I just want to see you've been sensible with your winnings."],prog:()=>'Bones saved: '+Math.min(S.bones,25000).toLocaleString()+'/25,000',
   can:()=>S.bones>=25000,take:()=>{},done:["Look at all those bones! You're the most sensible high roller I've ever met.","The Golden Paw Trophy is yours, and here's 10,000 bones on top. You're a true Paw-Yal, Max!"],reward:()=>{gainFurn('goldpaw');addBones(10000)}}];
 const galaOn=()=>S.q.lottie===6&&S.qa.lottie,galaN=()=>Object.keys(GALA).filter(k=>S.qf&&S.qf['gala'+k]).length;
+// ================= RIO'S NEW LIFE: arriving at the dock, choosing land, building his dream home =================
+const RIOX={g:null,obs:[],bld:null,signs:[]};
+const RIODOCK={x:-17.2,z:43.9};
+const RIOCOL=[{n:'Sunset orange',wall:0xfbf0dc,roof:0xd8642a,shut:0x2a7a6a,door:0x2a7a6a},{n:'Seaside blue',wall:0xf4f8fa,roof:0x3a78b8,shut:0xf2c14e,door:0xc89020},{n:'Forest green',wall:0xf6efdc,roof:0x3f7a4a,shut:0x8a4a2a,door:0x8a4a2a},{n:'Cherry blossom',wall:0xfff4f2,roof:0xc8506a,shut:0x6a4a8a,door:0x6a4a8a}];
+function RIOS(){if(!S.rio)S.rio={plot:null,seen:{},col:0};if(!S.rio.seen)S.rio.seen={};return S.rio}
+const rioPlot=()=>RIOP.find(p=>p.id===RIOS().plot)||null;
+// 0 still choosing, 1 tent on the plot, 2 stone foundation, 3 timber frame, 4 walls and roof up, 5 finished home
+function rioStage(){const q=(S.q&&S.q.rio)||0;return !rioPlot()?0:q>=6?5:q>=5?4:q>=4?3:q>=3?2:1}
+function rioSignTex(t1,t2,col){return ftex('riosign'+t1+t2,(x,s)=>{x.fillStyle='#fff8ea';x.fillRect(0,0,s,s);x.fillStyle=col;x.fillRect(0,0,s,s*.22);x.fillStyle='#fff';x.font='700 '+(s*.11)+'px Fredoka, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText(t1,s/2,s*.12);
+  x.fillStyle='#5a432c';x.font='600 '+(s*.105)+'px Fredoka, sans-serif';const w=t2.split('|');w.forEach((l,i)=>x.fillText(l,s/2,s*((w.length>1?.33:.41)+i*.15)))},256)}
+function rioSign(g,x,z,t1,t2,col){const wd=WD(0x8a5a34,.7);CY(g,.05,.06,1.25,wd,x,.62,z,8);const b=RB(g,1.25,.8,.06,wd,x,1.3,z,.02);const pl=new THREE.Mesh(new THREE.PlaneGeometry(1.15,.7),new THREE.MeshStandardMaterial({map:rioSignTex(t1,t2,col),roughness:.8}));pl.position.set(x,1.3,z+.035);g.add(pl);
+  const t=pl.material.map;t.repeat.set(1,.6);t.offset.set(0,.4)}
+function rioStakes(g,hw,hd,flag){const wd=WD(0x9a6a40,.7),rope=M(0xe8d8b0,{roughness:.9}),C=[[-hw,-hd],[hw,-hd],[hw,hd],[-hw,hd]];C.forEach(([x,z],i)=>{CY(g,.045,.055,.8,wd,x,.4,z,7);const f=RB(g,.26,.16,.015,M(flag,{roughness:.6}),x+.14,.7,z,.004);
+    const n=C[(i+1)%4];if(i===2)return;pbar(g,V3(x,.62,z),V3(n[0],.62,n[1]),.014,rope,5)})}
+function rioTent(g,x,z,ry){const t=new THREE.Group();t.position.set(x,0,z);t.rotation.y=ry;g.add(t);const cv=M(0x2a9d8f,{roughness:.95,side:THREE.DoubleSide}),cv2=M(0xf6efdc,{roughness:.95,side:THREE.DoubleSide}),W=2.1,H=1.55,D=2.3;
+  const tri=new THREE.Shape();tri.moveTo(-W/2,0);tri.lineTo(W/2,0);tri.lineTo(0,H);tri.closePath();const body=new THREE.Mesh(new THREE.ExtrudeGeometry(tri,{depth:D,bevelEnabled:false}),cv);body.position.z=-D/2;t.add(body);
+  const dr=new THREE.Shape();dr.moveTo(-.5,0);dr.lineTo(.5,0);dr.lineTo(0,1.1);dr.closePath();const dm=new THREE.Mesh(new THREE.ShapeGeometry(dr),M(0x1c2a26));dm.position.set(0,.01,D/2+.01);t.add(dm);
+  [-1,1].forEach(s=>{const fl=new THREE.Shape();fl.moveTo(0,0);fl.lineTo(s*.55,0);fl.lineTo(0,1.12);fl.closePath();const f=new THREE.Mesh(new THREE.ShapeGeometry(fl),cv2);f.position.set(s*.52,0,D/2+.03);f.rotation.y=s*.8;t.add(f)});
+  const L=Math.hypot(W/2,H);[-1,1].forEach(s=>{for(let i=0;i<3;i++){const st=RB(t,L*.98,.012,.18,cv2,s*W/4,H/2+.012,-D/2+.45+i*.7,.004);st.rotation.z=-s*Math.atan2(H,W/2)}});
+  const pl=WD(0x8a5a32,.7);CY(t,.03,.03,D+.3,pl,0,H+.02,0,6).rotation.x=Math.PI/2;[-1,1].forEach(s=>{pbar(t,V3(0,H,s*(D/2+.1)),V3(0,.02,s*(D/2+.95)),.012,M(0xe8dcc0),4)});
+  const fg=new THREE.Group();fg.position.set(x+1.9,0,z+1.5);g.add(fg);for(let i=0;i<7;i++){const a=i/7*6.283;SPH(fg,.11,M(0x9a958c,{roughness:.9}),Math.cos(a)*.34,.06,Math.sin(a)*.34,1,.7,1)}[0,1.05,2.1].forEach(a=>{const l=CY(fg,.045,.045,.5,WD(0x6a4228,.8),0,.09,0,6);l.rotation.set(Math.PI/2,a,0)});
+  const kt=CY(fg,.09,.11,.14,MTL(0x3a3a40,.5),.55,.07,.1,10)}
+function rioBuild(){const X=RIOX;if(X.g){islandG.remove(X.g);const ci=CULL.findIndex(c=>c.g===X.g);if(ci>=0)CULL.splice(ci,1)}X.obs.forEach(o=>{const i=OBC.indexOf(o);if(i>=0)OBC.splice(i,1)});X.obs=[];if(X.bld){const i=BLD.indexOf(X.bld);if(i>=0)BLD.splice(i,1);X.bld=null}X.signs=[];
+  if(!S||!S.q)return;RIOS();const st=rioStage(),g=new THREE.Group();X.g=g;islandG.add(g);const ob=(x,z,r)=>{const o={x,z,r};OBC.push(o);X.obs.push(o)};
+  if(st===0){ // luggage waiting at the dock, and a signpost on each of the three plots
+    const lg=new THREE.Group();lg.position.set(RIODOCK.x+1.3,hL(RIODOCK.x,RIODOCK.z),RIODOCK.z-.5);g.add(lg);const lea=M(0x8a4a2a,{roughness:.6}),br=MTL(0xd4a83c,.3);
+    RB(lg,.8,.5,.5,lea,0,.25,0,.05);[-1,1].forEach(s=>RB(lg,.06,.52,.52,M(0x5a2e18,{roughness:.6}),s*.25,.25,0,.01));RB(lg,.16,.05,.03,br,0,.52,0,.01);RB(lg,.5,.36,.2,M(0x2a7a8a,{roughness:.6}),.1,.68,0,.04);TOR(lg,.07,.014,br,.1,.88,0,false);
+    const rl=CY(lg,.05,.05,.7,M(0xf6efdc,{roughness:.8}),-.2,.56,.12,10);rl.rotation.z=Math.PI/2;rl.rotation.y=.4;TOR(lg,.052,.012,M(0xd0283c),-.2,.56,.12,false).rotation.y=Math.PI/2+.4;ob(lg.position.x,lg.position.z,.55);
+    RIOP.forEach(p=>{const y=hL(p.x,p.z),sg=new THREE.Group();sg.position.set(p.x,y,p.z);g.add(sg);rioStakes(sg,2.6,2.2,0xf5c542);rioSign(sg,0,3.1,'LAND TO LET',p.n,'#2a9d8f');ob(p.x,p.z+3.1,.2);X.signs.push({p,x:p.x,z:p.z+3.1})})}
+  else{const p=rioPlot(),y=hL(p.x,p.z),sg=new THREE.Group();sg.position.set(p.x,y,p.z);g.add(sg);const wd=WD(0xc09a62,.7),stone=M(0xb4aea4,{roughness:.9}),stone2=M(0xa29c92,{roughness:.9});
+    if(st<5){rioTent(sg,-4.4,.4,.35);ob(p.x-4.4,p.z+.4,1.3);ob(p.x-2.5,p.z+1.9,.5);rioSign(sg,3.3,3.0,st<2?'SOLD!':'BUILDING',st<2?"Rio's plot":"Rio's|dream home",'#e07a1e');ob(p.x+3.3,p.z+3.0,.2)}
+    if(st===1)rioStakes(sg,2.3,1.95,0xe07a1e);
+    if(st>=2&&st<4){ // stone foundation
+      RB(sg,4.3,.3,3.7,stone,0,.15,0,.03);for(let i=0;i<9;i++)RB(sg,.02,.31,3.72,stone2,-2+i*.5,.15,0,.004);for(let j=0;j<7;j++)RB(sg,4.32,.31,.02,stone2,0,.15,-1.6+j*.53,.004);
+      RB(sg,1.2,.14,.5,stone,0,.07,2.1,.02);[[3.0,-1.3],[3.3,-1.0],[2.9,-.85],[3.15,-1.15]].forEach(([x,z],i)=>SPH(sg,.2+i*.02,i%2?stone:stone2,x,i===3?.38:.14,z,1,.75,1));ob(p.x+3.1,p.z-1.1,.5)}
+    if(st===3){ // timber frame, rafters, ladder and a wood pile
+      const H=2.1,B=.3;[[-2,-1.7],[0,-1.7],[2,-1.7],[-2,1.7],[-.6,1.7],[.6,1.7],[2,1.7],[-2,0],[2,0]].forEach(([x,z])=>RB(sg,.13,H,.13,wd,x,B+H/2,z,.01));
+      [-1.7,1.7].forEach(z=>RB(sg,4.2,.13,.13,wd,0,B+H,z,.01));[-2,2].forEach(x=>RB(sg,.13,.13,3.5,wd,x,B+H,0,.01));RB(sg,1.3,.12,.12,wd,0,B+1.6,1.7,.01);
+      for(let i=0;i<5;i++){const x=-2+i;[-1,1].forEach(s=>pbar(sg,V3(x,B+H,s*1.75),V3(x,B+H+1.15,0),.055,wd,5))}pbar(sg,V3(-2.1,B+H+1.15,0),V3(2.1,B+H+1.15,0),.06,wd,6);
+      [[-2,-1.7,0,-1.7],[2,-1.7,0,-1.7]].forEach(([a,b,c,d])=>pbar(sg,V3(a,B+.2,b),V3(c,B+H-.1,d),.04,wd,5));
+      const ld=new THREE.Group();ld.position.set(2.45,0,.6);ld.rotation.z=.28;sg.add(ld);[-.2,.2].forEach(z=>RB(ld,.05,2.6,.05,WD(0x9a6a40,.7),0,1.3,z,.01));for(let i=0;i<7;i++)RB(ld,.035,.035,.42,WD(0x9a6a40,.7),0,.3+i*.34,0,.008);
+      for(let i=0;i<6;i++){const l=CY(sg,.09,.09,1.3,WD(0x8a5a34,.8),-3.0+(i%3)*.2+(i>2?.1:0),.1+(i>2?.17:0),2.5,8);l.rotation.z=Math.PI/2}ob(p.x-2.8,p.z+2.5,.6)}
+    let hs=null;
+    if(st>=4){const c=st===5?RIOCOL[RIOS().col||0]:{wall:0xe9dfc8,roof:0x8c8c92,shut:0xd8ccb0,door:0xb89868};
+      hs=mkHouse2({w:3.9,d:3.3,h:2.25,wall:c.wall,roof:c.roof,style:'siding',shutter:c.shut,door:c.door});sg.add(hs.g);
+      if(st===4){ // scaffolding and paint pots while it waits for colour
+        const ir=MTL(0x9aa0a8,.4),sx=hs.maxx+.45;[-1.2,1.2].forEach(z=>[0,.5].forEach(o=>CY(sg,.03,.03,2.9,ir,sx+o,1.45,z,6)));[1.2,2.3].forEach(yy=>{RB(sg,.62,.05,2.7,WD(0xb08a58,.7),sx+.25,yy,0,.01);[-1.2,1.2].forEach(z=>RB(sg,.5,.03,.03,ir,sx+.25,yy-.04,z,.005))});
+        [[0xd8642a,-.9],[0x3a78b8,-.5],[0x3f7a4a,-.1],[0xc8506a,.3]].forEach(([col,x])=>{CY(sg,.11,.1,.2,MTL(0xd8dde4,.3),x-1.2,.1,2.7,10);CY(sg,.1,.1,.02,M(col,{roughness:.3}),x-1.2,.2,2.7,10)});ob(p.x+sx+.25,p.z,.7)}
+      else{ // finished: mailbox, flower beds, a shell path and a bench under the window
+        const mb=mkMailbox(0x2a9d8f);mb.position.set(hs.minx-.7,0,hs.maxz+.7);sg.add(mb);ob(p.x+hs.minx-.7,p.z+hs.maxz+.7,.22);
+        const fc=[0xf6a8c8,0xfff07a,0xb8a0f0,0xf27a7a,0xffffff],soil=M(0x6a4a30,{roughness:1});[-1,1].forEach(s=>{RB(sg,1.2,.1,.42,soil,s*1.25,.05,hs.maxz+.3,.03);for(let i=0;i<5;i++){const fx=s*1.25-.45+i*.22;CY(sg,.012,.012,.26,M(0x4f9a3e),fx,.2,hs.maxz+.3,5);SPH(sg,.06,M(fc[(i+(s>0?2:0))%5],{roughness:.6}),fx,.36,hs.maxz+.3,1,.7,1)}});
+        for(let i=0;i<6;i++)CY(sg,.2-(i%2)*.03,.2,.035,M(i%2?0xf6e6d0:0xf2d8c8,{roughness:.6}),(i%2?.14:-.12),.02,hs.maxz+.85+i*.42,9);
+        const bn=new THREE.Group();bn.position.set(hs.maxx+.75,0,.5);bn.rotation.y=-Math.PI/2;sg.add(bn);RB(bn,1.2,.06,.4,WD(0x9a6a40,.6),0,.4,0,.02);RB(bn,1.2,.4,.05,WD(0x9a6a40,.6),0,.66,-.18,.02);[-.5,.5].forEach(x=>RB(bn,.06,.4,.36,WD(0x6a4228,.6),x,.2,0,.01));ob(p.x+hs.maxx+.75,p.z+.5,.55);
+        const t=textSprite("Rio's",FR.rio.color,'#fff',1.5);t.position.set(0,hs.top+.5,hs.maxz+.3);sg.add(t)}}
+    const cx=hs?(hs.minx+hs.maxx)/2:0,cz=hs?(hs.minz+hs.maxz)/2:0,hw=hs?(hs.maxx-hs.minx)/2+.05:2.2,hd=hs?(hs.maxz-hs.minz)/2+.05:1.9;
+    if(st>=2){const b=st===5?{key:'rio',x:p.x+cx,z:p.z+cz,hw,hd,g:sg,door:[p.x,p.z+(hs?hs.maxz:1.9)+.7]}:{key:'riosite',x:p.x+cx,z:p.z+cz,hw,hd,g:sg,door:[p.x,p.z+(hs?hs.maxz:1.9)+.75],name:"Rio's building site",mapc:'#c8a878',label:'Look at the building site',enter:rioSiteLook};BLD.push(b);X.bld=b}}
+  shadowAll(g);try{mergeByMat(g)}catch(e){}const c0=rioPlot()||{x:RIODOCK.x,z:RIODOCK.z};CULL.push({g,x:c0.x,z:c0.z,m:rioPlot()?9:999});rioSync(false)}
+function rioSiteLook(){const st=rioStage();say('max',[["The stone foundation is down. Solid as a rock! Well, lots of rocks.","The timber frame is up. You can see the shape of the house already!","Walls and a roof! It just needs a lick of paint and a garden."][Math.max(0,st-2)]||'Rio\'s house is coming along.'])}
+// where Rio waits: by the dock until he has a plot, then outside his tent or house
+function rioSpot(){const p=rioPlot();return p?{x:p.x+1.3,z:p.z+4.9}:{x:RIODOCK.x,z:RIODOCK.z}}
+function rioSync(move){const n=NPC.rio;if(!n)return;const s=rioSpot();n.hx=s.x;n.hz=s.z;if(move!==false){n.x=s.x;n.z=s.z;n.tgt=null}}
+function rioAction(){if(!S.q||rioStage()!==0)return null;const sg=RIOX.signs.find(o=>Math.hypot(P.x-o.x,P.z-o.z)<2.1);if(!sg)return null;const act=(S.q.rio||0)===0&&S.qa.rio&&!RIOS().seen[sg.p.id];
+  return{t:act?'Look around '+sg.p.n+' for Rio':'Read the sign: '+sg.p.n,f:()=>say('max',act?sg.p.d.concat(["Max has a good sniff around so he can tell Rio all about it."]):["Land to let: "+sg.p.n+". Franky keeps this plot for anyone new to the island."],null,()=>{if(!act)return;RIOS().seen[sg.p.id]=1;save();const n=rioSeenN();sfx.pick();toast(n>=3?'All three plots visited! Go and tell Rio at the dock.':'Plots visited for Rio: '+n+'/3')})}}
+const rioSeenN=()=>RIOP.filter(p=>RIOS().seen[p.id]).length;
+function rioChoose(){say('rio',["I've been thinking about everything you told me, "+PNAME()+".","You know this island far better than I do. Which plot would you choose?"],RIOP.map(p=>({t:p.n,f:()=>{RIOS().plot=p.id;save();rioBuild();rioSync(true);questTalk('rio')}})).concat([{t:'Let me think about it',f:unbusy}]))}
+function rioPaint(){say('rio',["What colour should my house be? You have a good eye for these things."],RIOCOL.map((c,i)=>({t:c.n,f:()=>{RIOS().col=i;save();rioBuild();sfx.swish&&sfx.swish();say('rio',[rioStage()===5?c.n+"! It looks wonderful. Thank you, my friend.":c.n+". Perfect. As soon as the walls are ready, that's what we'll paint it."])}})).concat([{t:'Keep it as it is',f:unbusy}]))}
+CHAT.rio=["The boat ride was long, but when I saw this island I knew. This is home.","Back where I come from there is snow on the mountains all winter. I miss it a little. I do not miss shovelling it.","I am big, so everyone thinks I am fierce. Really I am scared of crabs.",
+ "Krug let me steer the boat for one minute. We went in a circle. He took the wheel back.","Fish is my favourite. Grilled, baked, raw... I am not fussy.","Bonnie brought me a welcome basket. I ate the basket too. I thought it was a cracker.",
+ "I like to sit very still and watch the sunset. Xam says it is the most boring thing he has ever seen. He sat with me for an hour.","A home is not the walls, "+"my friend. It is who comes to visit.","I have never had a best friend before. Is this what it feels like? It feels warm.",
+ "Alphonso asked me about the history of Akitas. I told him we were brave mountain dogs. He wrote it all down.","Franky says building a house takes patience. I have lots of patience. I once waited two days for a fish.","Lottie invited me to the casino. I pressed one button and all the lights went off. I think I won?"];
+REQS.rio=[{cat:'fish',n:2,t:'2 fish'},{cat:'fruit',n:3,t:'3 pieces of fruit'},{cat:'shell',n:3,t:'3 seashells'}];
+ACH_SPECIAL.rio={id:'neighbour',t:'Good neighbour',d:"Help Rio finish building his dream home",v:()=>Math.min(6,(S.q&&S.q.rio)||0),n:6};
+PROP.rio=["For me? "+"I... I do not know what to say. Nobody has ever asked me anything so kind.","Yes. A thousand times yes. I came to this island looking for a home, and I found you."];
+GALA.rio="A gala? I have never been to one. I will come, and I will try not to knock anything over.";
+// the framed photo Rio gives his best friend
+FURN.riophoto={id:'riophoto',name:'Photo of Max and Rio',price:0,w:1,d:1,rug:false,soft:false,gift:true,c:0x8a5a34};
+KBUILD.riophoto=(g,c)=>{const wd=WD(c,.5);RB(g,.5,.5,.4,wd,0,.25,0,.03);RB(g,.56,.04,.46,WD(0x6a4228,.5),0,.52,0,.01);const fr=new THREE.Group();fr.position.set(0,.8,0);fr.rotation.x=-.14;g.add(fr);RB(fr,.6,.5,.04,MTL(0xd4a83c,.3),0,0,0,.02);
+  const t=ftex('riophoto',(x,s)=>{const sky=x.createLinearGradient(0,0,0,s);sky.addColorStop(0,'#8ad0f2');sky.addColorStop(1,'#d8f0ff');x.fillStyle=sky;x.fillRect(0,0,s,s);x.fillStyle='#6cc65a';x.fillRect(0,s*.72,s,s*.28);
+    const dog=(cx,cy,r,body,ear,mz)=>{x.fillStyle=body;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();[-1,1].forEach(e=>{x.fillStyle=ear;x.beginPath();x.moveTo(cx+e*r*.85,cy-r*.45);x.lineTo(cx+e*r*.62,cy-r*1.35);x.lineTo(cx+e*r*.25,cy-r*.8);x.fill()});
+      x.fillStyle=mz;x.beginPath();x.ellipse(cx,cy+r*.34,r*.5,r*.4,0,0,7);x.fill();x.fillStyle='#2a1a10';[-1,1].forEach(e=>{x.beginPath();x.arc(cx+e*r*.36,cy-r*.1,r*.09,0,7);x.fill()});x.beginPath();x.arc(cx,cy+r*.2,r*.12,0,7);x.fill();
+      x.strokeStyle='#2a1a10';x.lineWidth=2.5;x.beginPath();x.arc(cx,cy+r*.36,r*.2,.2,Math.PI-.2);x.stroke()};
+    dog(s*.33,s*.6,s*.17,'#d9a45c','#6c7786','#f2dcae');dog(s*.66,s*.5,s*.24,'#e8802a','#d66e1e','#f8d85a');x.fillStyle='rgba(255,255,255,.9)';x.font='600 '+(s*.09)+'px Fredoka, sans-serif';x.textAlign='center';x.fillText('Best friends',s/2,s*.94)},128);
+  const ph=new THREE.Mesh(new THREE.PlaneGeometry(.52,.42),new THREE.MeshStandardMaterial({map:t,roughness:.5}));ph.position.set(0,0,.025);fr.add(ph)};
+HOMES.rio={n:6,wall:'sagepanel',floor:'tatami',npc:[1.6,1.9],items:[['bed',0,0],['nightstand',1,0],['bookshelf',2,0],['woodstove',4,0],['bonsai',5,0],['rugmodern',2,2],['coffeetable',2,3],['cushion',1,3],['cushion',4,3],['teaset',5,2],['fishtrophy',0,3],['plant',0,5],['floorlamp',5,5]]};
+Q.rio=[
+ {t:'A new arrival',ask:["Oh! Hello. I am Rio. I have just stepped off the boat, and I do not know anybody here yet.","Franky told me there are three plots of land a newcomer can choose from, but this island is so big. Would you look at them for me and tell me what they are like? They are marked on your map."],
+  prog:()=>'Plots visited for Rio: '+rioSeenN()+'/3 (Harbour View, Bluebell Meadow and Skylark Hill)',can:()=>rioSeenN()>=3,take:()=>{},done:["You went to all three? For me? You do not even know me yet.","Thank you, "+"friend. Here is something for your trouble. Now, tell me everything!"],reward:()=>addBones(800)},
+ {t:'Decision time',ask:["Harbour View by the sea, Bluebell Meadow in the quiet west, or Skylark Hill up high in the east...","It is a big decision. I would like your advice. Will you help me choose?"],prog:()=>rioPlot()?'Tell Rio the good news!':'Talk to Rio at the dock and help him choose a plot.',
+  can:()=>!!rioPlot(),take:()=>{},get done(){const p=rioPlot();return[(p?p.n:'That one')+". Yes. I can already picture it.","I will pitch my tent there today and start saving for a real house. Come and visit me!"]},reward:()=>{addBones(1000);setTimeout(()=>{rioBuild();rioSync(true)},60)}},
+ {t:'Solid foundations',ask:["Every dream home starts from the ground up. Franky says I need a stone foundation.","Could you bring me 8 stones? Take your shovel and hit the big rocks around the island. I hear there are some new ones to find."],prog:()=>'Stone: '+Math.min(8,count('stone'))+'/8',
+  can:()=>count('stone')>=8,take:()=>take('stone',8),done:["Eight fine stones! Franky and I will lay the foundation this afternoon.","I can stand on my own floor now. Well. My own very cold floor."],reward:()=>{addBones(1500);setTimeout(rioBuild,60)}},
+ {t:'Raising the frame',ask:["The foundation is ready. Next comes the timber frame, the bones of the house.","I will need 10 pieces of wood. An axe and a few trees should do it."],prog:()=>'Wood: '+Math.min(10,count('wood'))+'/10',
+  can:()=>count('wood')>=10,take:()=>take('wood',10),done:["Beautiful, straight timber. I can smell the forest in it.","Look! You can see where the door will be. I have never had my own door."],reward:()=>{addBones(1500);gainFurn('toolchest');setTimeout(rioBuild,60)}},
+ {t:'A path of shells',ask:["The builders are putting up the walls and roof. While they work, I would like to make a garden path.","Where I come from we have no seashells. Could you bring me 5 from the beach? Any kind!"],prog:()=>'Seashells: '+Math.min(5,countCat('shell'))+'/5',
+  can:()=>countCat('shell')>=5,take:()=>takeCat('shell',5),done:["They sparkle! Every time I walk to my door I will think of the sea, and of you.","And look, the walls and roof are up. It only needs some colour now."],reward:()=>{addBones(2000);setTimeout(rioBuild,60)}},
+ {t:'Colour and a garden',ask:["My house has walls and a roof, but it looks so bare. It needs flowers by the door.","Could you bring me 4 flowers for the garden? And tell me what colour to paint it! Ask me about the paint whenever you like."],prog:()=>'Flowers: '+Math.min(4,countCat('flower'))+'/4 (you can also pick the paint colour by talking to Rio)',
+  can:()=>countCat('flower')>=4,take:()=>takeCat('flower',4),done:["It is finished. My own home, with flowers by the door and a path of shells.","I could not have done this without you. Please, come inside any time. My door is always open to you."],reward:()=>{addBones(2500);gainFurn('bonsai');setTimeout(()=>{rioBuild();rioSync(true)},60)}},
+ {t:'The house-warming',ask:["A house is only a home when friends have eaten in it. I want to hold a house-warming!","Could you bring 1 home-cooked meal and 3 pieces of fruit for the table? I will make the tea."],prog:()=>'Home-cooked food: '+Math.min(1,countCat('food'))+'/1, fruit: '+Math.min(3,countCat('fruit'))+'/3',
+  can:()=>countCat('food')>=1&&countCat('fruit')>=3,take:()=>{takeCat('food',1);takeCat('fruit',3)},done:["Everyone came! Bonnie danced, Franky fixed my squeaky door, and Xam ate eleven dumplings.","This tea set is from my old home. I would like you to have it."],reward:()=>{addBones(3000);gainFurn('teaset')}},
+ {t:'Fishing buddies',ask:["Now I have a home, I would like to learn the island ways. You are so good at fishing!","Would you catch 3 fish and show me? Then perhaps we can cook them together."],prog:()=>'Fish: '+Math.min(3,countCat('fish'))+'/3',
+  can:()=>countCat('fish')>=3,take:()=>takeCat('fish',3),done:["So THAT is how you do it. I have been holding the rod upside down.","We will go fishing together every week. That is what friends do, yes?"],reward:()=>{addBones(3000);gainFurn('fishtrophy')}},
+ {t:'Best friends',ask:["When I got off that boat I had one suitcase and nobody to talk to.","I do not need anything this time. I only hope that one day we will be the best of friends. Come and see me when we have 4 hearts of friendship."],prog:()=>'Friendship with Rio: '+Math.floor(heartsOf('rio'))+'/4 hearts (chat, bring gifts and do his daily requests)',
+  can:()=>heartsOf('rio')>=4,take:()=>{},done:["Four hearts. Do you know what that means? It means I am not the new dog any more. I am your friend.","I had this photo of us framed. One for my wall, and one for yours. Thank you for giving me a home, "+"my friend."],reward:()=>{addBones(8000);gainFurn('riophoto')}}];
+// five more rocks to mine, spread around the island well away from the others
+function moreRocks(){const R=rng(9091);let n=0;for(let k=0;k<6000&&n<5;k++){const x=-72+R()*144,z=-52+R()*112;if(!lobeSpot(x,z,.6)||ROCKS.some(r=>r.x!=null&&Math.hypot(r.x-x,r.z-z)<16)||CAS&&Math.hypot(x-CAS.x,z-CAS.z)<10)continue;
+    const r={x,z,east:x>rxAt(z),extra:1},g=new THREE.Group();g.position.set(x,hL(x,z),z);const sd=Math.round(Math.abs(x*5+z*3)),m=mkRock(.9,sd,0,{moss:sd%2===0});g.add(m);const m2=mkRock(.45,sd+1,0,{moss:false});m2.position.set(.66,m2.position.y,.4);g.add(m2);
+    [[-.72,.5,.12],[.2,-.78,.1]].forEach(([px,pz,ps],i)=>{const pb=mkRock(ps,sd+2+i,0,{moss:false,flat:true});pb.position.x=px;pb.position.z=pz;g.add(pb)});shadowAll(g);r.g=g;r.m=m;islandG.add(g);CULL.push({g,x,z});OBC.push({x,z,r:.95});ROCKS.push(r);n++}}
 // ================= MAIN ISLAND EXPANSION: new land, plots, nature and a lighthouse =================
 // new land is added to the island shape (see ISL); this fills it with trees, flowers, grass, rocks and palms
 function lobeSpot(x,z,m){if(!walkable(x,z)||ISL(x,z)>-7.5||hL(x,z)!==0||waterSdf(x,z)<2)return false;if(nearBld(x,z,m+.6)||pathD(x,z)<1.4+m||plotNear(x,z,6.5))return false;if(TREES.some(t=>Math.hypot(t.x-x,t.z-z)<2.4+m))return false;if(ROCKS.some(r=>Math.hypot(r.x-x,r.z-z)<2.4))return false;if(LIGHT&&Math.hypot(x-LIGHT.x,z-LIGHT.z+1)<6.8)return false;return true}
@@ -6380,14 +6514,15 @@ function newGame(){ac();for(let n=1;n<=SLOTS;n++)if(!readSlot(n)){heroPick(n);re
 function resetRuntime(){if(typeof TRIP!=='undefined')tripEnd();if(typeof IPL!=='undefined'){if(PLAY)playFinish();DIZ=0;if(IPL)islEnd();if(IED)iedEnd()}poseCancel();if(REDEC)redecEnd();if(SURF){[SURF.bm,SURF.bx].forEach(b=>b&&scene.remove(b));if(SURF.w)scene.remove(SURF.w.g);CAMO.yaw=SURF.cam;if(NPC.xam)NPC.xam.surf=false;max.rotation.set(0,0,0);SURF=null}DROPFALL.clear();if(SEA.on){SEA={on:false};if(seaG)seaG.visible=false;if(NPC.krug)NPC.krug.sea=false;moving=false;$('fade').hidden=true}if(MIR.on)closeMirror();EATB={until:0,k:1};munchT=0;if(WED){WED=null;$('fade').hidden=true;if(wedG){islandG.remove(wedG);wedG=null}confetti.forEach(c=>scene.remove(c));confetti.length=0;Object.values(NPC).forEach(n=>{n.wed=false;n.hop=0})}if(show){scene.remove(show.g);show=null}lookT=0;if(placing)cancelPlace();if(inside){leaveVisitor();inside=false;roomKey=null;CUR=null;sceneIn.remove(max);scene.add(max)}reel();while(shadows.length)removeShadow(shadows[0]);while(bugs.length)removeBug(bugs[0]);
   if(dlg)closeDlg();if(!$('sheet').hidden)closeSheet();$('catch').hidden=true;catchT=0;tapTgt=null;smileT=0}
 function startGame(n,st){ac();resetRuntime();slot=n;S=st;if(S.d&&!S.d.digs)S.d=null;if((S.wk||1)!==WK){const f=WK/(S.wk||1);S.px*=f;S.pz*=f;S.d=null;S.day='';S.drops=[];S.wk=WK}
-  S.ext=S.ext||{};S.rooms=S.rooms||{};S.q.bella=S.q.bella||0;S.q.krug=S.q.krug||0;S.q.xam=S.q.xam||0;S.q.lottie=S.q.lottie||0;S.hearts=S.hearts||{};if(!S.fp){S.fp={};Object.keys(FR).forEach(k=>S.fp[k]=Math.max(100,(S.hearts[k]||1)*100))}Object.keys(FR).forEach(k=>{if(S.fp[k]==null)S.fp[k]=100});
+  S.ext=S.ext||{};S.rooms=S.rooms||{};S.q.bella=S.q.bella||0;S.q.krug=S.q.krug||0;S.q.xam=S.q.xam||0;S.q.lottie=S.q.lottie||0;S.q.rio=S.q.rio||0;S.hearts=S.hearts||{};if(!S.fp){S.fp={};Object.keys(FR).forEach(k=>S.fp[k]=Math.max(100,(S.hearts[k]||1)*100))}Object.keys(FR).forEach(k=>{if(S.fp[k]==null)S.fp[k]=100});
   S.st=S.st||{cat:{},id:{},chat:{},gift:{},req:{}};S.ach=S.ach||{};S.wd=S.wd||{own:{},jacket:null,hat:null};S.wd.own=S.wd.own||{};setPlayerLook(S.look);wearRefresh();buildArch();
   if(!S.adv2){S.adv2=1;if(S.intro)setTimeout(()=>toast('Your friends have new adventures for you! Check the Tasks app.'),6500)}
+  if(!S.rioNews){S.rioNews=1;if(S.intro)setTimeout(()=>toast('A boat has docked! Someone new is waiting by the pier. Go and say hello.'),8200)}
   if(!S.lotNews){S.lotNews=1;if(S.intro)setTimeout(()=>toast('A new friend, Lottie the Yorkie, has opened Casino Paw-Yal in the north-east corner of the island!'),4600)}
   if(!S.bellaNews){S.bellaNews=1;if(S.intro)setTimeout(()=>toast('A new friend, Bella the poodle, has moved to the island! Visit her boutique.'),3800)}
-  landS();setHomePlot();migrateRooms();ownRecipes();if(!S.mirGift){S.mirGift=1;gainFurn('wardrobemirror');if(S.intro)setTimeout(()=>toast('Bella sent you a Mirrored Wardrobe! Place it with Decorate at home.'),5200)}tidyHome();buildHome();buildPlots();bizBuildAll();buildBldAO();buildBridge();buildLookout();ensureDay();syncWorld();islBuild();bizTickAll(true);if(!S.econ65){S.econ65=1;if(S.intro)setTimeout(()=>toast('A cruise ship now visits the pier! Its passengers shop at your businesses. Selling lots of the same item on one day now lowers its price.'),15000)}if(!S.bizNews){S.bizNews=1;if(S.intro)setTimeout(()=>toast('New! Open your own business on land you buy from Franky. Wild fruit, veg, wheat and honey now grow around the island.'),11000)}
+  landS();setHomePlot();migrateRooms();ownRecipes();if(!S.mirGift){S.mirGift=1;gainFurn('wardrobemirror');if(S.intro)setTimeout(()=>toast('Bella sent you a Mirrored Wardrobe! Place it with Decorate at home.'),5200)}tidyHome();buildHome();buildPlots();bizBuildAll();rioBuild();buildBldAO();buildBridge();buildLookout();ensureDay();syncWorld();islBuild();bizTickAll(true);if(!S.econ65){S.econ65=1;if(S.intro)setTimeout(()=>toast('A cruise ship now visits the pier! Its passengers shop at your businesses. Selling lots of the same item on one day now lowers its price.'),15000)}if(!S.bizNews){S.bizNews=1;if(S.intro)setTimeout(()=>toast('New! Open your own business on land you buy from Franky. Wild fruit, veg, wheat and honey now grow around the island.'),11000)}
   P.x=S.px;P.z=S.pz;P.face=Math.PI;if(!walkable(P.x,P.z)){P.x=HX;P.z=HZ+5}
-  Object.values(NPC).forEach(q=>{const b=BLD.find(x=>x.key===(q.k==='bella'?'tailor':q.k));q.x=b.door[0]+(q.k==='bella'?2.2:1);q.z=b.door[1]+(q.k==='bella'?1.2:1.5);q.tgt=null;q.talk=false});if(NPC.krug){const b=BLD.find(x=>x.key==='krug');NPC.krug.x=b.door[0]-.5;NPC.krug.z=b.door[1]+1.4;NPC.krug.sea=false}
+  Object.values(NPC).forEach(q=>{const b=BLD.find(x=>x.key===(q.k==='bella'?'tailor':q.k))||{door:[RIODOCK.x-1,RIODOCK.z-1.5]};q.x=b.door[0]+(q.k==='bella'?2.2:1);q.z=b.door[1]+(q.k==='bella'?1.2:1.5);q.tgt=null;q.talk=false});if(NPC.krug){const b=BLD.find(x=>x.key==='krug');NPC.krug.x=b.door[0]-.5;NPC.krug.z=b.door[1]+1.4;NPC.krug.sea=false}rioSync(true);
   P.y=gy(P.x,P.z);cam.position.set(P.x,10+P.y,P.z+11.5);hudBones();hudTool();uiMode();$('musBtn').style.opacity=S.music?1:.5;
   hideTitle();booted=true;save();sfx.fanfare();setTimeout(()=>{try{renderer.compile(scene,cam)}catch(e){}},60);
   if(!S.intro){S.intro=true;save();setTimeout(()=>{NPC.bonnie.x=P.x-1.6;NPC.bonnie.z=P.z+.4;NPC.bonnie.talk=true;
@@ -6400,7 +6535,7 @@ $('tCont').onclick=()=>{const l=lastSlot();if(l)startGame(l,readSlot(l))};$('tNe
 // ================= BOOT =================
 (async()=>{const step=async(f,t,fn)=>{BOOT.set(f,t);await new Promise(r=>setTimeout(r,16));try{fn()}catch(e){console.error(e);fail(t+' failed: '+e.message)}};
  await step(.3,'Shaping the land...',buildTerrain);
- await step(.55,'Planting the trees...',()=>{layoutNature();if(typeof layoutLobes==='function')layoutLobes();try{cliffRocks()}catch(e){console.warn(e)}buildContactAO();buildGround69();if(!max.children.some(o=>o.userData.blob))addBlob(max,.42);Object.values(NPC).forEach(n=>{if(!n.m.g.children.some(o=>o.userData.blob))addBlob(n.m.g,.42/n.m.g.scale.x)});tripTreesInit()});
+ await step(.55,'Planting the trees...',()=>{layoutNature();if(typeof layoutLobes==='function')layoutLobes();try{moreRocks()}catch(e){console.warn(e)}try{cliffRocks()}catch(e){console.warn(e)}buildContactAO();buildGround69();if(!max.children.some(o=>o.userData.blob))addBlob(max,.42);Object.values(NPC).forEach(n=>{if(!n.m.g.children.some(o=>o.userData.blob))addBlob(n.m.g,.42/n.m.g.scale.x)});tripTreesInit()});
  await step(.7,'Waking up the animals...',()=>{initFauna();initSky();initWeather();initPuddles()});
  await step(.85,'Building the houses...',()=>{buildHome();buildPlots();buildBridge();buildLookout();ensureDay();syncWorld()});
  await step(.95,'Almost ready...',()=>{P.x=-4;P.z=11;P.y=gy(P.x,P.z);cam.position.set(P.x+6,8,P.z+14);hudBones();hudTool();hudClock();applyTime();showTitle();cullStep(1);if(!LOW)try{renderer.compile(scene,cam)}catch(e){}});
