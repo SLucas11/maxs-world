@@ -358,7 +358,7 @@ body.redec #acts,body.redec #stick,body.redec #prompt,body.redec #keys,body.rede
 <script>
 // boot loader: show progress, catch errors, then run the game script after the first paint
 addEventListener('error',e=>{if(!window.__ready&&window.BOOT)BOOT.err('Something went wrong while loading: '+e.message)});
-window.APPV='78';
+window.APPV='79';
 // save backup and restore (moves your island between the downloaded file, the app, or a new phone)
 window.SAVEIO={dump(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('maxsworld.')===0)o[k]=localStorage.getItem(k)}return{app:'maxsworld',v:1,ver:window.APPV,at:new Date().toISOString(),data:o}},
  async backup(){try{if(window.save)save()}catch(e){}const d=this.dump();if(!Object.keys(d.data).some(k=>k.indexOf('maxsworld.slot')===0||k==='maxsworld.v1')){alert('There is no saved game to back up yet.');return}
@@ -684,7 +684,7 @@ const ENVT=(()=>{try{const face=(k)=>{const c=document.createElement('canvas');c
     else{const g=x.createLinearGradient(0,0,0,64);g.addColorStop(0,'#dfeeff');g.addColorStop(.48,'#f6fbff');g.addColorStop(.52,'#a8b296');g.addColorStop(1,'#727c62');x.fillStyle=g;x.fillRect(0,0,64,64);
       if(k==='pz'||k==='px'){x.fillStyle='#ffffff';x.fillRect(14,8,36,18)}}return c};
   const t=new THREE.CubeTexture(['px','nx','py','ny','pz','nz'].map(face));t.needsUpdate=true;return t}catch(e){return null}})();
-renderer.shadowMap.enabled=true;renderer.shadowMap.type=LOW?THREE.PCFShadowMap:THREE.PCFSoftShadowMap;if(LOW)renderer.shadowMap.autoUpdate=false;let SHF=0;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=LOW?THREE.PCFShadowMap:THREE.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;let SHF=0;
 let GFXLOST=false,gfxT=0;function gfxCard(on,btn){let c=$('gfx');if(!on){if(c)c.remove();return}if(!c){c=document.createElement('div');c.id='gfx';c.innerHTML='<div class="bcard"><b>Graphics paused</b><p id="gfxTxt">Waking the island back up...</p><button id="gfxRe" hidden>Reload game</button></div>';document.body.appendChild(c);$('gfxRe').onclick=()=>{try{save()}catch(e){}location.reload()}}if(btn){$('gfxRe').hidden=false;$('gfxTxt').textContent='Your phone reset the graphics. Your island is saved, so reload to carry on.'}}
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();GFXLOST=true;try{save()}catch(_){}gfxCard(true);clearTimeout(gfxT);gfxT=setTimeout(()=>{if(GFXLOST)gfxCard(true,true)},4000)});
 canvas.addEventListener('webglcontextrestored',()=>{GFXLOST=false;clearTimeout(gfxT);gfxCard(false);try{SHF=0;renderer.shadowMap.needsUpdate=true;resize()}catch(e){}});
@@ -700,10 +700,23 @@ const SUNL=new THREE.Vector3(-12,24,10),SUNF=SUNL.clone().normalize(),SUNR=new T
 let SHE=24;function snapSun(){const ts=SHE*2/sun.shadow.mapSize.x,u=Math.round(P.x*SUNR.x+P.y*SUNR.y+P.z*SUNR.z)/1,p=_sp.set(P.x,P.y,P.z),a=Math.round(p.dot(SUNR)/ts)*ts,b=Math.round(p.dot(SUNU)/ts)*ts,c=p.dot(SUNF);
   _sp.copy(SUNR).multiplyScalar(a).addScaledVector(SUNU,b).addScaledVector(SUNF,c);sun.target.position.copy(_sp);sun.position.copy(_sp).add(SUNL)}
 const SHLP=new THREE.Vector3(1e9,0,0);function shMoved(){const m=P.spd>.15||POSE||SHLP.distanceToSquared(cam.position)>1e-6;SHLP.copy(cam.position);return m}
-let PRCAP=TABLET?1.5:LOW?1.5:2,PRMAX=PRCAP,prT=0,prDt=.016,prN=0;
-// keep the frame rate smooth: lower the render resolution a little when frames get slow, raise it back when there is headroom
-function prStep(dt){prDt+=(Math.min(.1,dt)-prDt)*.05;prT+=dt;if(prT<3||document.hidden||titleOn)return;prT=0;const cur=Math.min(PRCAP,devicePixelRatio),fl=Math.min(1,devicePixelRatio);
- if(prDt>.045&&cur>fl+.01){PRCAP=Math.max(fl,cur-.1);resize()}else if(prDt<.03&&PRCAP<PRMAX&&cur<devicePixelRatio){PRCAP=Math.min(PRMAX,cur+.1);resize()}}
+let PRCAP=TABLET?1.5:LOW?1.5:2,PRMAX=PRCAP;
+// ---- smooth-play governor: watches how long frames really take and trades detail for speed (and back again) while you play.
+// Each step changes the drawing resolution, how often shadows are redrawn, the shadow sharpness and how thick the grass and flowers are.
+const QL={lv:LOW?3:4,top:LOW?5:4,acc:0,n:0,good:0,ceilT:0,pen:45,capped:false,t0:3};
+const QPR=LOW?[.75,.9,1.05,1.25,1.5,2]:[.7,.85,1,1.5,2,2],QSHI=LOW?[8,6,4,3,2,1]:[6,4,3,2,1,1],QDEC=[.35,.55,.8,1,1,1],QDECOR=[];let QSH=QSHI[QL.lv];
+try{const v=parseInt(localStorage.getItem('mw.ql'));if(v>=0&&v<=QL.top)QL.lv=v}catch(e){}
+function qlDogs(){const on=QL.lv>=4,f=o=>{if(o.isMesh&&!o.userData.blob&&!(o.material&&(o.material.transparent||o.material.isMeshBasicMaterial)))o.castShadow=on};try{max.traverse(f);Object.values(NPC).forEach(n=>n.m.g.traverse(f));if(typeof CRU!=="undefined"&&CRU.tour)CRU.tour.forEach(t=>{const g=t.g||(t.m&&t.m.g);if(g)g.traverse(f)})}catch(e){}}
+function qlApply(quiet){const l=QL.lv;PRCAP=QPR[l];PRMAX=QPR[QL.top];QSH=QSHI[l];qlDogs();
+  QDECOR.forEach(m=>{if(m.userData.n0==null)m.userData.n0=m.count;m.count=Math.max(1,Math.ceil(m.userData.n0*QDEC[l]))});
+  try{const ms=LOW?(l>=5?2048:l<=0?512:1024):(l>=4?3072:l>=2?2048:1024);if(typeof sun!=='undefined'&&sun.shadow.mapSize.x!==ms){sun.shadow.mapSize.set(ms,ms);if(sun.shadow.map){sun.shadow.map.dispose();sun.shadow.map=null}}SHF=0;renderer.shadowMap.needsUpdate=true}catch(e){}
+  if(!quiet){try{resize()}catch(e){}try{localStorage.setItem('mw.ql',String(l))}catch(e){}}}
+function prStep(dt,now){if(document.hidden||titleOn||dt>=.1){if(dt>=.1){QL.acc=0;QL.n=0}return}QL.acc+=dt;QL.n++;if(QL.acc<1.5)return;const avg=QL.acc/QL.n;QL.acc=0;QL.n=0;QL.avg=avg;if(now<QL.t0)return;
+  if(QL.capped?avg>.04:avg>.0225){QL.good=0;
+    if(QL.lv>0){QL.lv--;QL.ceilT=now+QL.pen;QL.pen=Math.min(300,QL.pen*2);QL.t0=now+1.4;qlApply()}
+    // the lowest setting made no difference: the phone itself is holding a steady 30 frames a second (battery saver), so give the detail back
+    else if(!QL.capped&&avg<.037){QL.capped=true;QL.lv=Math.min(QL.top,2);QL.t0=now+2.5;qlApply()}}
+  else if(avg<.0178){if(++QL.good>=4&&QL.lv<QL.top&&now>QL.ceilT&&!QL.capped){QL.good=0;QL.lv++;QL.t0=now+1.4;qlApply()}}else QL.good=0}
 function resize(){const w=innerWidth,h=innerHeight;renderer.setPixelRatio(Math.min(PRCAP,devicePixelRatio));renderer.setSize(w,h,false);cam.aspect=w/h;cam.fov=w<h?52:w/h>1.6?38:42;cam.updateProjectionMatrix();
   document.body.classList.toggle('land',w>h);document.body.classList.toggle('tablet',TABLET||Math.min(w,h)>=600&&matchMedia('(pointer:coarse)').matches)}
 resize();addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,250));
@@ -755,7 +768,9 @@ const max=new THREE.Group();scene.add(max);
 // ---- the player's dog: Max by default, or a dog the player designs
 const MAXLOOK={breed:'yorkie',sex:'m',coat:0xd9a45c,coat2:0x6c7786,light:0xf0cf92,pattern:'saddle',fur:'long',eyes:'round',eyeCol:0x4a2a14,eyeSize:1,ears:'prick',nose:'button',snout:'mid',body:'standard',size:1,tail:'plume',collar:0x3a78d8};
 const DOGBODY={standard:{len:1,wid:1,leg:1,head:1,ht:1},stocky:{len:.92,wid:1.26,leg:.78,head:1.1,ht:1.04},long:{len:1.48,wid:1.02,leg:.6,head:1,ht:.96},slim:{len:1.08,wid:.86,leg:1.38,head:.93,ht:.95},round:{len:1.04,wid:1.34,leg:.88,head:1.04,ht:1.22}};
-const DGEO={};const dgeo=(k,f)=>DGEO[k]||(DGEO[k]=f());
+const DGEO={};// fur lumps: phones get a lighter 20-triangle version with smoothed normals (they are only a few pixels across)
+function LUMPG(){if(!LOW)return new THREE.IcosahedronGeometry(1,1);const g=new THREE.IcosahedronGeometry(1,0),p=g.attributes.position,n=g.attributes.normal,v=new THREE.Vector3();for(let k=0;k<p.count;k++){v.fromBufferAttribute(p,k).normalize();n.setXYZ(k,v.x,v.y,v.z)}return g}
+const dgeo=(k,f)=>DGEO[k]||(DGEO[k]=f());
 const mixC=(a,b,t)=>new THREE.Color(a).lerp(new THREE.Color(b),t).getHex();
 let bodyG,legs,headG,eyes,ears,tail,tailSeg,jaw,tongue,smileG,PL_READY=false;
 function buildDog(Lin,root){const sph=dgeo('dogsph',()=>new THREE.SphereGeometry(1,LOW?20:26,LOW?14:18));
@@ -771,7 +786,7 @@ function buildDog(Lin,root){const sph=dgeo('dogsph',()=>new THREE.SphereGeometry
   // fluffy / curly coat: lumps scattered over an ellipsoid, merged into one mesh per part
   const fluff=(pr,cx,cy,cz,rx,ry,rz,n,s,mats,ymin=-.4,zmax=2)=>{if(L.fur!=='fluffy'&&L.fur!=='curly')return;const fg=new THREE.Group();pr.add(fg);const cu=L.fur==='curly',k=cu?1.5:1;
     for(let i=0;i<Math.round(n*k);i++){const a=R()*6.283,b=Math.acos(2*R()-1),d={x:Math.sin(b)*Math.cos(a),y:Math.cos(b),z:Math.sin(b)*Math.sin(a)};if(d.y<ymin||d.z>zmax)continue;
-      const r=s*(cu?.55:1)*(.7+R()*.5),o=A(dgeo('lump',()=>new THREE.IcosahedronGeometry(1,1)),mats[i%mats.length],cx+d.x*rx*.92,cy+d.y*ry*.92,cz+d.z*rz*.92,r,r*(cu?1:.8),r,fg);o.rotation.set(R()*3,R()*3,R()*3)}
+      const r=s*(cu?.55:1)*(.7+R()*.5),o=A(dgeo('lump',LUMPG),mats[i%mats.length],cx+d.x*rx*.92,cy+d.y*ry*.92,cz+d.z*rz*.92,r,r*(cu?1:.8),r,fg);o.rotation.set(R()*3,R()*3,R()*3)}
     if(PL_READY)mergeGroup(fg)};
   // body
   const bg=new THREE.Group();bg.position.y=dy;bg.scale.set(B.wid,B.ht,B.len);root.add(bg);P.bodyG=bg;
@@ -826,7 +841,7 @@ function buildDog(Lin,root){const sph=dgeo('dogsph',()=>new THREE.SphereGeometry
   const T={plume:{n:6,r:-.6,c:.22,w:.044,h:.07},curl:{n:6,r:-.5,c:.62,w:.05,h:.065},stub:{n:2,r:-.5,c:.2,w:.05,h:.05},long:{n:7,r:-1.75,c:.12,w:.03,h:.075},fluffy:{n:6,r:-.4,c:.42,w:.065,h:.08}}[L.tail]||{n:6,r:-.6,c:.22,w:.044,h:.07};
   tl.rotation.x=T.r;{let tp=tl;for(let i=0;i<T.n;i++){const sg=new THREE.Group();sg.position.y=i?T.h+.01:0;if(i)sg.rotation.x=T.c;tp.add(sg);
     const m=L.tail==='plume'||sad?(i<2?steel:i<4?steelL:tanL):(L.tail==='long'&&i===T.n-1&&pat!=='solid'?tanL:tan),w=T.w*(L.tail==='long'?1-i*.08:1)-i*.002+(L.tail==='plume'&&i===5?.01:0);
-    A(sph,m,0,.04,0,w,T.h,w,sg);if(L.tail==='fluffy'||L.fur==='fluffy'&&L.tail!=='stub')for(let j=0;j<4;j++){const o=A(dgeo('lump',()=>new THREE.IcosahedronGeometry(1,1)),j%2?tanL:m,(R()-.5)*w,.04+(R()-.5)*T.h,(R()-.5)*w,w*.7,undefined,undefined,sg);o.rotation.set(R()*3,R()*3,R()*3)}
+    A(sph,m,0,.04,0,w,T.h,w,sg);if(L.tail==='fluffy'||L.fur==='fluffy'&&L.tail!=='stub')for(let j=0;j<4;j++){const o=A(dgeo('lump',LUMPG),j%2?tanL:m,(R()-.5)*w,.04+(R()-.5)*T.h,(R()-.5)*w,w*.7,undefined,undefined,sg);o.rotation.set(R()*3,R()*3,R()*3)}
     P.tailSeg.push(sg);tp=sg}}
   // smile
   const sm=new THREE.Group();sm.position.set(0,-.095,.268+dz);hg.add(sm);P.smileG=sm;
@@ -922,7 +937,7 @@ const TOOLTEX={
  toolG.axe=ax;
  {const a2=ax.clone(true);let hd=null;a2.traverse(o=>{if(!o.isMesh)return;if(o.material.vertexColors){o.material=new THREE.MeshStandardMaterial({vertexColors:true,color:0xffe2a0,metalness:.85,roughness:.25});hd=o}else if(o.material===darkWood)o.material=M(0x8a1c1c,{roughness:.45})});
   if(hd){const h2=hd.clone();h2.rotation.y=-Math.PI/2;hd.parent.add(h2)}toolG.axe2=a2}
- Object.values(toolG).forEach(tg=>{const keep=[];Object.values(tg.userData).forEach(v=>[].concat(v).forEach(o=>{if(o&&o.isObject3D)o.traverse(q=>{if(q.isMesh)keep.push(q)})}));tg.traverse(o=>{Object.values(o.userData||{}).forEach(v=>[].concat(v).forEach(q=>{if(q&&q.isMesh)keep.push(q)}))});mergeDog(tg,keep)});
+ Object.values(toolG).forEach(tg=>{const keep=[];Object.values(tg.userData).forEach(v=>[].concat(v).forEach(o=>{if(o&&o.isObject3D)o.traverse(q=>{if(q.isMesh)keep.push(q)})}));tg.traverse(o=>{Object.values(o.userData||{}).forEach(v=>[].concat(v).forEach(q=>{if(q&&q.isMesh)keep.push(q)}))});mergeDog(tg,keep);const gs=[];tg.traverse(o=>{if(!o.isMesh&&o.children&&o.children.length)gs.push(o)});gs.forEach(o=>{try{mergeVCShallow(o,keep,true)}catch(e){}})});
  Object.values(toolG).forEach(g=>{g.position.set(0,-.1,.25);g.visible=false;g.traverse(o=>{if(o.isMesh)o.castShadow=true});headG.add(g)})}PL_READY=true;
 const _tv=new THREE.Vector3();let rodBend=0;
 function rodStep(dt){const r=toolG.rod;if(!r.visible)return;const tgt=F.on?(F.ph==='bite'?.2:F.dip>0?.09:F.cast<1?-.05:.025):0;rodBend+=(tgt-rodBend)*Math.min(1,dt*8);
@@ -1384,14 +1399,14 @@ function mergeByMat(g,opts){opts=opts||{};const _mbmM=new THREE.Matrix4();g.upda
 // merge each part of an animated dog model separately, so legs, head, ears, eyes and tail still move
 function mergeDog(root,skip){const gs=[];root.traverse(o=>{if(!o.isMesh&&o.children&&o.children.length)gs.push(o)});let n=0;gs.forEach(o=>{n+=mergeVCShallow(o,skip);n+=mergeByMat(o,{shallow:true,skip:x=>skip.includes(x)})});return n}
 // shallow vertex-colour merge: combines plain matte parts of one group (any colours) into a single mesh
-function mergeVCShallow(g,skip){const parts=g.children.filter(o=>{if(!o.isMesh||o.isInstancedMesh||!o.visible||skip.includes(o))return false;const m=o.material;
-    return m&&!Array.isArray(m)&&m.isMeshStandardMaterial&&!m.transparent&&!m.map&&!m.vertexColors&&m.roughness>=.5&&m.metalness<.3&&(!m.emissive||m.emissive.getHex()===0)&&m.side===THREE.FrontSide&&o.geometry.attributes.normal});
+function mergeVCShallow(g,skip,loose){const parts=g.children.filter(o=>{if(!o.isMesh||o.isInstancedMesh||!o.visible||skip.includes(o))return false;const m=o.material;
+    return m&&!Array.isArray(m)&&m.isMeshStandardMaterial&&!m.transparent&&!m.map&&!m.vertexColors&&(loose||m.roughness>=.5&&m.metalness<.3)&&(!m.emissive||m.emissive.getHex()===0)&&m.side===THREE.FrontSide&&o.geometry.attributes.normal});
   if(parts.length<2)return 0;g.updateMatrixWorld(true);const inv=new THREE.Matrix4().copy(g.matrixWorld).invert(),mt=new THREE.Matrix4();let n=0;
   const geos=parts.map(o=>{const ge=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();ge.applyMatrix4(mt.multiplyMatrices(inv,o.matrixWorld));n+=ge.attributes.position.count;return ge});
   const pos=new Float32Array(n*3),nor=new Float32Array(n*3),col=new Float32Array(n*3);let off=0;
   geos.forEach((ge,k)=>{const c=parts[k].material.color,cnt=ge.attributes.position.count;pos.set(ge.attributes.position.array,off*3);nor.set(ge.attributes.normal.array,off*3);for(let i=0;i<cnt;i++){col[(off+i)*3]=c.r;col[(off+i)*3+1]=c.g;col[(off+i)*3+2]=c.b}off+=cnt;ge.dispose()});
   parts.forEach(o=>g.remove(o));const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setAttribute('normal',new THREE.BufferAttribute(nor,3));geo.setAttribute('color',new THREE.BufferAttribute(col,3));geo.computeBoundingSphere();
-  const mm=new THREE.Mesh(geo,mergeVCShallow.m||(mergeVCShallow.m=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.62})));mm.castShadow=true;mm.receiveShadow=true;g.add(mm);return parts.length-1}
+  const mm=new THREE.Mesh(geo,loose?(mergeVCShallow.ml||(mergeVCShallow.ml=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.45,metalness:.25}))):mergeVCShallow.m||(mergeVCShallow.m=new THREE.MeshStandardMaterial({vertexColors:true,roughness:.62})));mm.castShadow=true;mm.receiveShadow=true;g.add(mm);return parts.length-1}
 function mergeGroup(g,skip){g.updateMatrixWorld(true);const inv=new THREE.Matrix4().copy(g.matrixWorld).invert(),parts=[];
   g.traverse(o=>{if(!o.isMesh||o.isInstancedMesh||(skip&&skip(o)))return;const m=o.material;if(Array.isArray(m)||m.transparent||m.map||m.vertexColors||m.isMeshBasicMaterial||!m.color)return;parts.push(o)});
   if(parts.length<2)return null;let n=0,flat=false;const mt=new THREE.Matrix4();
@@ -1405,10 +1420,10 @@ function mergeGroup(g,skip){g.updateMatrixWorld(true);const inv=new THREE.Matrix
 const CULL=[];let cullT=0;
 const FCS=new WeakSet(),_fcv=new THREE.Vector3();
 function fcPass(root){root.traverse(o=>{if(FCS.has(o))return;FCS.add(o);if(!(o.isMesh||o.isSprite)||o.isInstancedMesh||o.frustumCulled||o.userData.noFC)return;const g=o.geometry;if(!g)return;if(!g.boundingSphere)g.computeBoundingSphere();
-  const r=g.boundingSphere.radius*o.getWorldScale(_fcv).length()/1.732;if(r<40)o.frustumCulled=true})}
+  const r=g.boundingSphere.radius*o.getWorldScale(_fcv).length()/1.732;if(r<40)o.frustumCulled=true;if(o.isMesh&&r<(LOW?.3:.14)&&!o.userData.keepSh){o.castShadow=false;o.userData.noSh=1}})}
 function cullStep(dt){cullT-=dt;if(cullT>0)return;cullT=.12;if(typeof dynG!=='undefined')dynG.children.forEach(g=>{const dx=g.position.x-P.x,dz=g.position.z-P.z;g.visible=titleOn||!!LHV||dx*dx+dz*dz<1300});const px=P.x,pz=P.z,orbit=titleOn||!!LHV,CCY=Math.cos(CAMO.yaw),CSY=Math.sin(CAMO.yaw),CZF=Math.max(1,CAMO.zoom)*(1+Math.max(0,-CAMO.pitch)*1.4);
   for(const c of CULL){const dx0=c.x-px,dz0=c.z-pz,m=c.m||0,dx=dx0*CCY-dz0*CSY,dz=dx0*CSY+dz0*CCY,v=orbit?Math.hypot(dx,dz)<(LHV?160:36)+m:(dz>-58*CZF-m&&dz<16*CZF+m&&Math.abs(dx)<48*CZF+m);c.g.visible=v&&!(c.flw!==undefined&&(S.d&&S.d.fp[c.flw]||W.season==='winter'||dz<-34*CZF||dz>12*CZF||Math.abs(dx)>30*CZF));
-   const near=v&&Math.abs(dx)<27+m&&Math.abs(dz)<27+m;if(near!==c.near){c.near=near;if(!c.ms){c.ms=[];c.g.traverse(o=>{if(o.isMesh&&o.castShadow)c.ms.push(o)})}c.ms.forEach(o=>o.castShadow=near)}}}
+   const near=v&&Math.abs(dx)<27+m&&Math.abs(dz)<27+m;if(near!==c.near){c.near=near;if(!c.ms){c.ms=[];c.g.traverse(o=>{if(o.isMesh&&o.castShadow)c.ms.push(o)})}c.ms.forEach(o=>o.castShadow=near&&!o.userData.noSh)}}}
 // buildings
 const BLD=[],OBC=[],winMats=[];
 function shadowAll(g,cull){g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.frustumCulled=!!cull}})}
@@ -1699,7 +1714,7 @@ const LOTTIELOOK={breed:'yorkie',sex:'f',coat:0xa8682e,coat2:0x17130f,light:0xd5
 FR.lottie={name:'Lottie',color:'#b8283c',pitch:560,home:[0,0],mk:()=>mkLottie(),likes:'flower',gift5:'velvetrope',casino:1};
 const CAS={x:46,z:-49.7};
 function mkLottie(){const g=new THREE.Group(),P2=buildDog(LOTTIELOOK,g);g.scale.setScalar(1.45);
-  const R=rng(7717),lump=dgeo('lump',()=>new THREE.IcosahedronGeometry(1,1)),hd=P2.headG;
+  const R=rng(7717),lump=dgeo('lump',LUMPG),hd=new THREE.Group();P2.headG.add(hd);
   const wt=furify(M(0xfbf8f2,{roughness:.95,emissive:0x2a2620,emissiveIntensity:.08}),170,.3),wt2=furify(M(0xece6da,{roughness:.95}),170,.3),
     blk=furify(M(0x17130f,{roughness:.8}),170,.45),blk2=furify(M(0x2a231c,{roughness:.8}),170,.45),tan=furify(M(0xb87634,{roughness:.85}),170,.4);
   const L=(pr,m,x,y,z,s,sy)=>{const o=new THREE.Mesh(lump,m);o.position.set(x,y,z);o.scale.set(s,sy||s*.85,s);o.rotation.set(R()*3,R()*3,R()*3);pr.add(o);return o};
@@ -1713,13 +1728,14 @@ function mkLottie(){const g=new THREE.Group(),P2=buildDog(LOTTIELOOK,g);g.scale.
    [-1,1].forEach(s=>{const c=new THREE.Mesh(dgeo('bowC',()=>new THREE.ConeGeometry(.032,.07,12)),rm);c.rotation.z=s*Math.PI/2;c.position.x=s*.034;clip.add(c)});
    const gem=new THREE.Mesh(dgeo('gemS',()=>new THREE.SphereGeometry(1,14,10)),M(0xff3050,{roughness:.08,metalness:.35,emissive:0x50000c}));gem.scale.setScalar(.02);clip.add(gem)}
   // long silky Yorkie skirt: black over the back, tan down the legs, so she looks bigger and fluffier
-  const bd=P2.bodyG;for(let i=0;i<7;i++)[-1,1].forEach(s=>{const z=.2-i*.075;L(bd,i%2?blk:blk2,s*.13,.3+R()*.02,z,.05,.085);L(bd,tan,s*.12,.2,z+.01,.045,.07)});
+  const bd=new THREE.Group();P2.bodyG.add(bd);for(let i=0;i<7;i++)[-1,1].forEach(s=>{const z=.2-i*.075;L(bd,i%2?blk:blk2,s*.13,.3+R()*.02,z,.05,.085);L(bd,tan,s*.12,.2,z+.01,.045,.07)});
   for(let i=0;i<10;i++){const z=.16-i*.045;L(bd,i%2?blk:blk2,(R()-.5)*.06,.47,z,.055,.03)}
   // long tan fringe on her cheeks and chin
   [-1,1].forEach(s=>{for(let i=0;i<5;i++)L(hd,tan,s*(.15+R()*.04),-.09-R()*.08,.07+R()*.06,.04,.06)});for(let i=0;i<4;i++)L(hd,tan,(R()-.5)*.08,-.16-R()*.03,.15+R()*.04,.035,.05);
   // a gold necklace with a little diamond heart
   {const nk=new THREE.Group();nk.position.set(0,.45,.2);nk.rotation.x=1.05;bd.add(nk);const gm=M(0xe8c060,{roughness:.2,metalness:.85});for(let i=0;i<20;i++){const a=i/20*Math.PI*2,b=new THREE.Mesh(dgeo('gemS',()=>new THREE.SphereGeometry(1,14,10)),gm);b.scale.setScalar(.011);b.position.set(Math.cos(a)*.105,Math.sin(a)*.105,0);nk.add(b)}
    const h=new THREE.Mesh(dgeo('gemS',()=>new THREE.SphereGeometry(1,14,10)),M(0xeaf6ff,{roughness:.05,metalness:.4,emissive:0x203040}));h.scale.set(.024,.024,.014);h.position.set(0,-.12,.01);nk.add(h)}
+  const fluff=o=>!(o.material&&o.material.metalness>.1);try{mergeGroup(hd,o=>!fluff(o));mergeGroup(bd,o=>!fluff(o))}catch(e){}
   return{g,bd:P2.bodyG,legs:P2.legs,head:P2.headG,tail:P2.tail,jaw:P2.jaw,eyes:P2.eyes}}
 // ================= RIO: a big gentle Akita with an orange coat and a yellow underbelly, newly arrived by boat =================
 const RIOLOOK={breed:'custom',sex:'m',coat:0xe8802a,coat2:0xe8802a,light:0xf8d85a,pattern:'solid',fur:'fluffy',grain:'soft',sheen:'soft',eyes:'almond',eyeCol:0x3a2010,eyeSize:.95,ears:'prick',nose:'big',snout:'mid',body:'stocky',size:1,tail:'curl',collar:0x2a9d8f};
@@ -1729,7 +1745,7 @@ const RIOP=[{id:'harbour',n:'Harbour View',x:-43,z:40,d:["Harbour View. You can 
  {id:'bluebell',n:'Bluebell Meadow',x:-40,z:-14,d:["Bluebell Meadow. Soft grass, butterflies, and so quiet you can hear the bees.","A peaceful spot out west. Lots of room for a garden."]},
  {id:'skylark',n:'Skylark Hill',x:26,z:-24,d:["Skylark Hill. Up on the high ground in the east, with the whole island spread out below.","A bit of a climb, but what a view! You can hear the waterfall from here."]}];
 function mkRio(){const g=new THREE.Group(),P2=buildDog(RIOLOOK,g);g.scale.setScalar(1.62);
-  const R=rng(5511),lump=dgeo('lump',()=>new THREE.IcosahedronGeometry(1,1)),hd=P2.headG,bd=P2.bodyG;
+  const R=rng(5511),lump=dgeo('lump',LUMPG),hd=new THREE.Group(),bd=new THREE.Group();P2.headG.add(hd);P2.bodyG.add(bd);
   const yel=furify(M(0xf8d85a,{roughness:.9}),170,.3),yel2=furify(M(0xfbe488,{roughness:.9}),170,.3),org=furify(M(0xe8802a,{roughness:.88}),170,.35),org2=furify(M(0xd66e1e,{roughness:.88}),170,.35);
   const L=(pr,m,x,y,z,s,sy,sz)=>{const o=new THREE.Mesh(lump,m);o.position.set(x,y,z);o.scale.set(s,sy||s*.85,sz||s);o.rotation.set(R()*3,R()*3,R()*3);pr.add(o);return o};
   // yellow underbelly and chest bib, running from the chin down between the front legs and along the tummy
@@ -1740,6 +1756,7 @@ function mkRio(){const g=new THREE.Group(),P2=buildDog(RIOLOOK,g);g.scale.setSca
   [-1,1].forEach(s=>{for(let i=0;i<4;i++)L(hd,i%2?yel:yel2,s*(.12+R()*.04),-.07-R()*.05,.1+R()*.05,.045,.05)});for(let i=0;i<4;i++)L(hd,yel2,(R()-.5)*.08,-.13-R()*.02,.16+R()*.03,.04,.04);
   // little yellow eyebrow dots, an Akita trademark
   [-1,1].forEach(s=>L(hd,yel2,s*.075,.115,.185,.022,.016,.014));
+  try{mergeGroup(hd);mergeGroup(bd)}catch(e){}
   return{g,bd:P2.bodyG,legs:P2.legs,head:P2.headG,tail:P2.tail,jaw:P2.jaw,eyes:P2.eyes}}
 // ---- surfboards (shared shape, painted designs)
 let SBGEO=null;const SBT={};
@@ -1813,7 +1830,7 @@ const CASX={bulbs:[],bm:null,bm2:null,t:0,spray:[]};
    gold=MTL(0xd4a83c,.25),red=M(0x9e1f2e,{roughness:.55}),dark=M(0x23160f,{roughness:.6}),marble=M(0xf4efe6,{roughness:.32}),iron=M(0x1e2024,{roughness:.45,metalness:.6}),groove=M(0xcbb894,{roughness:.9});
  const win=new THREE.MeshStandardMaterial({color:0x23303c,emissive:0xffc070,emissiveIntensity:0,roughness:.12,metalness:.2});winMats.push(win);
  CASX.bm=new THREE.MeshBasicMaterial({color:0xfff2b0});CASX.bm2=new THREE.MeshBasicMaterial({color:0xb08a40});
- const bulb=(x,y,z,k)=>{const b=SPH(anim,.035,k%2?CASX.bm2:CASX.bm,x,y,z);CASX.bulbs.push(b);return b};
+ CASX.bp=[[],[]];const bulb=(x,y,z,k)=>{CASX.bp[k%2].push([x,y,z])};
  const Y0=.18,FZ=1.95; // top of the terrace, front face of the main block
  // marble terrace, steps and red carpet
  RB(g,7.9,Y0,5.6,marble,0,Y0/2,.15,.03);RB(g,8.0,.04,5.7,groove,0,.02,.15,.01);
@@ -1885,6 +1902,7 @@ const CASX={bulbs:[],bm:null,bm2:null,t:0,spray:[]};
   OBC.push({x:CAS.x+fx,z:CAS.z+fz,r:1.2})}
  [[-2.45,3.25,.25],[2.45,3.25,.25],[-3.35,2.35,.38],[3.35,2.35,.38],[-1.18,CZ+.45,.12],[1.18,CZ+.45,.12]].forEach(([x,z,r])=>OBC.push({x:CAS.x+x,z:CAS.z+z,r}));
  shadowAll(g);mergeByMat(g,{skip:o=>{for(let q=o;q;q=q.parent)if(q.userData&&q.userData.anim)return true;return false}});
+ {const bg=new THREE.SphereGeometry(.035,8,6),dm=new THREE.Object3D();CASX.bp.forEach((L,k)=>{const im=new THREE.InstancedMesh(bg,k?CASX.bm2:CASX.bm,L.length);L.forEach((q,i)=>{dm.position.set(q[0],q[1],q[2]);dm.updateMatrix();im.setMatrixAt(i,dm.matrix)});im.frustumCulled=false;im.castShadow=false;im.receiveShadow=false;anim.add(im)})}
  const t=textSprite('Casino Paw-Yal',FR.lottie.color,'#fff',2.2);t.position.set(0,7.3,-.6);g.add(t);
  const b={key:'lottie',x:CAS.x,z:CAS.z+.1,hw:3.45,hd:2.5,g,door:[CAS.x,CAS.z+3.35],name:'Casino Paw-Yal',mapc:'#b8283c',label:'Go into Casino Paw-Yal',enter:()=>enterRoom('lottie')};BLD.push(b);CULL.push({g,x:CAS.x,z:CAS.z,m:9});
  PATHS.push([[CAS.x+.4,CAS.z+3.9],[CAS.x+2.4,CAS.z+8.6],[CAS.x+3.6,CAS.z+14],[CAS.x+4.2,CAS.z+24],[CAS.x+4.6,CAS.z+33],[CAS.x+5.3,CAS.z+44],[CAS.x+5.7,CAS.z+53.3]])}
@@ -4301,8 +4319,8 @@ addEventListener('keyup',e=>{keys[e.code]=false;setKeys();if(e.code==='Space'||e
 // ================= MAIN LOOP =================
 let last=0,clockT=0,saveT=0,promptT='';
 let FERR=0;function frame(t){requestAnimationFrame(frame);if(GFXLOST)return;try{frame0(t);FERR=0}catch(e){if(++FERR===1||FERR%300===0)console.error(e);if(FERR===3)fail('Frame error: '+e.message)}}
-function frame0(t){const dt=Math.min(.1,(t-last)/1000||.016);last=t;const now=t/1000;prStep(dt);
-  clockT-=dt;if(clockT<=0){clockT=1;redecBtnUI();fcPass(scene);if(inside)fcPass(sceneIn);hudClock();hudBuff();placeCamc();camResetUI();applyTime();ensureDay();checkAch()}weatherStep(dt,now);saveT+=dt;if(saveT>15){saveT=0;save()}
+function frame0(t){const dt=Math.min(.1,(t-last)/1000||.016);last=t;const now=t/1000;prStep(dt,now);
+  clockT-=dt;if(clockT<=0){clockT=1;redecBtnUI();fcPass(scene);qlDogs();if(inside)fcPass(sceneIn);hudClock();hudBuff();placeCamc();camResetUI();applyTime();ensureDay();checkAch()}weatherStep(dt,now);saveT+=dt;if(saveT>15){saveT=0;save()}
   if(toastT>0){toastT-=dt;if(toastT<=0)$('toast').classList.remove('on')}if(catchT>0){catchT-=dt;if(catchT<=0)$('catch').hidden=true}
   dlgStep(dt);pops.forEach(p=>{p.t+=dt;p.s.position.y+=dt*.8;p.s.material.opacity=Math.max(0,1-p.t/1.4)});for(let i=pops.length-1;i>=0;i--)if(pops[i].t>1.4){pops[i].s.parent&&pops[i].s.parent.remove(pops[i].s);pops.splice(i,1)}
   // movement
@@ -4341,10 +4359,10 @@ function frame0(t){const dt=Math.min(.1,(t-last)/1000||.016);last=t;const now=t/
     lookT=Math.max(0,lookT-dt);if(lookT>0&&!titleOn){const k2=Math.min(1,dt*2);cam.position.x+=(P.x-cam.position.x)*k2;cam.position.y+=(P.y+30-cam.position.y)*k2;cam.position.z+=(P.z+24-cam.position.z)*k2;cam.lookAt(P.x*.6,0,P.z*.6+4)}else if(titleOn){const a=now*.05;cam.position.set(P.x+Math.sin(a)*15,P.y+7.5,P.z+Math.cos(a)*15);cam.lookAt(P.x,P.y+.5,P.z)}else{const k=camSnap?1:1-Math.exp(-dt*6);camSnap=0;camOut(k)}
     snapSun();
     waterTex.offset.x+=dt*.004;fallTex.offset.y+=dt*.9;if(foamM){foamM.material.opacity=.22+Math.sin(now*1.3)*.1}mists.forEach((m,i)=>m.material.opacity=.4+Math.sin(now*3+i)*.15);
-    musicStep(dt);CURVE.value=.0026;if(LOW&&(++SHF%2===0||camSnap||shMoved()))renderer.shadowMap.needsUpdate=true;renderer.render(scene,cam)}
+    musicStep(dt);CURVE.value=.0026;if(camSnap||++SHF%(shMoved()?QSH:Math.max(2,QSH*2))===0)renderer.shadowMap.needsUpdate=true;renderer.render(scene,cam)}
   else{if(visitor){const n=visitor,m=n.m;if(n.talk)turn(n,Math.atan2(P.x-n.x,P.z-n.z),dt*6);m.g.position.set(n.x,0,n.z);m.g.rotation.y=n.face;m.tail.rotation.z=Math.sin(t/(n.talk?60:110))*.4;m.head.rotation.x=Math.sin(t/900)*.04;m.legs.forEach(l=>{l.lg.rotation.x*=.8});npcFace(n,t)}
     {const k=camSnap?1:1-Math.exp(-dt*6);camSnap=0;camIn(k)}
-    musicStep(dt);CURVE.value=0;if(LOW&&(++SHF%2===0||camSnap||shMoved()))renderer.shadowMap.needsUpdate=true;renderer.render(sceneIn,cam)}}
+    musicStep(dt);CURVE.value=0;if(camSnap||++SHF%(shMoved()?QSH:Math.max(2,QSH*2))===0)renderer.shadowMap.needsUpdate=true;renderer.render(sceneIn,cam)}}
 
 // ================= TITLE + SLOTS =================
 const STAGEN=['Tent','House','Big house','Grand house'];
@@ -5552,7 +5570,7 @@ function mkTravelOffice(){const g=new THREE.Group(),W=5.2,D=3.4,H=2.6,hw=W/2,fz=
   [-1,1].forEach(s=>{const lp=mkLampPost();lp.position.set(TJ.x+s*.95,.3,TJ.z0+.4);lp.scale.setScalar(.8);g.add(lp);const gs=glowSprite(0xffd890,1.8,0);gs.position.set(TJ.x+s*.95,.3+2.02*.8,TJ.z0+.4);g.add(gs);lamps.push(gs)});
   {const fs=pmSign('FERRY ⟶ ISLANDS','#ffffff','#1e3a5a',1.1,.26,{edge:'#2a8ac8',fs:.5});fs.position.set(TJ.x+1.2,1.3,TJ.z0+1.1);fs.rotation.y=-.3;g.add(fs);CY(g,.035,.035,1.1,jd,TJ.x+1.2,.7,TJ.z0+1.08,6)}
   [TJ.z1-.5].forEach(z=>[-1,1].forEach(s=>{CY(g,.09,.11,.3,M(0x2a2a30),TJ.x+s*.6,.46,z,10);TOR(g,.1,.025,M(0xe8dcc0,{roughness:.9}),TJ.x+s*.6,.5,z,true)}));
-  g.traverse(o=>{if(o.isMesh&&!(o.material&&o.material.transparent)){o.castShadow=true;o.receiveShadow=true}});return g}
+  g.traverse(o=>{if(o.isMesh&&!(o.material&&o.material.transparent)){o.castShadow=true;o.receiveShadow=true}});try{mergeByMat(g,{skip:o=>o===g.userData.globe})}catch(e){}return g}
 // travel office + ferry on the main island
 const KIOSK=mkTravelOffice();KIOSK.position.set(TKX,gy(TKX,TKZ),TKZ);islandG.add(KIOSK);window.TJON=1;BLD.push({key:'travel',x:TKX,z:TKZ,hw:2.85,hd:1.95,g:KIOSK,door:[TKX+1.4,TKZ+2.55],label:'Buy tickets from Skye',enter:()=>openTravel()});CULL.push({g:KIOSK,x:TKX,z:TKZ+2,m:9});
 [[-2.65,2.95,.1],[2.65,2.95,.1],[3.2,3.2,.12],[-1.95,2.6,.5],[.4,2.05,.25],[-1.5,2.05,.25],[TJ.x-.95,TJ.z0+.4,.12],[TJ.x+.95,TJ.z0+.4,.12],[TJ.x+1.2,TJ.z0+1.08,.08]].forEach(([x,z,r])=>OBC.push({x:TKX+x,z:TKZ+z,r}));
@@ -6029,7 +6047,7 @@ function layoutLobes(){const R=rng(4242),rnd=(a,b)=>a+R()*(b-a);
     for(let i=0;i<5;i++){const x=cx+(R()-.5)*2.4,z=cz+(R()-.5)*2.4;if(!walkable(x,z)||TREES.some(t=>Math.hypot(t.x-x,t.z-z)<1.2))continue;const g=new THREE.Group();g.position.set(x,hL(x,z),z);cy(g,.025,.35,stemM,0,.17,0,5);[-1,1].forEach(s=>{const lf=spX(g,.07,stemM,s*.07,.12,0,1,.3,.5);lf.rotation.z=s*.5});
       const col=ITEMS[ty].color;for(let p=0;p<6;p++){const a=p*1.047;spX(g,.085,col,Math.cos(a)*.085,.38,Math.sin(a)*.085,1,.55,1)}spX(g,.05,0xf8d040,0,.41,0);const fm=mergeGroup(g);if(fm)fm.castShadow=false;islandG.add(g);CULL.push({g,x,z,flw:FLW.length});FLW.push({x,z,id:ty,g})}}
   // grass tufts
-  try{const NT=TABLET?700:LOW?900:2400,im=new THREE.InstancedMesh(tuftGeo(),tufts.material,NT),dm=new THREE.Object3D();let c=0;for(let k=0;k<NT*6&&c<NT;k++){const[x,z]=box();if(!inLobe(x,z)||ISL(x,z)>-7.3||!walkable(x,z)||pathD(x,z)<1.2||plotNear(x,z,4.9)||Math.hypot(x-LIGHT.x,z-LIGHT.z+1)<4.4)continue;dm.position.set(x,hV(x,z),z);dm.rotation.y=R()*6.28;const s=.8+R()*.7;dm.scale.set(s,s*(.8+R()*.5),s);dm.updateMatrix();im.setMatrixAt(c,dm.matrix);im.setColorAt(c,new THREE.Color().setHSL(.27+R()*.05,.5+R()*.15,.42+R()*.12));c++}im.count=c;if(im.instanceColor)im.instanceColor.needsUpdate=true;im.frustumCulled=false;islandG.add(im)}catch(e){}
+  try{const NT=TABLET?700:LOW?900:2400,im=new THREE.InstancedMesh(tuftGeo(),tufts.material,NT),dm=new THREE.Object3D();let c=0;for(let k=0;k<NT*6&&c<NT;k++){const[x,z]=box();if(!inLobe(x,z)||ISL(x,z)>-7.3||!walkable(x,z)||pathD(x,z)<1.2||plotNear(x,z,4.9)||Math.hypot(x-LIGHT.x,z-LIGHT.z+1)<4.4)continue;dm.position.set(x,hV(x,z),z);dm.rotation.y=R()*6.28;const s=.8+R()*.7;dm.scale.set(s,s*(.8+R()*.5),s);dm.updateMatrix();im.setMatrixAt(c,dm.matrix);im.setColorAt(c,new THREE.Color().setHSL(.27+R()*.05,.5+R()*.15,.42+R()*.12));c++}im.count=c;if(im.instanceColor)im.instanceColor.needsUpdate=true;im.frustumCulled=false;islandG.add(im);QDECOR.push(im)}catch(e){}
   // lighthouse station on the south-east point: tapered banded tower, gallery, lantern room and the keeper's cottage
   {const y=hL(LIGHT.x,LIGHT.z),g=new THREE.Group();g.position.set(LIGHT.x,y,LIGHT.z);islandG.add(g);const H=9,R0=1.6,R1=1.05,B=.45,top=B+H;LIGHT.top=top;LIGHT.y=y;
     const stone=M(0x9c968a,{roughness:.95}),stone2=M(0xb4aea2,{roughness:.95}),dark=M(0x26282e,{roughness:.5,metalness:.4}),red=M(0xc8322a,{roughness:.5}),white=M(0xf6f3ea,{roughness:.7});
@@ -6451,18 +6469,18 @@ function buildGround69(){try{const R=rng(6969),spot=(x,z,m)=>walkable(x,z)&&hL(x
   const S1=new THREE.InstancedMesh(stemG,sm,NF),H1=new THREE.InstancedMesh(headG,hm,NF),d=new THREE.Object3D(),c=new THREE.Color(),PAL=[0xffffff,0xfff07a,0xf6a8c8,0xb8a0f0,0x9ad0ff,0xffc070,0xf27a7a];let n=0;
   for(let k=0;k<900&&n<NF;k++){const cx=(R()-.5)*150,cz=(R()-.5)*130;if(!spot(cx,cz,2.2))continue;const pal=[PAL[Math.floor(R()*PAL.length)],PAL[Math.floor(R()*PAL.length)]],cnt=6+Math.floor(R()*14);
     for(let i=0;i<cnt&&n<NF;i++){const x=cx+(R()-.5)*3.4,z=cz+(R()-.5)*3.4;if(!spot(x,z,1.6))continue;d.position.set(x,hV(x,z),z);d.rotation.set((R()-.5)*.3,R()*6,(R()-.5)*.3);const s=.7+R()*.6;d.scale.set(s,s*(.8+R()*.5),s);d.updateMatrix();S1.setMatrixAt(n,d.matrix);H1.setMatrixAt(n,d.matrix);c.setHex(pal[i%2]).offsetHSL(0,0,(R()-.5)*.08);H1.setColorAt(n,c);n++}}
-  S1.count=H1.count=n;if(H1.instanceColor)H1.instanceColor.needsUpdate=true;[S1,H1].forEach(m=>{m.frustumCulled=false;m.receiveShadow=true;islandG.add(m)});G69.st=S1;G69.fl=H1;
+  S1.count=H1.count=n;if(H1.instanceColor)H1.instanceColor.needsUpdate=true;[S1,H1].forEach(m=>{m.frustumCulled=false;m.receiveShadow=true;islandG.add(m)});G69.st=S1;G69.fl=H1;QDECOR.push(S1,H1);
   // pebbles lining the paths
   const NP=LOW?500:1300,pg=new THREE.IcosahedronGeometry(.1,0),pm=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.9}),PB=new THREE.InstancedMesh(pg,pm,NP);n=0;
   for(const p of PATHS){for(let s=0;s<p.length-1&&n<NP;s++){const a=p[s],b=p[s+1],L=Math.hypot(b[0]-a[0],b[1]-a[1]);if(L<.1)continue;const nx=-(b[1]-a[1])/L,nz=(b[0]-a[0])/L;
     for(let t=0;t<L&&n<NP;t+=.75+R()*.6){[-1,1].forEach(sd=>{if(n>=NP||R()<.45)return;const off=1.12+R()*.3,x=a[0]+(b[0]-a[0])*t/L+nx*off*sd,z=a[1]+(b[1]-a[1])*t/L+nz*off*sd;
       if(!walkable(x,z)||rampAt(x,z)!==null||onBridge(x,z)||onXB(x,z)||onFB(x,z)||nearBld(x,z,.4)||waterSdf(x,z)<.6||pathD(x,z)<.95)return;const s2=.6+R()*1.1;d.position.set(x,hV(x,z)+.015,z);d.rotation.set(R()*3,R()*3,R()*3);d.scale.set(s2*(1+R()*.5),s2*.55,s2);d.updateMatrix();PB.setMatrixAt(n,d.matrix);
       const g=.42+R()*.3;c.setRGB(g,g*.95,g*.88).offsetHSL(.05,R()*.1,0);PB.setColorAt(n,c);n++})}}}
-  PB.count=n;if(PB.instanceColor)PB.instanceColor.needsUpdate=true;PB.frustumCulled=false;PB.receiveShadow=true;islandG.add(PB);G69.pb=PB;
+  PB.count=n;if(PB.instanceColor)PB.instanceColor.needsUpdate=true;PB.frustumCulled=false;PB.receiveShadow=true;islandG.add(PB);G69.pb=PB;QDECOR.push(PB);
   // autumn leaf litter under the leafy trees
   const lg=new THREE.PlaneGeometry(.2,.12);lg.rotateX(-Math.PI/2);const lm=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.85,side:THREE.DoubleSide}),T=TREES.filter(t=>!t.pine&&!t.palm&&!t.trip&&t.g),NL=Math.min(T.length*22,LOW?900:2400),LV=new THREE.InstancedMesh(lg,lm,NL);n=0;
   const LC=[0xe8862a,0xc8502a,0xf2b030,0xa8642a,0xd8a040];T.forEach(t=>{for(let i=0;i<22&&n<NL;i++){const a=R()*6.28,r=.4+Math.sqrt(R())*2.2,x=t.x+Math.cos(a)*r,z=t.z+Math.sin(a)*r;if(!walkable(x,z))continue;d.position.set(x,hV(x,z)+.012,z);d.rotation.set(0,R()*6.28,0);const s=.8+R()*.6;d.scale.set(s,1,s);d.updateMatrix();LV.setMatrixAt(n,d.matrix);c.setHex(LC[Math.floor(R()*LC.length)]);LV.setColorAt(n,c);n++}});
-  LV.count=n;if(LV.instanceColor)LV.instanceColor.needsUpdate=true;LV.frustumCulled=false;LV.receiveShadow=true;islandG.add(LV);G69.lv=LV}catch(e){console.warn('ground69',e)}}
+  LV.count=n;if(LV.instanceColor)LV.instanceColor.needsUpdate=true;LV.frustumCulled=false;LV.receiveShadow=true;islandG.add(LV);G69.lv=LV;QDECOR.push(LV)}catch(e){console.warn('ground69',e)}}
 // soft round shadow under a character so they sit on the ground
 var BLOBT=null;function addBlob(g,r=.42){if(!BLOBT)BLOBT=ftex('charBlob',(x,w)=>{const gr=x.createRadialGradient(w/2,w/2,0,w/2,w/2,w/2);gr.addColorStop(0,'rgba(0,0,0,.42)');gr.addColorStop(.5,'rgba(0,0,0,.2)');gr.addColorStop(1,'rgba(0,0,0,0)');x.clearRect(0,0,w,w);x.fillStyle=gr;x.fillRect(0,0,w,w)},64);
   const m=new THREE.Mesh(new THREE.PlaneGeometry(r*2,r*2.4),new THREE.MeshBasicMaterial({map:BLOBT,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-4}));m.rotation.x=-Math.PI/2;m.position.y=.012;m.renderOrder=1;m.userData.blob=1;g.add(m);return m}
@@ -6520,7 +6538,7 @@ function startGame(n,st){ac();resetRuntime();slot=n;S=st;if(S.d&&!S.d.digs)S.d=n
   if(!S.rioNews){S.rioNews=1;if(S.intro)setTimeout(()=>toast('A boat has docked! Someone new is waiting by the pier. Go and say hello.'),8200)}
   if(!S.lotNews){S.lotNews=1;if(S.intro)setTimeout(()=>toast('A new friend, Lottie the Yorkie, has opened Casino Paw-Yal in the north-east corner of the island!'),4600)}
   if(!S.bellaNews){S.bellaNews=1;if(S.intro)setTimeout(()=>toast('A new friend, Bella the poodle, has moved to the island! Visit her boutique.'),3800)}
-  landS();setHomePlot();migrateRooms();ownRecipes();if(!S.mirGift){S.mirGift=1;gainFurn('wardrobemirror');if(S.intro)setTimeout(()=>toast('Bella sent you a Mirrored Wardrobe! Place it with Decorate at home.'),5200)}tidyHome();buildHome();buildPlots();bizBuildAll();rioBuild();buildBldAO();buildBridge();buildLookout();ensureDay();syncWorld();islBuild();bizTickAll(true);if(!S.econ65){S.econ65=1;if(S.intro)setTimeout(()=>toast('A cruise ship now visits the pier! Its passengers shop at your businesses. Selling lots of the same item on one day now lowers its price.'),15000)}if(!S.bizNews){S.bizNews=1;if(S.intro)setTimeout(()=>toast('New! Open your own business on land you buy from Franky. Wild fruit, veg, wheat and honey now grow around the island.'),11000)}
+  landS();setHomePlot();migrateRooms();ownRecipes();if(!S.mirGift){S.mirGift=1;gainFurn('wardrobemirror');if(S.intro)setTimeout(()=>toast('Bella sent you a Mirrored Wardrobe! Place it with Decorate at home.'),5200)}tidyHome();buildHome();buildPlots();bizBuildAll();rioBuild();qlApply();buildBldAO();buildBridge();buildLookout();ensureDay();syncWorld();islBuild();bizTickAll(true);if(!S.econ65){S.econ65=1;if(S.intro)setTimeout(()=>toast('A cruise ship now visits the pier! Its passengers shop at your businesses. Selling lots of the same item on one day now lowers its price.'),15000)}if(!S.bizNews){S.bizNews=1;if(S.intro)setTimeout(()=>toast('New! Open your own business on land you buy from Franky. Wild fruit, veg, wheat and honey now grow around the island.'),11000)}
   P.x=S.px;P.z=S.pz;P.face=Math.PI;if(!walkable(P.x,P.z)){P.x=HX;P.z=HZ+5}
   Object.values(NPC).forEach(q=>{const b=BLD.find(x=>x.key===(q.k==='bella'?'tailor':q.k))||{door:[RIODOCK.x-1,RIODOCK.z-1.5]};q.x=b.door[0]+(q.k==='bella'?2.2:1);q.z=b.door[1]+(q.k==='bella'?1.2:1.5);q.tgt=null;q.talk=false});if(NPC.krug){const b=BLD.find(x=>x.key==='krug');NPC.krug.x=b.door[0]-.5;NPC.krug.z=b.door[1]+1.4;NPC.krug.sea=false}rioSync(true);
   P.y=gy(P.x,P.z);cam.position.set(P.x,10+P.y,P.z+11.5);hudBones();hudTool();uiMode();$('musBtn').style.opacity=S.music?1:.5;
