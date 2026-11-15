@@ -358,7 +358,7 @@ body.redec #acts,body.redec #stick,body.redec #prompt,body.redec #keys,body.rede
 <script>
 // boot loader: show progress, catch errors, then run the game script after the first paint
 addEventListener('error',e=>{if(!window.__ready&&window.BOOT)BOOT.err('Something went wrong while loading: '+e.message)});
-window.APPV='84';
+window.APPV='85';
 // save backup and restore (moves your island between the downloaded file, the app, or a new phone)
 window.SAVEIO={dump(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('maxsworld.')===0)o[k]=localStorage.getItem(k)}return{app:'maxsworld',v:1,ver:window.APPV,at:new Date().toISOString(),data:o}},
  async backup(){try{if(window.save)save()}catch(e){}const d=this.dump();if(!Object.keys(d.data).some(k=>k.indexOf('maxsworld.slot')===0||k==='maxsworld.v1')){alert('There is no saved game to back up yet.');return}
@@ -1424,7 +1424,7 @@ const FCS=new WeakSet(),_fcv=new THREE.Vector3();
 function fcPass(root){root.traverse(o=>{if(FCS.has(o))return;FCS.add(o);if(!(o.isMesh||o.isSprite)||o.isInstancedMesh||o.frustumCulled||o.userData.noFC)return;const g=o.geometry;if(!g)return;if(!g.boundingSphere)g.computeBoundingSphere();
   const r=g.boundingSphere.radius*o.getWorldScale(_fcv).length()/1.732;if(r<40)o.frustumCulled=true;if(o.isMesh&&r<(LOW?.3:.14)&&!o.userData.keepSh){o.castShadow=false;o.userData.noSh=1}})}
 function cullStep(dt){cullT-=dt;if(cullT>0)return;cullT=.12;if(typeof dynG!=='undefined')dynG.children.forEach(g=>{const dx=g.position.x-P.x,dz=g.position.z-P.z;g.visible=titleOn||!!LHV||dx*dx+dz*dz<1300});const px=P.x,pz=P.z,orbit=titleOn||!!LHV,CCY=Math.cos(CAMO.yaw),CSY=Math.sin(CAMO.yaw),CZF=Math.max(1,CAMO.zoom)*(1+Math.max(0,-CAMO.pitch)*1.4);
-  for(const c of CULL){const dx0=c.x-px,dz0=c.z-pz,m=c.m||0,dx=dx0*CCY-dz0*CSY,dz=dx0*CSY+dz0*CCY,v=orbit?Math.hypot(dx,dz)<(LHV?160:36)+m:(dz>-58*CZF-m&&dz<16*CZF+m&&Math.abs(dx)<48*CZF+m);c.g.visible=v&&!(c.flw!==undefined&&(S.d&&S.d.fp[c.flw]||W.season==='winter'||dz<-34*CZF||dz>12*CZF||Math.abs(dx)>30*CZF));
+  for(const c of CULL){const dx0=c.x-px,dz0=c.z-pz,m=c.m||0,dx=dx0*CCY-dz0*CSY,dz=dx0*CSY+dz0*CCY,v=orbit?Math.hypot(dx,dz)<(LHV?160:36)+m:(dz>-58*CZF-m&&dz<16*CZF+m&&Math.abs(dx)<48*CZF+m);c.g.visible=v&&!c.off&&!(c.flw!==undefined&&(S.d&&S.d.fp[c.flw]||W.season==='winter'||dz<-34*CZF||dz>12*CZF||Math.abs(dx)>30*CZF));
    const near=v&&Math.abs(dx)<27+m&&Math.abs(dz)<27+m;if(near!==c.near){c.near=near;if(!c.ms){c.ms=[];c.g.traverse(o=>{if(o.isMesh&&o.castShadow)c.ms.push(o)})}c.ms.forEach(o=>o.castShadow=near&&!o.userData.noSh)}}}
 // buildings
 const BLD=[],OBC=[],winMats=[];
@@ -3696,7 +3696,8 @@ function getAction(){
     const dg=nearestIn(S.d.digs,fp.x,fp.z,1.2,o=>!o.t);if(dg)return{t:'Dig here',f:()=>dig(dg.o)};
     const rk=nearestIn(ROCKS,fp.x,fp.z,1.4);if(rk)return{t:'Hit the rock',f:()=>hitRock(rk.i)}}
   const tr=nearestIn(TREES,fp.x,fp.z,1.3);
-  if(tr){if(AXES.has(T))return{t:'Chop the tree',f:()=>chop(tr.i)};return{t:'Shake the tree',f:()=>shake(tr.i)}}
+  if(tr){if(T==='shovel'&&treeMovable(tr.o))return{t:'Dig up the '+treeName(tr.o),f:()=>digTree(tr.i)};if(AXES.has(T))return{t:'Chop the tree',f:()=>chop(tr.i)};return{t:'Shake the tree',f:()=>shake(tr.i)}}
+  if(T==='shovel'&&S.tcar&&S.tcar.length){const sp=treeSpotFront();if(sp)return{t:'Replant the '+treeName(TREES[S.tcar[S.tcar.length-1]]),f:()=>replantTree(sp.x,sp.z)}}
   if(T==='rod'){const w=waterFront()||castSpot(CHMAX);if(w)return{t:'Hold A to cast',cast:1,f:()=>castLine(w.x,w.z,w.h)}}
   if(T==='net'){const b=bugInReach();return{t:b?'Swing the net!':'Swing the net',f:swingNet}}
   return null}
@@ -3711,7 +3712,7 @@ function dig(o){toolAnim=.5;sfx.dig();if(!give(o.id))return swapFor(o.id,()=>dig
 function digGold(){toolAnim=.5;sfx.dig();if(!give('goldenbone'))return swapFor('goldenbone',()=>digGold());S.gb=true;smileT=3;sfx.fanfare();$('cNew').hidden=true;$('cName').textContent='Max found the Golden Bone!';$('cSub').textContent='Alphonso will be thrilled.';$('catch').hidden=false;catchT=3.5;syncWorld();save()}
 function bugInReach(){const p=front(.9);let best=null,bd=1.25;bugs.forEach(b=>{if(b.flee)return;const d=Math.hypot(b.x-p.x,b.z-p.z);if(d<bd&&b.y<2.1){bd=d;best=b}});return best}
 function swingNet(){toolAnim=.45;sfx.swish();const b=bugInReach();if(b){const from=new THREE.Vector3(b.x,b.y,b.z);removeBug(b);caught(b.id,from)}}
-function useTool(){const a=getAction();if(a)a.f();else if(S.tool==='rod')toast('Stand by the water to fish.');else if(S.tool==='shovel'){toolAnim=.4;sfx.dig();toast('Nothing here. Look for star-shaped cracks!')}else if(AXES.has(S.tool)){toolAnim=.4;toast('Swish! Stand next to a tree to chop.')}}
+function useTool(){const a=getAction();if(a)a.f();else if(S.tool==='rod')toast('Stand by the water to fish.');else if(S.tool==='shovel'){toolAnim=.4;sfx.dig();toast(S.tcar&&S.tcar.length?(typeof TRIP!=='undefined'&&TRIP?'Take the tree home and plant it on your own island!':'No room for a tree here. Try open grass away from paths, buildings and other trees.'):'Nothing here. Look for star-shaped cracks, or face a tree to dig it up and move it!')}else if(AXES.has(S.tool)){toolAnim=.4;toast('Swish! Stand next to a tree to chop.')}}
 function barkFn(){barkT=performance.now()/1000;woof();if(!inside)faunaScare();bugs.forEach(b=>{if(Math.hypot(b.x-P.x,b.z-P.z)<6&&!b.flee){b.flee=.01;b.fa=Math.atan2(b.x-P.x,b.z-P.z)}});
   shadows.forEach(s=>{if(Math.hypot(s.x-P.x,s.z-P.z)<8&&s.state==='roam')fleeShadow(s)});if(F.on)reel();
   const n=nearestIn(Object.values(NPC),P.x,P.z,4);if(n&&Math.random()<.6)setTimeout(()=>{woof(FR[n.o.k].pitch/450);toast(FR[n.o.k].name+' barks back happily!')},350)}
@@ -4348,7 +4349,7 @@ function frame0(t){const dt=Math.min(.1,(t-last)/1000||.016);last=t;const now=t/
   tailSeg.forEach((sg,i)=>sg.rotation.z=Math.sin(t/(bk||sm?60:mvg?85:110)-i*.55)*(.08+i*.015));
   const blk=(t%3600)<130?.12:1;eyes.forEach(e=>e.scale.y=blk*(1-.6*sm));if(show&&show.t<3.2)headG.rotation.x-=.25;ears.forEach(e=>e.eg.rotation.z=-e.s*(e.b+Math.sin(t/900+e.s)*.03+(mvg?e.m:0)));
   tongue.visible=bk>0;jaw.position.y=-.115-(bk>0?Math.abs(Math.sin((now-barkT)*14))*.04:0);if(munchT>0){munchT-=dt;headG.rotation.x+=.2+Math.sin(munchT*15)*.12;jaw.position.y=-.115-Math.abs(Math.sin(munchT*17))*.04}
-  Object.entries(toolG).forEach(([k,g])=>g.visible=!inside&&!POSE&&!SURF&&!PLAY&&(SEA.on?k==='rod':S.tool===k));rodStep(dt);poseStep(dt,now);islStep(dt,now);playStep(dt,now);tripStep(dt,now);lighthouseStep(now);bizStep(dt);gfx63Step(dt,now);try{nightSkyStep(dt);season69()}catch(e){}cruStep(dt);casinoStep(dt);spaStep(dt);poolStep(dt);gardenStep(dt);decorStep(dt);if(SURF){surfStep(dt,now);P.y=WL}redecStep(dt);chStep(dt);elecStep(dt);shellWash(dt);fxStepFX(dt);emoStep(dt);if(!inside)dropFallStep(now);fallStep(dt,now);
+  Object.entries(toolG).forEach(([k,g])=>g.visible=!inside&&!POSE&&!SURF&&!PLAY&&(SEA.on?k==='rod':S.tool===k));rodStep(dt);poseStep(dt,now);islStep(dt,now);playStep(dt,now);tripStep(dt,now);lighthouseStep(now);bizStep(dt);gfx63Step(dt,now);try{nightSkyStep(dt);season69()}catch(e){}cruStep(dt);casinoStep(dt);spaStep(dt);poolStep(dt);gardenStep(dt);decorStep(dt);treeMoveStep(dt);if(SURF){surfStep(dt,now);P.y=WL}redecStep(dt);chStep(dt);elecStep(dt);shellWash(dt);fxStepFX(dt);emoStep(dt);if(!inside)dropFallStep(now);fallStep(dt,now);
   if(!inside){
     Object.values(NPC).forEach(n=>{const m=n.m;if(n.surf||n.play){m.g.position.set(n.x,n.play?n.sy:(n.sy||WL),n.z);m.g.rotation.y=n.face;return}n.y=(n.y??0)+(gy(n.x,n.z)-(n.y??0))*Math.min(1,dt*12);m.g.position.set(n.x,n.y+(n.hop||0),n.z);m.g.rotation.y=n.face;n.gt+=n.spd*dt*2.4;const mv=n.spd>.3;
       m.legs.forEach(l=>{if(mv){const q=n.gt+l.ph;l.lg.rotation.x=Math.sin(q)*.6;l.lg.position.y=l.y0+Math.max(0,Math.cos(q))*.04}else{l.lg.rotation.x*=.8;l.lg.position.y+=(l.y0-l.lg.position.y)*.3}});
@@ -6519,6 +6520,42 @@ function decorStep(dt){if(inside||SEA.on||document.hidden)return;const t=perform
       if(a.flutter)c.children.forEach(b=>{const p=t*.7+b.userData.ph;b.position.set(Math.sin(p)*.45,.55+Math.sin(p*1.7)*.2,Math.cos(p*1.3)*.4);b.rotation.y=p+Math.PI/2;b.children.forEach(w=>{w.rotation.y=w.userData.wing*(.3+Math.abs(Math.sin(t*14+b.userData.ph))*1.1)})});
       if(a.bees)c.children.forEach(b=>{const p=t*1.6+b.userData.ph;b.position.set(Math.sin(p)*.35,.6+Math.sin(p*2.3)*.18,Math.cos(p*1.4)*.3);b.rotation.y=p})})}}
 
+// ================= MOVE TREES: dig them up with the shovel and replant them somewhere new =================
+// S.tmv[i]=[x,z] for trees moved to a new home, S.tcar=[i,...] for trees Max is carrying right now
+const TCARMAX=3,TGROW=[];
+function treeMovable(t){return t&&!t.trip&&t.g&&!t.gone}
+function treeRefs(t){if(t.ox===undefined){t.ox=t.x;t.oz=t.z}if(!t.ob)t.ob=OBC.find(c=>!c.isl&&c.x===t.ox&&c.z===t.oz)||null;if(!t.cu)t.cu=CULL.find(c=>c.g===t.g)||null}
+function treeSet(t,x,z){t.x=x;t.z=z;t.g.position.set(x,hL(x,z),z);t.g.scale.setScalar(1);if(t.ob){t.ob.x=x;t.ob.z=z;if(!OBC.includes(t.ob))OBC.push(t.ob)}if(t.cu){t.cu.x=x;t.cu.z=z;t.cu.off=false}t.gone=false}
+function treeHide(t){t.gone=true;t.x=t.z=1e6;if(t.ob){const k=OBC.indexOf(t.ob);if(k>=0)OBC.splice(k,1)}if(t.cu)t.cu.off=true;t.g.visible=false}
+function treeApply(){TGROW.length=0;S.tmv=S.tmv||{};S.tcar=S.tcar||[];TREES.forEach((t,i)=>{if(t.trip||!t.g)return;treeRefs(t);const m=S.tmv[i];treeSet(t,m?m[0]:t.ox,m?m[1]:t.oz)});
+  S.tcar=S.tcar.filter(i=>TREES[i]&&!TREES[i].trip);S.tcar.forEach(i=>treeHide(TREES[i]));treeRedraw()}
+function treeRedraw(){try{buildContactAO()}catch(e){}try{renderer.shadowMap.needsUpdate=true}catch(e){}cullT=0}
+function treeName(t){return t.palm?'palm tree':t.pine?'pine tree':t.fruit&&ITEMS[t.fruit]?ITEMS[t.fruit].name.toLowerCase()+' tree':'tree'}
+function treeSpotOK(x,z){if(typeof TRIP!=='undefined'&&TRIP||inside||SEA.on)return false;if(!walkable(x,z)||onPier(x,z)||onBridge(x,z))return false;
+  try{if(!goodSpot(x,z,.6))return false}catch(e){return false}
+  if(TREES.some(t=>!t.gone&&Math.hypot(t.x-x,t.z-z)<2.4))return false;if(ROCKS.some(r=>r.x!=null&&Math.hypot(r.x-x,r.z-z)<2))return false;
+  if(OBC.some(c=>Math.hypot(c.x-x,c.z-z)<c.r+.7))return false;if(typeof deckAt==='function'&&deckAt(x,z))return false;
+  if(ISLS().items.some(it=>ISLC[it.id]&&Math.hypot(it.x-x,it.z-z)<(isPath(it.id)?.95:(ISLC[it.id][3]||.5)+1)))return false;
+  if(BLD.some(b=>b.door&&Math.hypot(x-b.door[0],z-b.door[1])<2.2))return false;
+  if(Object.values(NPC).some(n=>n&&!n.away&&n.x!=null&&Math.hypot(n.x-x,n.z-z)<.9))return false;return true}
+function digTree(i){const t=TREES[i];if(!treeMovable(t))return;S.tcar=S.tcar||[];
+  if(S.tcar.length>=TCARMAX){sfx.no();toast('Max is already carrying '+TCARMAX+' trees! Replant one first.');return}
+  toolAnim=.6;sfx.dig();t.g.userData.shake=.6;const p=V3(t.x,hL(t.x,t.z)+.15,t.z);fxBits(p,0x6a4a2a,14,1.6);fxBits(p,0x8a6a3a,8,1.1);
+  t.gone=true;const name=treeName(t);TGROW.push({t,k:1,dir:-1,done:()=>{treeHide(t);treeRedraw()}});
+  S.tcar.push(i);S.st.tdug=(S.st.tdug||0)+1;smileT=1.5;
+  toast('Max dug up the '+name+'! Face open grass with the shovel and press A to replant it.'+(S.tcar.length>1?' (Carrying '+S.tcar.length+' trees)':''));save()}
+function replantTree(x,z){S.tcar=S.tcar||[];const i=S.tcar.pop();const t=TREES[i];if(!t){save();return}
+  x=Math.round(x*20)/20;z=Math.round(z*20)/20;toolAnim=.6;sfx.dig();treeRefs(t);treeSet(t,x,z);t.g.visible=true;t.g.scale.setScalar(.05);
+  S.tmv=S.tmv||{};if(Math.hypot(x-t.ox,z-t.oz)<.05)delete S.tmv[i];else S.tmv[i]=[x,z];
+  const p=V3(x,hL(x,z)+.1,z);fxBits(p,0x6a4a2a,10,1.2);fxBits(V3(x,hL(x,z)+1.6,z),0x7ad85a,12,1.4);
+  TGROW.push({t,k:.05,dir:1,done:()=>{sfx.pop&&sfx.pop()}});treeRedraw();S.st.tplant=(S.st.tplant||0)+1;smileT=2;
+  toast('Max replanted the '+treeName(t)+'!'+(S.tcar.length?' Still carrying '+S.tcar.length+' more.':''));save()}
+function treeMoveStep(dt){for(let k=TGROW.length-1;k>=0;k--){const a=TGROW[k];a.k+=a.dir*dt*2.2;const e=Math.max(0,Math.min(1,a.k));
+  const s=a.dir>0?(e<1?e+Math.sin(e*Math.PI)*.15:1):Math.max(.01,e);a.t.g.scale.setScalar(Math.max(.01,s));
+  if(a.dir<0)a.t.g.position.y=hL(a.t.g.position.x,a.t.g.position.z)-(1-e)*.6;
+  if((a.dir>0&&a.k>=1)||(a.dir<0&&a.k<=0)){a.t.g.scale.setScalar(a.dir>0?1:.01);TGROW.splice(k,1);a.done&&a.done()}}}
+function treeSpotFront(){for(const d of[1.7,2.1,1.4,2.5]){const p=front(d);if(treeSpotOK(p.x,p.z))return p}return null}
+
 // ================= MAIN ISLAND EXPANSION: new land, plots, nature and a lighthouse =================
 // new land is added to the island shape (see ISL); this fills it with trees, flowers, grass, rocks and palms
 function lobeSpot(x,z,m){if(!walkable(x,z)||ISL(x,z)>-7.5||hL(x,z)!==0||waterSdf(x,z)<2)return false;if(nearBld(x,z,m+.6)||pathD(x,z)<1.4+m||plotNear(x,z,6.5))return false;if(TREES.some(t=>Math.hypot(t.x-x,t.z-z)<2.4+m))return false;if(ROCKS.some(r=>Math.hypot(r.x-x,r.z-z)<2.4))return false;if(LIGHT&&Math.hypot(x-LIGHT.x,z-LIGHT.z+1)<6.8)return false;return true}
@@ -7082,10 +7119,11 @@ let AOM=null;function buildContactAO(){try{if(AOM){islandG.remove(AOM);AOM=null}
 function newGame(){ac();for(let n=1;n<=SLOTS;n++)if(!readSlot(n)){heroPick(n);return}slotList('new')}
 function resetRuntime(){if(typeof TRIP!=='undefined')tripEnd();if(typeof IPL!=='undefined'){if(PLAY)playFinish();DIZ=0;if(IPL)islEnd();if(IED)iedEnd()}poseCancel();if(REDEC)redecEnd();if(SURF){[SURF.bm,SURF.bx].forEach(b=>b&&scene.remove(b));if(SURF.w)scene.remove(SURF.w.g);CAMO.yaw=SURF.cam;if(NPC.xam)NPC.xam.surf=false;max.rotation.set(0,0,0);SURF=null}DROPFALL.clear();if(SEA.on){SEA={on:false};if(seaG)seaG.visible=false;if(NPC.krug)NPC.krug.sea=false;moving=false;$('fade').hidden=true}if(MIR.on)closeMirror();EATB={until:0,k:1};munchT=0;if(WED){WED=null;$('fade').hidden=true;if(wedG){islandG.remove(wedG);wedG=null}confetti.forEach(c=>scene.remove(c));confetti.length=0;Object.values(NPC).forEach(n=>{n.wed=false;n.hop=0})}if(show){scene.remove(show.g);show=null}lookT=0;if(placing)cancelPlace();if(inside){leaveVisitor();inside=false;roomKey=null;CUR=null;sceneIn.remove(max);scene.add(max)}reel();while(shadows.length)removeShadow(shadows[0]);while(bugs.length)removeBug(bugs[0]);
   if(dlg)closeDlg();if(!$('sheet').hidden)closeSheet();$('catch').hidden=true;catchT=0;tapTgt=null;smileT=0}
-function startGame(n,st){ac();resetRuntime();slot=n;S=st;if(S.d&&!S.d.digs)S.d=null;if((S.wk||1)!==WK){const f=WK/(S.wk||1);S.px*=f;S.pz*=f;S.d=null;S.day='';S.drops=[];S.wk=WK}
+function startGame(n,st){ac();resetRuntime();slot=n;S=st;try{treeApply()}catch(e){console.warn('trees',e)}if(S.d&&!S.d.digs)S.d=null;if((S.wk||1)!==WK){const f=WK/(S.wk||1);S.px*=f;S.pz*=f;S.d=null;S.day='';S.drops=[];S.wk=WK}
   S.ext=S.ext||{};S.rooms=S.rooms||{};S.q.bella=S.q.bella||0;S.q.krug=S.q.krug||0;S.q.xam=S.q.xam||0;S.q.lottie=S.q.lottie||0;S.q.rio=S.q.rio||0;S.hearts=S.hearts||{};if(!S.fp){S.fp={};Object.keys(FR).forEach(k=>S.fp[k]=Math.max(100,(S.hearts[k]||1)*100))}Object.keys(FR).forEach(k=>{if(S.fp[k]==null)S.fp[k]=100});
   S.st=S.st||{cat:{},id:{},chat:{},gift:{},req:{}};S.ach=S.ach||{};S.wd=S.wd||{own:{},jacket:null,hat:null};S.wd.own=S.wd.own||{};setPlayerLook(S.look);wearRefresh();buildArch();
   if(!S.adv2){S.adv2=1;if(S.intro)setTimeout(()=>toast('Your friends have new adventures for you! Check the Tasks app.'),6500)}
+  if(!S.treeNews){S.treeNews=1;if(S.intro)setTimeout(()=>toast('New! Equip your shovel and face a tree to dig it up, then replant it anywhere on the island.'),10500)}
   if(!S.rioNews){S.rioNews=1;if(S.intro)setTimeout(()=>toast('A boat has docked! Someone new is waiting by the pier. Go and say hello.'),8200)}
   if(!S.lotNews){S.lotNews=1;if(S.intro)setTimeout(()=>toast('A new friend, Lottie the Yorkie, has opened Casino Paw-Yal in the north-east corner of the island!'),4600)}
   if(!S.bellaNews){S.bellaNews=1;if(S.intro)setTimeout(()=>toast('A new friend, Bella the poodle, has moved to the island! Visit her boutique.'),3800)}
