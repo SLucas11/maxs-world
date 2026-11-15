@@ -358,7 +358,7 @@ body.redec #acts,body.redec #stick,body.redec #prompt,body.redec #keys,body.rede
 <script>
 // boot loader: show progress, catch errors, then run the game script after the first paint
 addEventListener('error',e=>{if(!window.__ready&&window.BOOT)BOOT.err('Something went wrong while loading: '+e.message)});
-window.APPV='81';
+window.APPV='82';
 // save backup and restore (moves your island between the downloaded file, the app, or a new phone)
 window.SAVEIO={dump(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('maxsworld.')===0)o[k]=localStorage.getItem(k)}return{app:'maxsworld',v:1,ver:window.APPV,at:new Date().toISOString(),data:o}},
  async backup(){try{if(window.save)save()}catch(e){}const d=this.dump();if(!Object.keys(d.data).some(k=>k.indexOf('maxsworld.slot')===0||k==='maxsworld.v1')){alert('There is no saved game to back up yet.');return}
@@ -2352,11 +2352,12 @@ function mkTree(t){const g=new THREE.Group();g.position.set(t.x,hL(t.x,t.z),t.z)
 // ================= SEASONS & WEATHER =================
 const SEASON_N={spring:'Spring',summer:'Summer',autumn:'Autumn',winter:'Winter'};
 const WTYPES={sunny:{n:'Sunny',i:'☀',t:{}},cloudy:{n:'Cloudy',i:'☁',t:{cloud:.75}},rain:{n:'Rain',i:'☂',t:{cloud:.9,rain:1}},storm:{n:'Thunderstorm',i:'⚡',t:{cloud:1,rain:1.5,storm:1}},snow:{n:'Snow',i:'❄',t:{cloud:.75,snow:1}},fog:{n:'Misty',i:'≋',t:{cloud:.45,fog:1}}};
-const WPROB={spring:[['sunny',.42],['cloudy',.25],['rain',.27],['fog',.06]],summer:[['sunny',.58],['cloudy',.15],['rain',.12],['storm',.15]],autumn:[['sunny',.34],['cloudy',.3],['rain',.23],['storm',.05],['fog',.08]],winter:[['sunny',.2],['cloudy',.25],['snow',.5],['fog',.05]]};
+const WPROB={spring:[['sunny',.52],['cloudy',.29],['rain',.13],['fog',.06]],summer:[['sunny',.66],['cloudy',.18],['rain',.07],['storm',.09]],autumn:[['sunny',.44],['cloudy',.35],['rain',.11],['storm',.03],['fog',.07]],winter:[['sunny',.2],['cloudy',.13],['snow',.62],['fog',.05]],frosty:[['sunny',.3],['cloudy',.22],['snow',.36],['rain',.05],['fog',.07]]};
+function wprobFor(se){return se==='autumn'&&new Date().getMonth()===10?WPROB.frosty:WPROB[se]}
 const WBLK=['Night','Morning','Afternoon','Evening'];
 function seasonAuto(){const m=new Date().getMonth();return m>=2&&m<=4?'spring':m>=5&&m<=7?'summer':m>=8&&m<=10?'autumn':'winter'}
 function seasonNow(){return S&&S.season&&S.season!=='auto'?S.season:seasonAuto()}
-function forecast(){const se=seasonNow(),r=rng(hash(todayKey()+se+'wx')),out=[];let prev=null;for(let b=0;b<4;b++){let pick='sunny';if(prev&&r()<.45)pick=prev;else{let x=r();for(const[k,p]of WPROB[se]){pick=k;if(x<p)break;x-=p}}out.push(pick);prev=pick}return out}
+function forecast(){const se=seasonNow(),r=rng(hash(todayKey()+se+'wx')),out=[];let prev=null;for(let b=0;b<4;b++){let pick='sunny';if(prev&&r()<.45)pick=prev;else{let x=r();for(const[k,p]of wprobFor(se)){pick=k;if(x<p)break;x-=p}}out.push(pick);prev=pick}return out}
 function weatherNow(){if(S&&S.wx&&S.wx!=='auto')return S.wx;return forecast()[Math.floor(new Date().getHours()/6)]}
 const W={type:null,cloud:0,rain:0,storm:0,snow:0,fog:0,wet:0,flash:0,bolt:6,thunder:-1,sn:0,season:null,rip:0};
 const WINDU={value:1};
@@ -2456,7 +2457,7 @@ let wxApplyT=0;
 function weatherStep(dt,now){if(!rainL)return;applySeason();const ty=weatherNow(),se=W.season;
   if(ty!==W.type){const was=W.type;W.type=ty;if(was&&booted){const msg={rain:'It’s starting to rain!',storm:'A storm is rolling in...',snow:'Snow is falling!',sunny:'The sun is coming out.',cloudy:'Clouds are gathering.',fog:'A soft mist rolls in.'}[ty];if(msg)toast(msg)}hudClock()}
   const t=Object.assign({},WTYPES[ty].t),k=Math.min(1,dt*.35);if(se==='winter'&&ty!=='sunny'&&ty!=='rain'&&ty!=='storm')t.snow=Math.max(t.snow||0,ty==='fog'?.3:.5);['cloud','rain','storm','snow','fog'].forEach(n=>W[n]+=((t[n]||0)-W[n])*k);
-  W.wet=Math.max(0,Math.min(1,W.wet+(W.rain>.3?dt*.04:-dt*.008)));W.sn+=((se==='winter'?.9:0)-W.sn)*Math.min(1,dt*.2);SEASU.snow.value=W.sn;
+  W.wet=Math.max(0,Math.min(1,W.wet+(W.rain>.3?dt*.04:-dt*.008)));W.sn+=((se==='winter'?.9:W.type==='snow'?.75:0)-W.sn)*Math.min(1,dt*.2);SEASU.snow.value=W.sn;
   WINDU.value=1+W.rain*.5+W.storm*1.6+W.snow*.3;
   if(TERRM){TERRM.roughness=.95-.4*W.wet;TERRM.color.setScalar(1-.14*W.wet)}
   // storm lightning
@@ -2827,7 +2828,7 @@ function initSky(){for(let i=0;i<22;i++){const s=new THREE.Sprite(new THREE.Spri
   const pt=canvasTex((x,s)=>{x.fillStyle='#ffffff';x.beginPath();x.ellipse(s/2,s/2,s*.4,s*.22,.6,0,7);x.fill();x.strokeStyle='rgba(0,0,0,.18)';x.beginPath();x.moveTo(s*.2,s*.65);x.lineTo(s*.8,s*.35);x.stroke()},32);for(let i=0;i<28;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:pt,transparent:true,depthWrite:false}));s.scale.set(.12,.12,1);s.userData={ph:Math.random()*9,r:Math.random()};scene.add(s);petals.push(s)}
   for(let i=0;i<24;i++){const s=glowSprite(0xffffff,.35,0);s.userData={ph:Math.random()*9};scene.add(s);sparkles.push(s)}}
 function skyStep(dt,now){clouds.forEach(c=>{const u=c.userData;u.ox+=u.sp*dt;if(u.ox>70)u.ox=-70;c.position.set(P.x+u.ox,u.y,P.z+u.oz);c.material.opacity=(.85-nightK*.6)*(u.extra?Math.min(1,W.cloud*1.2):1);c.material.color.setScalar(1-.5*W.cloud-.2*W.storm)});
-  const day=nightK<.5;const pv=day&&!inside&&(W.season==='spring'||W.season==='autumn')&&W.rain<.3;petals.forEach(p=>{const u=p.userData;u.ph+=dt*(W.season==='autumn'?.3:.4);p.visible=pv;if(W.season==='autumn')p.scale.set(.17,.17,1);else p.scale.set(.12,.12,1);const a=u.ph+u.r*20;p.position.set(P.x+Math.sin(a*.7)*7+Math.cos(u.r*40)*4,P.y+3.5-((u.ph*.6+u.r*5)%5),P.z+Math.cos(a*.5)*6-2);p.material.rotation=a*2});
+  const day=nightK<.5;const pv=day&&!inside&&(W.season==='spring'||W.season==='autumn')&&W.rain<.3&&W.snow<.3;petals.forEach(p=>{const u=p.userData;u.ph+=dt*(W.season==='autumn'?.3:.4);p.visible=pv;if(W.season==='autumn')p.scale.set(.17,.17,1);else p.scale.set(.12,.12,1);const a=u.ph+u.r*20;p.position.set(P.x+Math.sin(a*.7)*7+Math.cos(u.r*40)*4,P.y+3.5-((u.ph*.6+u.r*5)%5),P.z+Math.cos(a*.5)*6-2);p.material.rotation=a*2});
   sparkles.forEach(s=>{const u=s.userData;u.ph+=dt;if(u.ph>2.2||!s.userData.ok){u.ph=0;const a=Math.random()*6.28,d=6+Math.random()*16,x=P.x+Math.cos(a)*d,z=P.z+Math.sin(a)*d;u.ok=hV(x,z)<-.5;s.position.set(x,WL+.05,z)}s.material.opacity=u.ok&&day?Math.max(0,Math.sin(u.ph/2.2*Math.PI))*.9:0})}
 const CATCHLINE={seabass:"No, wait... it's at least a C+!",boot:'Who keeps losing these?',can:'Even the sea has litter.',shark:'A SHARK! Max wags his whole body!',goldtrout:"It shines like Rachel's smile!",
  tuna:'Tuna! Max can smell lunch already.',frog:'Ribbit! It looks a bit grumpy.',goldfish:'So tiny and so shiny!',koi:'A koi! So graceful.',tadpole:'It will grow legs someday!',
