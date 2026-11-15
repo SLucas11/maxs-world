@@ -358,7 +358,7 @@ body.redec #acts,body.redec #stick,body.redec #prompt,body.redec #keys,body.rede
 <script>
 // boot loader: show progress, catch errors, then run the game script after the first paint
 addEventListener('error',e=>{if(!window.__ready&&window.BOOT)BOOT.err('Something went wrong while loading: '+e.message)});
-window.APPV='82';
+window.APPV='83';
 // save backup and restore (moves your island between the downloaded file, the app, or a new phone)
 window.SAVEIO={dump(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('maxsworld.')===0)o[k]=localStorage.getItem(k)}return{app:'maxsworld',v:1,ver:window.APPV,at:new Date().toISOString(),data:o}},
  async backup(){try{if(window.save)save()}catch(e){}const d=this.dump();if(!Object.keys(d.data).some(k=>k.indexOf('maxsworld.slot')===0||k==='maxsworld.v1')){alert('There is no saved game to back up yet.');return}
@@ -1060,7 +1060,8 @@ function hiLevel(x,z){if(z<FALL.z-.1)return FALL.top-.22;if(z<-32.75)return 2.78
 function waterSdf(x,z){return Math.min(hiSdf(x,z),Math.abs(x-rxAt(z))*slopeF(rxAt,z)-2,Math.hypot(x-POND.x,z-POND.z)-POND.r,streamSdf(x,z))}
 function hV(x,z){let h=rampAt(x,z);if(h===null){h=0;for(const p of PLAT)h=Math.max(h,p.h*sst(.3,-.25,platSdf(p,x,z)))}
   const e=ISL(x,z);if(e>-3.2)h-=1.3*sst(-3.2,3,e);const w=waterSdf(x,z);if(w<.5)h-=.8*sst(.5,-.3,w);return h}
-function gy(x,z){{const tk=tripAt(x,z);if(tk)return tripGy(tk,x,z)}if(onFB(x,z)){const z0=fbZ(z),u=cl((x-sxAt(z0)+3.1)/6.2);return Math.max(hV(x,z),.36+Math.sin(u*Math.PI)*.28)}if(window.TJON&&onTJ(x,z))return KIOSK.position.y+.31;if(SEA.on)return WL+YDECK;if(onPier(x,z))return PIER.y;if(onBridge(x,z))return .2;return hV(x,z)}
+function gy(x,z){const h0=gy0(x,z);return DECKS&&DECKS.length?deckLift(x,z,h0):h0}
+function gy0(x,z){{const tk=tripAt(x,z);if(tk)return tripGy(tk,x,z)}if(onFB(x,z)){const z0=fbZ(z),u=cl((x-sxAt(z0)+3.1)/6.2);return Math.max(hV(x,z),.36+Math.sin(u*Math.PI)*.28)}if(window.TJON&&onTJ(x,z))return KIOSK.position.y+.31;if(SEA.on)return WL+YDECK;if(onPier(x,z))return PIER.y;if(onBridge(x,z))return .2;return hV(x,z)}
 const WL=-.22;
 function waterLevel(x,z){if(hiSdf(x,z)<0)return hiLevel(x,z);return streamSdf(x,z)<0&&z<-8*WK-.05?1.28:WL}
 function waterAt(x,z){{const tk=tripAt(x,z);if(tk)return tripWater(tk,x,z)}if(SEA.on)return onHullSea(x,z)?null:'deep';if(onPier(x,z)||onBridge(x,z))return null;if(hiSdf(x,z)<0)return Math.hypot(x-SPOND.x,z-SPOND.z)<SPOND.r+.2?'pond':'river';if(streamSdf(x,z)<0)return 'river';if(Math.hypot(x-POND.x,z-POND.z)<POND.r)return 'pond';
@@ -3858,7 +3859,7 @@ function menuFor(k,lines){const o=[],qi=S.q[k],qs=Q[k];
   if(k==='lottie'){o.splice(o.length-1,0,{t:'Tell me one of your stories',f:lottieStory});o.splice(1,0,{t:roomKey==='lottie'?"Let's play a game!":'What games do you have?',f:()=>roomKey==='lottie'?lottieGames():say('lottie',["Roulette, blackjack and the slot machines, darling! Come inside Casino Paw-Yal in the north-east corner of the island and try your luck."],null,()=>menuFor('lottie',['Anything else, darling?']))})}
   if(k!=='lottie'&&GALA[k]&&galaOn()&&!(S.qf&&S.qf['gala'+k]))o.unshift({t:"Lottie's gala invitation!",f:()=>{S.qf=S.qf||{};S.qf['gala'+k]=1;save();say(k,[GALA[k]],null,()=>{toast('Invited '+FR[k].name+' to the Paw-Yal Gala! ('+galaN()+'/4)');menuFor(k,['Anything else?'])})}});if(TRIP&&TRIP.fr===k)o.unshift({t:'Enjoy the island together',f:()=>{const L=TRIPCHAT[TRIP.k];say(k,[L[Math.floor(Math.random()*L.length)]],null,()=>{emote(k,emoPick(k));menuFor(k,['Anything else?'])})}});
   if(!S.d.gift[k])o.push({t:'Give a gift',f:()=>giftPick(k)});
-  if(k==='franky'&&S.house.stage>0){o.push({t:'Add a room',f:extMenu});o.push({t:'Renovate my home',f:()=>{unbusy();openReno()}});o.push({t:'Paint my house',f:paintHouse})}if(k==='franky')o.push({t:'Land and moving house',f:()=>{unbusy();openLand()}});if(k==='franky'&&!SEA.on)o.splice(1,0,{t:'Decorate the island',f:()=>say('franky',[ISLS().items.length?"Back for more? Let's make this island even prettier!":"Ooh, I love a project! Paths, lamps, benches, flower beds... pick what you like and put it anywhere on the island."],null,()=>openIsland('franky'))});
+  if(k==='franky'&&S.house.stage>0){o.push({t:'Add a room',f:extMenu});o.push({t:'Renovate my home',f:()=>{unbusy();openReno()}});o.push({t:'Paint my house',f:paintHouse})}if(k==='franky')o.push({t:'Land and moving house',f:()=>{unbusy();openLand()}});if(k==='franky'&&!SEA.on)o.splice(1,0,{t:'Decorate the island',f:()=>say('franky',[ISLS().items.length?"Back for more? Let's make this island even prettier!":"Ooh, I love a project! Paths, lamps, benches, flower beds... pick what you like and put it anywhere on the island."],null,()=>openIsland('franky'))});if(k==='franky'&&!SEA.on)o.splice(2,0,{t:'Build a garden extension',f:()=>say('franky',[ISLS().items.some(t=>ISLSURF[t.id])?"More garden work? Lovely! What are we building today?":"A garden? Now you're talking! I can build you a fenced garden with its own lawn and a wooden patio.","I do patios, terraces and raised spa platforms too. Pop a hot tub, a sauna or a cold plunge on top and you've got your own garden spa!"],null,()=>openIsland('franky','garden'))});
   if(S.q.bella===9&&S.qa.bella&&DELIV[k]&&!(S.qf&&S.qf['par'+k]))o.unshift({t:"Your parcel from Bella!",f:()=>{S.qf=S.qf||{};S.qf['par'+k]=1;save();say(k,[DELIV[k]],null,()=>{toast('Delivered '+FR[k].name+"'s parcel!");menuFor(k,['Anything else?'])})}});
   if(S.q.bella===5&&S.qa.bella&&INV[k]&&!(S.qf&&S.qf['inv'+k]))o.unshift({t:"Bella's fashion show is on!",f:()=>{S.qf=S.qf||{};S.qf['inv'+k]=1;save();say(k,[INV[k]],null,()=>{toast('Invited '+FR[k].name+' to the fashion show!');menuFor(k,['Anything else?'])})}});
   if(k==='xam'&&!SURF&&!TRIP)o.splice(1,0,{t:'Surf lesson ('+SURFCOST+' bones)',f:()=>{unbusy();startSurf()}});
@@ -4347,7 +4348,7 @@ function frame0(t){const dt=Math.min(.1,(t-last)/1000||.016);last=t;const now=t/
   tailSeg.forEach((sg,i)=>sg.rotation.z=Math.sin(t/(bk||sm?60:mvg?85:110)-i*.55)*(.08+i*.015));
   const blk=(t%3600)<130?.12:1;eyes.forEach(e=>e.scale.y=blk*(1-.6*sm));if(show&&show.t<3.2)headG.rotation.x-=.25;ears.forEach(e=>e.eg.rotation.z=-e.s*(e.b+Math.sin(t/900+e.s)*.03+(mvg?e.m:0)));
   tongue.visible=bk>0;jaw.position.y=-.115-(bk>0?Math.abs(Math.sin((now-barkT)*14))*.04:0);if(munchT>0){munchT-=dt;headG.rotation.x+=.2+Math.sin(munchT*15)*.12;jaw.position.y=-.115-Math.abs(Math.sin(munchT*17))*.04}
-  Object.entries(toolG).forEach(([k,g])=>g.visible=!inside&&!POSE&&!SURF&&!PLAY&&(SEA.on?k==='rod':S.tool===k));rodStep(dt);poseStep(dt,now);islStep(dt,now);playStep(dt,now);tripStep(dt,now);lighthouseStep(now);bizStep(dt);gfx63Step(dt,now);try{nightSkyStep(dt);season69()}catch(e){}cruStep(dt);casinoStep(dt);spaStep(dt);poolStep(dt);if(SURF){surfStep(dt,now);P.y=WL}redecStep(dt);chStep(dt);elecStep(dt);shellWash(dt);fxStepFX(dt);emoStep(dt);if(!inside)dropFallStep(now);fallStep(dt,now);
+  Object.entries(toolG).forEach(([k,g])=>g.visible=!inside&&!POSE&&!SURF&&!PLAY&&(SEA.on?k==='rod':S.tool===k));rodStep(dt);poseStep(dt,now);islStep(dt,now);playStep(dt,now);tripStep(dt,now);lighthouseStep(now);bizStep(dt);gfx63Step(dt,now);try{nightSkyStep(dt);season69()}catch(e){}cruStep(dt);casinoStep(dt);spaStep(dt);poolStep(dt);gardenStep(dt);if(SURF){surfStep(dt,now);P.y=WL}redecStep(dt);chStep(dt);elecStep(dt);shellWash(dt);fxStepFX(dt);emoStep(dt);if(!inside)dropFallStep(now);fallStep(dt,now);
   if(!inside){
     Object.values(NPC).forEach(n=>{const m=n.m;if(n.surf||n.play){m.g.position.set(n.x,n.play?n.sy:(n.sy||WL),n.z);m.g.rotation.y=n.face;return}n.y=(n.y??0)+(gy(n.x,n.z)-(n.y??0))*Math.min(1,dt*12);m.g.position.set(n.x,n.y+(n.hop||0),n.z);m.g.rotation.y=n.face;n.gt+=n.spd*dt*2.4;const mv=n.spd>.3;
       m.legs.forEach(l=>{if(mv){const q=n.gt+l.ph;l.lg.rotation.x=Math.sin(q)*.6;l.lg.position.y=l.y0+Math.max(0,Math.cos(q))*.04}else{l.lg.rotation.x*=.8;l.lg.position.y+=(l.y0-l.lg.position.y)*.3}});
@@ -4856,7 +4857,7 @@ function islFree(id,x,z,r,ignore){if(inside||SEA.on)return false;if(TRIP&&!TS(TR
   const pts=path?[[x,z],[x-.45,z-.45],[x+.45,z-.45],[x-.45,z+.45],[x+.45,z+.45]]:[[x,z]];for(const[a,b]of pts){if(!walkable(a,b)||onPier(a,b)||onBridge(a,b))return false}
   if(path){if(Math.abs(gy(x-.45,z)-gy(x+.45,z))>.3||Math.abs(gy(x,z-.45)-gy(x,z+.45))>.3)return false;if(BLD.some(b=>Math.abs(x-b.x)<b.hw+.3&&Math.abs(z-b.z)<b.hd+.3))return false;return!ISLS().items.some(t=>t!==ignore&&isPath(t.id)&&t.x===x&&t.z===z)}
   const rad=Math.max(ISLC[id][3]||0,.25),ca=Math.cos(r*Math.PI/4),sa=Math.sin(r*Math.PI/4),cs=(ISLCOL[id]||[[0,0,rad]]).map(([lx,lz,cr])=>[x+lx*ca+lz*sa,z-lx*sa+lz*ca,Math.max(cr,.12)]);
-  const me=islBox(id,x,z,r);if(ISLS().items.some(t=>t!==ignore&&!isPath(t.id)&&ISLC[t.id]&&boxHit(me,islBox(t.id,t.x,t.z,t.r||0))))return false;
+  const me=islBox(id,x,z,r);if(ISLS().items.some(t=>t!==ignore&&!isPath(t.id)&&ISLC[t.id]&&(ISLSURF[id]||!ISLSURF[t.id])&&boxHit(me,islBox(t.id,t.x,t.z,t.r||0))))return false;
   const h0=hL(x,z);for(const[cx,cz,cr]of cs){if(!walkable(cx,cz)||hL(cx,cz)!==h0)return false;if(BLD.some(b=>Math.abs(cx-b.x)<b.hw+cr+.15&&Math.abs(cz-b.z)<b.hd+cr+.15))return false;
     if(BLD.some(b=>b.door&&Math.hypot(cx-b.door[0],cz-b.door[1])<cr+.9))return false;
     if(OBC.some(c=>!(ignore&&ignore.__o&&ignore.__o.cols.includes(c))&&Math.hypot(cx-c.x,cz-c.z)<c.r+cr-.04))return false;
@@ -4907,11 +4908,11 @@ function islGrid(b,cat,shop){const g=el('div','grid');Object.entries(ISLC).filte
    const img=isPath(k)?(PICON[k]||(PICON[k]=pathIcon(k))):islIcon(k);const sw=img?{img}:{c:'#d8ccb4',t:'?'};
    if(shop)g.appendChild(card(sw,n,pr.toLocaleString()+' bones'+(isPath(k)?' / '+PACK:'')+(have?' · have '+have:''),()=>{closeSheet();islBuy(k)}));
    else if(have)g.appendChild(card(sw,n,'x'+have+' · tap to place',()=>islStart(k)))});return g}
-function openIsland(from){const shop=from==='franky';const tabs=[];
-  if(shop){[['path','Paths'],['light','Lights'],['decor','Decor'],['park','Doggy Park'],['swim','Pools'],['grotto','Grottos']].forEach(([c,l])=>tabs.push({id:c,label:l,render(b){const p=el('p');p.textContent=c==='swim'?'Luxury outdoor swimming pools, built by Franky. They need a big, flat, clear space. Walk up to one and press A to go for a swim, and a friend might join you!':c==='grotto'?'Hidden rocky grottos with their own swimming pools. Each one is a little world of its own. Press A next to the water to swim.':c==='path'?'Paths come in packs of '+PACK+' tiles. Turn on Auto-lay and walk to lay a path as you go!':c==='light'?'Lights glow at night and make the island cosy.':c==='park'?'Build your own doggy park, one piece at a time. Max can play on every piece: press A next to it!':'Benches, fences, flowers and more. Place them anywhere outdoors.';b.appendChild(p);b.appendChild(islGrid(b,c,true))}}))}
+function openIsland(from,tab0){const shop=from==='franky';const tabs=[];
+  if(shop){[['path','Paths'],['light','Lights'],['decor','Decor'],['park','Doggy Park'],['swim','Pools'],['grotto','Grottos'],['garden','Garden'],['wellness','Garden Spa'],['outdoor','Outdoor furniture']].forEach(([c,l])=>tabs.push({id:c,label:l,render(b){const p=el('p');p.textContent=c==='garden'?'Give your home a garden! A fenced Garden Extension comes with its own lawn and wooden patio. Patios, terraces and raised spa platforms are walk-on decks: anything you place on top sits on them.':c==='wellness'?'Hot tubs, cold plunges and saunas for outdoors. Put them on a spa platform or patio, or straight on the grass. Press A next to one to use it.':c==='outdoor'?'Garden furniture for your patio or lawn: dining sets, sofas, loungers, a barbecue, a fire pit and more.':c==='swim'?'Luxury outdoor swimming pools, built by Franky. They need a big, flat, clear space. Walk up to one and press A to go for a swim, and a friend might join you!':c==='grotto'?'Hidden rocky grottos with their own swimming pools. Each one is a little world of its own. Press A next to the water to swim.':c==='path'?'Paths come in packs of '+PACK+' tiles. Turn on Auto-lay and walk to lay a path as you go!':c==='light'?'Lights glow at night and make the island cosy.':c==='park'?'Build your own doggy park, one piece at a time. Max can play on every piece: press A next to it!':'Benches, fences, flowers and more. Place them anywhere outdoors.';b.appendChild(p);b.appendChild(islGrid(b,c,true))}}))}
   tabs.push({id:'mine',label:'My items',render(b){const L=ISLS(),any=Object.keys(L.inv).length;const p=el('p');p.textContent=any?'Tap an item to place it. You can carry on walking while you choose a spot.':shop?'Nothing in storage. Buy something from the other tabs!':'Nothing in storage. Talk to Franky to buy paths, lights and decorations.';b.appendChild(p);
-    if(any)['path','light','decor','park','swim','grotto'].forEach(c=>b.appendChild(islGrid(b,c,false)));const n=L.items.length,mv=el('button','tb',"Move or put away things you've placed ("+n+')');mv.style.cssText='display:block;width:100%;margin-top:12px';mv.disabled=!n;mv.onclick=iedStart;b.appendChild(mv)}});
-  openSheet(shop?"Franky's Island Designs":'Island decorations',tabs,shop?undefined:'mine')}
+    if(any)['path','light','decor','park','swim','grotto','garden','wellness','outdoor'].forEach(c=>b.appendChild(islGrid(b,c,false)));const n=L.items.length,mv=el('button','tb',"Move or put away things you've placed ("+n+')');mv.style.cssText='display:block;width:100%;margin-top:12px';mv.disabled=!n;mv.onclick=iedStart;b.appendChild(mv)}});
+  openSheet(shop?"Franky's Island Designs":'Island decorations',tabs,shop?(tab0||undefined):'mine')}
 // placeBar buttons: route to island modes when active
 {const pr=$('pRot').onclick,pc=$('pCancel').onclick,pp=$('pPlace').onclick;
  $('pRot').onclick=()=>{if(IPL){IPL.r=(IPL.r+(isPath(IPL.id)?2:1))%8;sfx.tick()}else pr&&pr()};
@@ -6254,6 +6255,165 @@ const SWIMS={};[[POOLDEF,'swim'],[GROTTODEF,'grotto']].forEach(([D,cat])=>Object
      s.acc=(s.acc||0)+dt;if(s.acc>.2){s.acc=0;fxBits(wpos(s.g,lx,s.wy+.02,lz),0xdff6ff,3,1.1);if(Math.random()<.3)tone(380+Math.random()*300,.05,'sine',.025)}
      if(s.t>1.5&&!s.said){s.said=1;toast((cat==='grotto'?'What a magical swim!':'Splash! Max is swimming.')+' Press A to get out.')}},
    stop(s){s.offSay=cat==='grotto'?'That was the most magical swim ever!':'Ahh, what a lovely swim!';S.st.swims=(S.st.swims||0)+1;save()},off:[d.off[0],d.off[1],0]}}));
+// ================= GARDENS: garden extension, patios, spa platforms, outdoor spa and outdoor furniture =================
+// Surfaces (patios, platforms, the garden) are walk-on decks: Max, friends and anything placed on them sit at the deck height.
+var ISLSURF={};var DECKS=[];
+function deckHit(d,x,z){const rx=x-d.x,rz=z-d.z,lx=rx*d.ca-rz*d.sa,lz=rx*d.sa+rz*d.ca;let top=null;for(const[cx,cz,hw,hd,h]of d.rects){if(Math.abs(lx-cx)<=hw&&Math.abs(lz-cz)<=hd){const t=d.base+h;if(top===null||t>top)top=t}}return top}
+function deckLift(x,z,h0){let h=h0;for(const d of DECKS){if(Math.abs(x-d.x)>d.rad||Math.abs(z-d.z)>d.rad)continue;const t=deckHit(d,x,z);if(t!==null&&t>h)h=t}return h}
+function deckAt(x,z){let best=null;for(const d of DECKS){if(Math.abs(x-d.x)>d.rad||Math.abs(z-d.z)>d.rad)continue;const t=deckHit(d,x,z);if(t!==null&&(!best||t>best.top))best={d,top:t}}return best}
+
+// ---- materials and little builders
+const GDN={};
+function lawnMat(){return GDN.lawn||(GDN.lawn=new THREE.MeshStandardMaterial({roughness:.95,map:ftex('gdnlawn',(x,s)=>{for(let i=0;i<8;i++){x.fillStyle=i%2?'#6fbf4a':'#7ccc55';x.fillRect(0,i*s/8,s,s/8)}for(let i=0;i<2500;i++){x.fillStyle='rgba('+(Math.random()<.5?'40,110,30':'170,220,110')+','+(.12+Math.random()*.15)+')';x.fillRect(Math.random()*s,Math.random()*s,1,2+Math.random()*3)}},256)}))}
+function boards(g,x0,x1,z0,z1,top,col,alongZ){const th=.05,span=alongZ?(x1-x0):(z1-z0),n=Math.max(1,Math.round(span/.2)),w=span/n,m1=WD(col,.62),m2=WD(lighten(col,.08),.62),cx=(x0+x1)/2,cz=(z0+z1)/2;
+  RB(g,x1-x0,top-th,z1-z0,WD(dk2(col),.7),cx,(top-th)/2,cz,.01);
+  for(let i=0;i<n;i++){if(alongZ)RB(g,w-.022,th,z1-z0-.02,i%2?m1:m2,x0+w*(i+.5),top-th/2,cz,.008);else RB(g,x1-x0-.02,th,w-.022,i%2?m1:m2,cx,top-th/2,z0+w*(i+.5),.008)}}
+function rail(g,x0,z0,x1,z1,base,h,col){const L=Math.hypot(x1-x0,z1-z0),a=Math.atan2(x1-x0,z1-z0),n=Math.max(1,Math.round(L/.55)),m=WD(col,.6);
+  for(let i=0;i<=n;i++){const u=i/n;RB(g,.07,h,.07,m,x0+(x1-x0)*u,base+h/2,z0+(z1-z0)*u,.01)}
+  [h-.03,h*.5].forEach(y=>{const r=RB(g,.06,.05,L,m,(x0+x1)/2,base+y,(z0+z1)/2,.01);r.rotation.y=a})}
+function railCols(x0,z0,x1,z1,out){const L=Math.hypot(x1-x0,z1-z0),n=Math.max(1,Math.round(L/.4));for(let i=0;i<=n;i++){const u=i/n;out.push([x0+(x1-x0)*u,z0+(z1-z0)*u,.1])}return out}
+function picket(g,x0,z0,x1,z1){const L=Math.hypot(x1-x0,z1-z0),a=Math.atan2(x1-x0,z1-z0),n=Math.max(1,Math.round(L/.16)),w=M(0xf8f6f0,{roughness:.6});
+  for(let i=0;i<=n;i++){const u=i/n,p=RB(g,.07,.62,.03,w,x0+(x1-x0)*u,.35,z0+(z1-z0)*u,.005);p.rotation.y=a}[.2,.5].forEach(y=>{const r=RB(g,.04,.06,L,w,(x0+x1)/2,y,(z0+z1)/2,.005);r.rotation.y=a})}
+function flowerRow(g,x0,x1,z,cols,seed){const R=rng(seed);RB(g,x1-x0,.1,.32,M(0x5a3a22,{roughness:1}),(x0+x1)/2,.09,z,.03);for(let x=x0+.12;x<x1-.08;x+=.17){const c=cols[Math.floor(R()*cols.length)],h=.18+R()*.15;CY(g,.012,.012,h,M(0x3a8a3a),x,.14+h/2,z+(R()-.5)*.14,4);SPH(g,.055,M(c,{roughness:.5}),x,.15+h,z+(R()-.5)*.14,1,.7,1);SPH(g,.07,M(0x4a9a3a,{roughness:.8}),x+.05,.17,z,1,.6,1)}}
+function puff(par,p,col,op,sz,vy){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:GT,color:col||0xffffff,transparent:true,opacity:op||.3,depthWrite:false}));s.scale.set(sz||.4,sz||.4,1);s.position.copy(p);par.add(s);fxAdd(s,new THREE.Vector3((Math.random()-.5)*.25,vy||.6,(Math.random()-.5)*.25),1.8,{g:0,fade:1,grow:1.3})}
+
+// ---- the catalogue: [id, name, price, category, footprint [hw,hd,zoff], collisions, surface rects, builder]
+const GARDEN=[
+ ['gardenext','Garden Extension & Patio',30000,'garden',[3.6,3.0],null,[[0,0,3.6,3.0,.04],[-1.8,-1.75,1.6,1.05,.16]],g=>{
+   RB(g,7.2,.04,6.0,lawnMat(),0,.02,0,.01);boards(g,-3.4,-.2,-2.8,-.7,.16,0xb07a48);
+   [[-1.2,-.62],[-2.4,-.62]].forEach(([x,z])=>RB(g,.5,.08,.16,M(0xa8a29a,{roughness:.9}),x,.08,z,.02));
+   picket(g,-3.55,-2.95,3.55,-2.95);picket(g,-3.55,-2.95,-3.55,2.95);picket(g,3.55,-2.95,3.55,2.95);picket(g,-3.55,2.95,-.75,2.95);picket(g,.75,2.95,3.55,2.95);
+   const gate=new THREE.Group();gate.position.set(.75,0,2.95);gate.rotation.y=-1.9;g.add(gate);picket(gate,0,0,-1.4,0);[-.78,.78].forEach(x=>RB(g,.12,.8,.12,M(0xf0ece4,{roughness:.6}),x,.4,2.95,.02));
+   flowerRow(g,.2,3.35,-2.7,[0xff6aa8,0xffd23a,0xb07aff,0xff8a3a],71);flowerRow(g,2.9,3.35,-2.3,[0xff6aa8,0xffffff],72);
+   for(let i=0;i<4;i++){const s=CY(g,.2,.2,.04,M(0xb8b2a8,{roughness:.9}),Math.sin(i*.8)*.25,.05,2.4-i*.7,10);s.scale.z=.8}
+   [[-3.2,2.6],[3.2,2.6]].forEach(([x,z])=>{RB(g,.4,.4,.4,M(0xb0603a,{roughness:.8}),x,.2,z,.04);SPH(g,.3,M(0x4a9a3a,{roughness:.8}),x,.62,z)});
+   const sh=new THREE.Group();sh.position.set(2.4,0,-1.6);g.add(sh);RB(sh,.7,.06,.5,WD(0x8a5a34,.6),0,.62,0,.02);[[-.3,-.2],[.3,-.2],[-.3,.2],[.3,.2]].forEach(([a,b])=>RB(sh,.05,.6,.05,WD(0x6a4228,.6),a,.3,b,.005));SPH(sh,.12,M(0x7ab0e0),-.15,.75,0,1,.8,1);CY(sh,.08,.06,.16,M(0xb0603a),.15,.72,0,10)}],
+ ['patiosmall','Small Wooden Patio',6000,'garden',[1.25,1.25],[],[[0,0,1.25,1.25,.16]],g=>{boards(g,-1.25,1.25,-1.25,1.25,.16,0xb07a48)}],
+ ['patiolarge','Large Wooden Patio',11000,'garden',[2.0,1.5],[],[[0,0,2.0,1.5,.16]],g=>{boards(g,-2,2,-1.5,1.5,.16,0xa86e3e)}],
+ ['patiogrey','Grey Composite Deck',12500,'garden',[1.75,1.75],[],[[0,0,1.75,1.75,.16]],g=>{boards(g,-1.75,1.75,-1.75,1.75,.16,0x8a8a88,true)}],
+ ['patiostone','Stone Terrace',13500,'garden',[1.75,1.5],[],[[0,0,1.75,1.5,.14]],g=>{RB(g,3.5,.1,3.0,M(0x9a958c,{roughness:.9}),0,.05,0,.01);const R=rng(81),c=[0xd8d0c0,0xcac0ae,0xe2dccc];for(let i=0;i<5;i++)for(let j=0;j<4;j++)RB(g,.66,.04,.7,M(c[Math.floor(R()*3)],{roughness:.85}),-1.4+i*.7,.12,-1.125+j*.75,.02)}],
+ ['spaplat','Garden Spa Platform',22000,'garden',[2.2,2.02,.32],null,null,g=>platform(g,2.2,1.7,false)],
+ ['spaplatbig','Grand Spa Platform & Pergola',36000,'garden',[2.9,2.42,.32],null,null,g=>platform(g,2.9,2.1,true)],
+ // the outdoor spa
+ ['outhottub','Outdoor Hot Tub',14000,'wellness',[1.0,1.0],[[0,0,.95]],null,g=>{const t=buildFurn('jacuzzi');g.add(t);g.userData.tub={w:.66,r:.6,jets:.7};RB(g,.8,.2,.34,WD(0x8a5a34,.6),0,.1,1.17,.02)}],
+ ['outspapool','Outdoor Round Spa Pool',12500,'wellness',[1.0,1.1],[[0,0,.97]],null,g=>{const t=buildFurn('jacuzziround');g.add(t);g.userData.tub={w:.62,r:.6,jets:.75}}],
+ ['outplunge','Cold Plunge Barrel',5500,'wellness',[.48,.48],[[0,0,.46]],null,g=>{const t=buildFurn('plungetub');g.add(t);g.userData.plunge={w:.78}}],
+ ['iceplunge','Ice Bath Trough',6500,'wellness',[.84,.52],[[-.4,0,.45],[.4,0,.45]],null,g=>{const st=MTL(0xc8ccd0,.35);const o=CY(g,.5,.46,.55,st,0,.275,0,28);o.scale.x=1.65;const inn=new THREE.Mesh(new THREE.CylinderGeometry(.46,.46,.5,28,1,true),new THREE.MeshStandardMaterial({color:0x9aa4ac,metalness:.6,roughness:.4,side:THREE.BackSide}));inn.scale.x=1.65;inn.position.y=.3;g.add(inn);
+   const r=TOR(g,.49,.025,st,0,.55,0,true);r.scale.x=1.65;const wt=new THREE.Mesh(new THREE.CircleGeometry(.46,28),new THREE.MeshStandardMaterial({color:0x9fe0f2,roughness:.05,metalness:.1,transparent:true,opacity:.85}));wt.rotation.x=-Math.PI/2;wt.scale.x=1.65;wt.position.y=.47;g.add(wt);
+   const R=rng(83);for(let i=0;i<9;i++){const ic=new THREE.Mesh(new THREE.BoxGeometry(.09,.07,.09),new THREE.MeshStandardMaterial({color:0xeef8ff,transparent:true,opacity:.85,roughness:.05}));ic.position.set((R()-.5)*1.2,.49,(R()-.5)*.5);ic.rotation.set(R(),R()*6,R());g.add(ic)}
+   RB(g,.06,.3,.03,M(0xffffff),.82,.62,0,.01);RB(g,.03,.2,.035,M(0x3a8adf),.82,.6,.002,.005);g.userData.plunge={w:.47}}],
+ ['barrelsauna','Barrel Sauna',16000,'wellness',[1.0,1.18],[[0,-.55,.9],[0,.45,.9]],null,g=>{
+   const wm=new THREE.MeshStandardMaterial({color:0xc8844a,map:WD(0xc8844a,.6).map,roughness:.6}),dm=WD(0x8a5530,.6);
+   const b=new THREE.Mesh(new THREE.CylinderGeometry(.95,.95,2.2,24),wm);b.rotation.x=Math.PI/2;b.position.y=1.08;g.add(b);
+   for(let i=0;i<24;i++){const a=i/24*Math.PI*2;const s=RB(g,.02,.02,2.21,dm,Math.cos(a)*.952,1.08+Math.sin(a)*.952,0,.002)}
+   [-.8,.8].forEach(z=>{const t=TOR(g,.965,.025,MTL(0x2a2a2e,.4),0,1.08,z,false)});
+   [-.7,.7].forEach(z=>{RB(g,1.6,.3,.16,dm,0,.15,z,.02)});
+   RB(g,.6,1.25,.03,GLS(0xf2c890,.55),0,1.0,1.11,.01);RB(g,.04,1.25,.05,dm,-.3,1.0,1.12,.005);RB(g,.04,1.25,.05,dm,.3,1.0,1.12,.005);RB(g,.64,.05,.05,dm,0,1.63,1.12,.005);RB(g,.04,.25,.05,WD(0x5a3a1a,.5),.22,1.0,1.14,.01);
+   const gl=glowSprite(0xffb060,1.2,.5);gl.position.set(0,1.0,.9);g.add(gl);lamps.push(gl);
+   CY(g,.07,.07,.6,MTL(0x2a2a2e,.5),.45,2.1,-.6,10);CY(g,.12,.12,.04,MTL(0x2a2a2e,.5),.45,2.41,-.6,10);
+   RB(g,.9,.14,.36,WD(0x8a5a34,.6),0,.07,1.32,.02);g.userData.sauna={chim:[.45,2.45,-.6]}}],
+ ['saunacabin','Garden Sauna Cabin',19000,'wellness',[1.12,1.3,.1],[[0,0,1.0]],null,g=>{const t=buildFurn('sauna');g.add(t);const rf=WD(0x5a3a22,.7);
+   [-1,1].forEach(s=>{const r=RB(g,1.25,.06,2.4,rf,s*.56,2.42,0,.02);r.rotation.z=s*-.42});RB(g,.08,.08,2.4,rf,0,2.66,0,.01);
+   RB(g,1.2,.12,.5,WD(0x8a5a34,.6),-.4,.06,1.2,.02);const l=glowSprite(0xffc070,1.0,.45);l.position.set(-.4,1.9,1.05);g.add(l);lamps.push(l);
+   CY(g,.07,.07,.5,MTL(0x2a2a2e,.5),.6,2.7,-.5,10);g.userData.sauna={chim:[.6,2.98,-.5]}}],
+ // outdoor furniture
+ ['patiodining','Patio Dining Set',3800,'outdoor',[1.0,1.0],[[0,0,.55],[.82,0,.2],[-.82,0,.2],[0,.82,.2],[0,-.82,.2]],null,g=>{parasol(g,0,0,0x3aa0d8);const w=MTL(0x2a2a2e,.5);CY(g,.52,.52,.04,GLO(0xf2f0ea,.3),0,.72,0,24);CY(g,.04,.04,.7,w,0,.36,0,8);CY(g,.25,.28,.03,w,0,.015,0,14);
+   for(let i=0;i<4;i++){const c=new THREE.Group(),a=i*Math.PI/2;c.position.set(Math.sin(a)*.82,0,Math.cos(a)*.82);c.rotation.y=a+Math.PI;g.add(c);RB(c,.42,.05,.42,FB(0xf6f2ea),0,.45,0,.02);[[-.18,-.18],[.18,-.18],[-.18,.18],[.18,.18]].forEach(([x,z])=>RB(c,.03,.44,.03,w,x,.22,z,.004));RB(c,.42,.42,.04,w,0,.68,-.2,.01);RB(c,.38,.3,.05,FB(0x3aa0d8),0,.7,-.17,.02)}}],
+ ['rattansofa','Rattan Sofa Set',4600,'outdoor',[1.05,.85],[[-.55,-.4,.38],[.55,-.4,.38],[0,.45,.32]],null,g=>{const rt=WD(0x8a6038,.8),cu=FB(0xeae2d2);RB(g,2.0,.36,.75,rt,0,.2,-.4,.05);RB(g,1.84,.14,.62,cu,0,.43,-.36,.05);RB(g,2.0,.5,.16,rt,0,.6,-.72,.05);[-1,1].forEach(s=>RB(g,.16,.26,.75,rt,s*.92,.5,-.4,.04));
+   [-.5,.5].forEach(x=>{RB(g,.8,.4,.14,cu,x,.7,-.6,.06)});RB(g,.32,.3,.1,FB(0xff8a5a),-.55,.68,-.5,.06);RB(g,.32,.3,.1,FB(0x3aa0d8),.55,.68,-.5,.06);
+   RB(g,1.0,.3,.55,rt,0,.15,.45,.04);RB(g,1.04,.03,.59,GLS(0xd8eef6,.45),0,.32,.45,.005);CY(g,.07,.06,.12,M(0xffffff),0,.39,.45,10);SPH(g,.08,M(0x4a9a3a),0,.48,.45)}],
+ ['sunlounger','Sun Lounger',1600,'outdoor',[.34,.85],[[0,-.42,.3],[0,.42,.3]],null,g=>{lounger(g,0,0,0,0xff8a5a)}],
+ ['bbq','Barbecue Grill',2400,'outdoor',[.75,.35],[[-.35,0,.32],[.35,0,.32]],null,g=>{const bl=MTL(0x2a2a2e,.4),st=MTL(0xc8ccd0,.25);RB(g,.8,.55,.5,bl,0,.38,0,.03);[-1,1].forEach(s=>RB(g,.3,.04,.45,st,s*.56,.66,0,.01));RB(g,.76,.04,.46,st,0,.67,0,.005);
+   const lid=new THREE.Mesh(new THREE.CylinderGeometry(.24,.24,.76,16,1,false,0,Math.PI),bl);lid.rotation.z=Math.PI/2;lid.rotation.y=0;lid.position.set(0,.68,-.12);lid.rotation.x=-1.2;g.add(lid);
+   for(let i=0;i<5;i++)RB(g,.7,.02,.02,MTL(0x5a5a5e,.4),0,.7,-.16+i*.08,.002);const co=M(0xff5a1a,{roughness:.6});co.emissive=new THREE.Color(0xff4a10);co.emissiveIntensity=.9;RB(g,.66,.03,.36,co,0,.665,0,.005);
+   [[0,-.08,0xb05a2a],[.18,.06,0xd8a060],[-.18,.06,0xb05a2a]].forEach(([x,z,c])=>{const s=CY(g,.035,.035,.18,M(c,{roughness:.5}),x,.73,z,8);s.rotation.z=Math.PI/2});
+   [[-.35,-.2],[.35,-.2],[-.35,.2],[.35,.2]].forEach(([x,z])=>CY(g,.04,.04,.12,M(0x111111),x,.06,z,8));const gs=glowSprite(0xff7a2a,.7,.35);gs.position.y=.75;g.add(gs);lamps.push(gs);g.userData.bbq=1}],
+ ['firepit','Fire Pit & Log Seats',3000,'outdoor',[1.35,.55],[[0,0,.55],[-1.05,0,.25],[1.05,0,.25]],null,g=>{for(let i=0;i<12;i++){const a=i/12*Math.PI*2,r=mkRock(.14,i*7+2,0,{});r.position.set(Math.cos(a)*.42,0,Math.sin(a)*.42);g.add(r)}
+   CY(g,.36,.36,.04,M(0x2a2420,{roughness:1}),0,.04,0,14);[0,1.1,2.2].forEach(a=>{const l=CY(g,.05,.05,.5,WD(0x6a4228,.8),Math.cos(a)*.08,.1,Math.sin(a)*.08,8);l.rotation.z=Math.PI/2;l.rotation.y=a});
+   const fg=new THREE.Group();fg.position.y=.18;fg.scale.setScalar(2.2);g.add(fg);const fl=mesh(coneG,new THREE.MeshBasicMaterial({color:0xffa030}),0,.12,0);fl.scale.set(.14,.36,.14);fg.add(fl);const fs=glowSprite(0xff9a3a,1.2,.8);fs.position.y=.16;fg.add(fs);g.userData.fire={fl,fs};
+   [-1.05,1.05].forEach(x=>{const lg=CY(g,.2,.2,.7,WD(0x7a5634,.8),x,.22,0,12);lg.rotation.x=Math.PI/2;CY(g,.17,.17,.005,WD(0xd8b080,.7),x,.22,.351,12).rotation.x=Math.PI/2})}],
+ ['patioheater','Patio Heater',1800,'outdoor',[.3,.3],[[0,0,.28]],null,g=>{const st=MTL(0xc8ccd0,.25);CY(g,.28,.3,.12,st,0,.06,0,16);CY(g,.04,.04,2.0,st,0,1.1,0,8);CY(g,.12,.1,.3,st,0,2.0,0,12);const hm=M(0xff6a2a);hm.emissive=new THREE.Color(0xff5010);hm.emissiveIntensity=1;CY(g,.08,.08,.26,hm,0,2.0,0,10);
+   CY(g,.5,.05,.12,st,0,2.25,0,20);const gs=glowSprite(0xff8a3a,1.4,.5);gs.position.y=2.0;g.add(gs);lamps.push(gs)}],
+ ['hammock','Garden Hammock',2600,'outdoor',[1.45,.35],[[-1.35,0,.12],[1.35,0,.12]],null,g=>{const w=WD(0x7a5634,.7);[-1.35,1.35].forEach(x=>{RB(g,.1,1.3,.1,w,x,.65,0,.02);RB(g,.5,.06,.1,w,x,.03,0,.01)});
+   const fab=new THREE.MeshStandardMaterial({color:0xf2a23a,map:ftex('hammk',(x,s)=>{for(let i=0;i<8;i++){x.fillStyle=['#f2a23a','#ffffff','#3aa0d8','#ffffff'][i%4];x.fillRect(0,i*s/8,s,s/8)}},64),side:THREE.DoubleSide,roughness:.9});
+   const geo=new THREE.PlaneGeometry(2.0,.7,16,4),p=geo.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i);p.setZ(i,-(1-(x/1.0)**2)*.35+Math.abs(y)*-.0+ (y*y)*.25)}geo.computeVertexNormals();
+   const sw=new THREE.Group();sw.position.y=1.0;g.add(sw);const h=new THREE.Mesh(geo,fab);h.rotation.x=-Math.PI/2;sw.add(h);[-1,1].forEach(s=>{const c=CY(sw,.008,.008,.42,M(0xe8dcc0),s*1.18,.02,0,4);c.rotation.z=s*1.2});g.userData.sw=sw}],
+ ['swingseat','Garden Swing Seat',3200,'outdoor',[1.05,.6],[[-.95,0,.15],[.95,0,.15],[0,-.45,.15],[0,.45,.15]],null,g=>{const fr=MTL(0xf2f0ea,.35);[-1,1].forEach(s=>{[-1,1].forEach(t=>{const l=RB(g,.06,1.9,.06,fr,s*.95,.93,t*.32,.01);l.rotation.x=t*-.3})});RB(g,2.0,.06,.06,fr,0,1.85,0,.01);
+   const can=RB(g,2.1,.04,.9,FB(0x3aa0d8),0,1.95,0,.02);can.rotation.x=.12;
+   const sw=new THREE.Group();sw.position.y=1.82;g.add(sw);[-.7,.7].forEach(x=>CY(sw,.01,.01,1.3,MTL(0x8a8a8e,.4),x,-.65,0,4));const s=new THREE.Group();s.position.y=-1.32;sw.add(s);RB(s,1.5,.08,.5,fr,0,0,0,.02);RB(s,1.4,.1,.46,FB(0xf6f2ea),0,.08,0,.04);RB(s,1.5,.5,.06,fr,0,.25,-.24,.02);RB(s,1.4,.42,.1,FB(0xf6f2ea),0,.3,-.18,.04);[[-.4,0xff8a5a],[.4,0xffd23a]].forEach(([x,c])=>RB(s,.3,.28,.1,FB(c),x,.3,-.1,.05));g.userData.sw=sw}]];
+function platform(g,hw,hd,big){const top=.5;boards(g,-hw,hw,-hd,hd,top,0xa86e3e);
+  [[.33,.16],[.165,.48]].forEach(([h,z])=>{RB(g,1.4,h,.32,WD(0x8a5a34,.6),0,h/2,hd+z,.01);RB(g,1.4,.04,.3,WD(0xb07a48,.6),0,h-.02,hd+z,.005)});
+  const rc=0x8a5a34;rail(g,-hw+.05,-hd+.05,hw-.05,-hd+.05,top,.55,rc);rail(g,-hw+.05,-hd+.05,-hw+.05,hd-.05,top,.55,rc);rail(g,hw-.05,-hd+.05,hw-.05,hd-.05,top,.55,rc);rail(g,-hw+.05,hd-.05,-.75,hd-.05,top,.55,rc);rail(g,.75,hd-.05,hw-.05,hd-.05,top,.55,rc);
+  [[-hw+.2,hd-.2],[hw-.2,hd-.2]].forEach(([x,z])=>{const b=RB(g,.34,.34,.34,M(0x5a5a60,{roughness:.8}),x,top+.17,z,.03);SPH(g,.22,M(0x4a9a3a,{roughness:.8}),x,top+.45,z)});
+  if(big){const pw=WD(0x7a5634,.7);[[-hw+.2,-hd+.2],[hw-.2,-hd+.2],[-hw+.2,hd-.5],[hw-.2,hd-.5]].forEach(([x,z])=>RB(g,.14,2.2,.14,pw,x,top+1.1,z,.02));
+    [-hd+.2,hd-.5].forEach(z=>RB(g,hw*2-.2,.16,.1,pw,0,top+2.25,z,.01));for(let i=0;i<9;i++){const x=-hw+.3+i*(hw*2-.6)/8;RB(g,.08,.1,hd*2-.2,pw,x,top+2.38,-.15,.01)}
+    const C=[0xffd890,0xff9ab0,0x9ad8ff,0xb8ff9a];for(let i=0;i<12;i++){const x=-hw+.4+i*(hw*2-.8)/11,y=top+2.12-Math.sin(i/11*Math.PI)*.25;SPH(g,.045,new THREE.MeshBasicMaterial({color:C[i%4]}),x,y,-hd+.2);const s=glowSprite(C[i%4],.5,.5);s.position.set(x,y,-hd+.2);g.add(s);lamps.push(s)}}}
+// register
+GARDEN.forEach(([id,n,p,cat,fp,cols,surf,build])=>{ISLC[id]=[n,p,cat,Math.max(fp[0],fp[1])];ISLFP[id]=fp;
+  if(id==='spaplat'||id==='spaplatbig'){const hw=fp[0],hd=id==='spaplat'?1.7:2.1,c=[];railCols(-hw+.1,-hd+.1,hw-.1,-hd+.1,c);railCols(-hw+.1,-hd+.4,-hw+.1,hd-.1,c);railCols(hw-.1,-hd+.4,hw-.1,hd-.1,c);railCols(-hw+.1,hd-.1,-.8,hd-.1,c);railCols(.8,hd-.1,hw-.1,hd-.1,c);cols=c;
+    surf=[[0,0,hw,hd,.5],[0,hd+.16,.7,.16,.33],[0,hd+.48,.7,.16,.165]]}
+  if(id==='gardenext'){const c=[];railCols(-3.5,-2.92,3.5,-2.92,c);railCols(-3.52,-2.5,-3.52,2.92,c);railCols(3.52,-2.5,3.52,2.92,c);railCols(-3.5,2.92,-.85,2.92,c);railCols(.85,2.92,3.5,2.92,c);c.forEach(q=>q[2]=.12);cols=c}
+  if(cols)ISLCOL[id]=cols;if(surf)ISLSURF[id]=surf;
+  ISLM[id]=()=>{const g=new THREE.Group();build(g);if(surf&&!g.userData.sw){try{mergeByMat(g,{skip:o=>o.isSprite||(o.material&&o.material.transparent)})}catch(e){}}return g}});
+// ---- placement rules for decks
+const islFree0=islFree;
+islFree=function(id,x,z,r,ignore){if(!ISLC[id]||!islFree0(id,x,z,r,ignore))return false;const B=islBox(id,x,z,r),cat=ISLC[id][2];
+  const at=(lx,lz)=>[B.x+lx*B.ax[0][0]+lz*B.ax[1][0],B.z+lx*B.ax[0][1]+lz*B.ax[1][1]];
+  if(isPath(id))return !deckAt(x,z);
+  if(ISLSURF[id]){const h0=hL(x,z),y0=gy0(x,z);
+    for(let lx=-B.hw;lx<=B.hw+.01;lx+=Math.max(.3,B.hw/6))for(let lz=-B.hd;lz<=B.hd+.01;lz+=Math.max(.3,B.hd/6)){const[px,pz]=at(Math.max(-B.hw+.05,Math.min(B.hw-.05,lx)),Math.max(-B.hd+.05,Math.min(B.hd-.05,lz)));
+      if(!walkable(px,pz)||onPier(px,pz)||onBridge(px,pz)||hL(px,pz)!==h0||Math.abs(gy0(px,pz)-y0)>.35||deckAt(px,pz))return false;
+      if(BLD.some(b=>Math.abs(px-b.x)<b.hw+.15&&Math.abs(pz-b.z)<b.hd+.15))return false;if(BLD.some(b=>b.door&&Math.hypot(px-b.door[0],pz-b.door[1])<.9))return false;
+      if(OBC.some(c=>!c.isl&&Math.hypot(px-c.x,pz-c.z)<c.r+.05))return false}
+    return true}
+  const pts=[[0,0],[-.95,-.95],[.95,-.95],[-.95,.95],[.95,.95]].map(([a,b])=>at(a*B.hw,b*B.hd)),tops=pts.map(([a,b])=>{const d=deckAt(a,b);return d?d.d.id+':'+d.top.toFixed(2):''});
+  if(tops.some(t=>t!==tops[0]))return false;if(tops[0]&&(cat==='swim'||cat==='grotto'))return false;return true};
+const islAddObj0=islAddObj;
+islAddObj=function(it){const o=islAddObj0(it);if(ISLSURF[it.id]){const a=(it.r||0)*Math.PI/4,f=ISLFP[it.id]||[2,2];o.deck={id:ISLOBJ.length+':'+it.x+','+it.z,x:it.x,z:it.z,ca:Math.cos(a),sa:Math.sin(a),base:gy0(it.x,it.z),rects:ISLSURF[it.id],rad:Math.hypot(f[0],f[1]+(f[2]||0)*2)+.2,o};DECKS.push(o.deck);o.g.position.y=o.deck.base;o.cols.forEach(c=>c.deck=1)}return o};
+const islClearObj0=islClearObj;
+islClearObj=function(o){islClearObj0(o);if(o.deck){const i=DECKS.indexOf(o.deck);if(i>=0)DECKS.splice(i,1)}};
+islBuild=function(){ISLOBJ.splice(0).forEach(islClearObj);DECKS.length=0;const its=ISLS().items.filter(it=>!isPath(it.id)&&ISLC[it.id]);its.filter(it=>ISLSURF[it.id]).forEach(islAddObj);its.filter(it=>!ISLSURF[it.id]).forEach(islAddObj);islPaths()};
+function deckBusy(it){const o=ISLOBJ.find(o=>o.it===it);if(!o||!o.deck)return false;return ISLS().items.some(t=>t!==it&&!isPath(t.id)&&!ISLSURF[t.id]&&ISLC[t.id]&&deckHit(o.deck,t.x,t.z)!==null)}
+const iedPick0=iedPick,iedStore0=iedStore;
+iedPick=function(){const it=IED&&IED.sel;if(it&&deckBusy(it)){toast('Move everything off the '+ISLC[it.id][0].toLowerCase()+' first.');sfx.no();return}iedPick0()};
+iedStore=function(){const it=IED&&IED.sel;if(it&&deckBusy(it)){toast('Move everything off the '+ISLC[it.id][0].toLowerCase()+' first.');sfx.no();return}iedStore0()};
+iedFind=function(){const fx=P.x+Math.sin(P.face)*1.1,fz=P.z+Math.cos(P.face)*1.1;let best=null,bd=1.25;ISLS().items.forEach(it=>{if(!ISLC[it.id])return;let d;
+  if(ISLSURF[it.id]){const B=islBox(it.id,it.x,it.z,it.r||0),rx=fx-B.x,rz=fz-B.z,lx=rx*B.ax[0][0]+rz*B.ax[0][1],lz=rx*B.ax[1][0]+rz*B.ax[1][1];d=Math.hypot(Math.max(0,Math.abs(lx)-B.hw),Math.max(0,Math.abs(lz)-B.hd))+.95}
+  else d=Math.hypot(it.x-fx,it.z-fz)-(isPath(it.id)?0:Math.min(.5,(ISLC[it.id][3]||.2)));if(d<bd){bd=d;best=it}});return best};
+// ---- things to do: soak, plunge, sauna, hammock and swing seat
+function gBuff(sec,k){const now=performance.now()/1000;EATB={until:Math.max(EATB.until,now)+sec,k:Math.max(k,EATB.until>now?EATB.k:1)};hudBuff()}
+['outhottub','outspapool'].forEach(id=>{PLAYS[id]={verb:'Soak in the hot tub',hold:1,start(s){const t=s.g.userData.tub||{w:.62};const p=wpos(s.g,0,t.w-.4,.18);return{x:p.x,y:p.y,z:p.z,face:s.g.rotation.y+Math.PI}},
+  begin(s){sfx.splash&&sfx.splash();s.fr=joinFriend(s)},
+  step(s,dt,now){const t=s.g.userData.tub||{w:.62},b=Math.sin(s.t*1.6)*.02,p=wpos(s.g,0,t.w-.4+b,.18);setMax(p.x,p.y,p.z,s.g.rotation.y+Math.PI,-.05,Math.sin(s.t*.9)*.04);legPose('sit',now);
+    if(s.fr){const q=wpos(s.g,0,t.w-.4-b,-.25);npcSet(s.fr,q.x,q.y,q.z,s.g.rotation.y,-.05)}
+    s.acc=(s.acc||0)+dt;if(s.acc>.14){s.acc=0;spaFxOne(s.g.children[0],'jets');if(Math.random()<.25)puff(s.g.parent,wpos(s.g,(Math.random()-.5)*1.1,t.w+.1,(Math.random()-.5)*1.1),0xffffff,.22,.45,.5)}
+    if(s.t>1.5&&!s.said){s.said=1;toast('Ahh, warm bubbles! Press A to get out.')}},
+  stop(s){s.offSay=s.t>4?'Max feels warm, relaxed and full of beans!':'Ahh, lovely and warm!';if(s.t>4)gBuff(60,1.12);S.st.soaks=(S.st.soaks||0)+1;save()},off:[0,1.55,0]}});
+['outplunge','iceplunge'].forEach(id=>{PLAYS[id]={verb:'Take a cold plunge',hold:1,start(s){const w=s.g.userData.plunge.w;const p=wpos(s.g,0,w-.42,0);return{x:p.x,y:p.y,z:p.z,face:s.g.rotation.y}},
+  begin(s){sfx.splash&&sfx.splash();fxBits(wpos(s.g,0,s.g.userData.plunge.w+.05,0),0xe8f8ff,10,1.6)},
+  step(s,dt,now){const w=s.g.userData.plunge.w,p=wpos(s.g,0,w-.42+Math.sin(s.t*30)*.008,0);setMax(p.x,p.y,p.z,s.g.rotation.y+Math.sin(s.t*.6)*.4,-.08,Math.sin(s.t*38)*.05);legPose('sit',now);
+    s.acc=(s.acc||0)+dt;if(s.acc>.35){s.acc=0;fxBits(wpos(s.g,(Math.random()-.5)*.4,w+.05,(Math.random()-.5)*.3),0xe8f8ff,2,.6);puff(s.g.parent,wpos(s.g,0,w+.55,.15),0xffffff,.18,.18,.3)}
+    if(s.t>1.2&&!s.said){s.said=1;toast('Brrrrr! That is COLD! Press A to hop out.')}},
+  stop(s){s.offSay=s.t>3?'Brrr! Max feels super refreshed and zippy!':'Brrr! Too cold, too cold!';if(s.t>3)gBuff(75,1.18);S.st.plunges=(S.st.plunges||0)+1;save()},off:[0,id==='iceplunge'?1.05:1.0,0]}});
+['barrelsauna','saunacabin'].forEach(id=>{PLAYS[id]={verb:'Have a sauna',start(s){const p=wpos(s.g,id==='saunacabin'?-.4:0,id==='saunacabin'?.12:.14,.8);return{x:p.x,y:p.y,z:p.z,face:s.g.rotation.y+Math.PI}},
+  begin(s){max.visible=false;sfx.door&&sfx.door();toast('Max pops into the sauna...')},
+  step(s,dt,now){const p=wpos(s.g,0,.2,0);setMax(p.x,p.y,p.z,s.g.rotation.y,0,0);s.acc=(s.acc||0)+dt;if(s.acc>.16){s.acc=0;const c=s.g.userData.sauna.chim;puff(s.g.parent,wpos(s.g,c[0],c[1],c[2]),0xe8e8ec,.35,.4,.7)}
+    if(s.t>4.2)return 'off'},
+  stop(s){max.visible=true;s.offSay=PNAME()+' had a lovely warm sauna. Relaxed and full of energy!';gBuff(75,1.15);S.st.saunas=(S.st.saunas||0)+1;save()},off:[id==='saunacabin'?-.4:0,id==='saunacabin'?1.75:1.75,0]}});
+PLAYS.hammock={verb:'Relax in the hammock',hold:1,start(s){const p=wpos(s.g,0,.72,0);return{x:p.x,y:p.y,z:p.z,face:s.g.rotation.y+Math.PI/2}},
+  step(s,dt,now){const sw=s.g.userData.sw,a=Math.sin(s.t*1.3)*.1;sw.rotation.x=a;const p=wpos(s.g,0,.72-Math.abs(a)*.1,Math.sin(a)*.3);setMax(p.x,p.y,p.z,s.g.rotation.y+Math.PI/2,0,a*.8+.15);legPose('sit',now);if(s.t>1.5&&!s.said){s.said=1;toast('Swing, swing... so cosy. Press A to get up.')}},
+  stop(s){s.g.userData.sw.rotation.x=0;s.offSay='What a lovely snooze in the sunshine!'},off:[0,.9,0]};
+PLAYS.swingseat={verb:'Sit on the swing seat',hold:1,start(s){const p=wpos(s.g,-.35,.62,0);return{x:p.x,y:p.y,z:p.z,face:s.g.rotation.y}},begin(s){s.fr=joinFriend(s)},
+  step(s,dt,now){const sw=s.g.userData.sw;sw.rotation.x=Math.sin(s.t*1.5)*.22;sw.updateMatrixWorld(true);const seat=sw.children[sw.children.length-1],p=wpos(seat,-.35,.16,.04);setMax(p.x,p.y,p.z,s.g.rotation.y,-sw.rotation.x,0);legPose('sit',now);
+    if(s.fr){const q=wpos(seat,.35,.16,.04);npcSet(s.fr,q.x,q.y,q.z,s.g.rotation.y,-sw.rotation.x)}if(s.t>1.5&&!s.said){s.said=1;toast('Whee, gently does it! Press A to hop off.')}},
+  stop(s){s.g.userData.sw.rotation.x=0;s.offSay='That was so relaxing!'},off:[0,1.0,0]};
+// ---- ambient life: bubbles and steam from outdoor tubs, smoke from saunas and barbecues
+let GDT=0;function gardenStep(dt){if(inside||SEA.on||document.hidden)return;GDT+=dt;if(GDT<.22)return;GDT=0;
+  for(const o of ISLOBJ){const u=o.g.userData;if(!(u.tub||u.sauna||u.bbq))continue;if(Math.abs(o.it.x-P.x)>16||Math.abs(o.it.z-P.z)>16)continue;if(PLAY&&PLAY.o===o)continue;
+    if(u.tub){if(Math.random()<.6)spaFxOne(o.g.children[0],'jets');if(Math.random()<(W.season==='winter'||W.snow>.3?.5:.15))puff(o.g.parent,wpos(o.g,(Math.random()-.5)*1.1,u.tub.w+.1,(Math.random()-.5)*1.1),0xffffff,.2,.45,.45)}
+    else if(u.sauna){if(Math.random()<.3)puff(o.g.parent,wpos(o.g,...u.sauna.chim),0xd8d8de,.22,.3,.6)}
+    else if(u.bbq&&Math.random()<.35)puff(o.g.parent,wpos(o.g,(Math.random()-.5)*.4,.85,0),0xc8c8cc,.2,.25,.5)}}
+
 // ================= MAIN ISLAND EXPANSION: new land, plots, nature and a lighthouse =================
 // new land is added to the island shape (see ISL); this fills it with trees, flowers, grass, rocks and palms
 function lobeSpot(x,z,m){if(!walkable(x,z)||ISL(x,z)>-7.5||hL(x,z)!==0||waterSdf(x,z)<2)return false;if(nearBld(x,z,m+.6)||pathD(x,z)<1.4+m||plotNear(x,z,6.5))return false;if(TREES.some(t=>Math.hypot(t.x-x,t.z-z)<2.4+m))return false;if(ROCKS.some(r=>Math.hypot(r.x-x,r.z-z)<2.4))return false;if(LIGHT&&Math.hypot(x-LIGHT.x,z-LIGHT.z+1)<6.8)return false;return true}
