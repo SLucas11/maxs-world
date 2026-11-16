@@ -358,7 +358,7 @@ body.redec #acts,body.redec #stick,body.redec #prompt,body.redec #keys,body.rede
 <script>
 // boot loader: show progress, catch errors, then run the game script after the first paint
 addEventListener('error',e=>{if(!window.__ready&&window.BOOT)BOOT.err('Something went wrong while loading: '+e.message)});
-window.APPV='85';
+window.APPV='86';
 // save backup and restore (moves your island between the downloaded file, the app, or a new phone)
 window.SAVEIO={dump(){const o={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('maxsworld.')===0)o[k]=localStorage.getItem(k)}return{app:'maxsworld',v:1,ver:window.APPV,at:new Date().toISOString(),data:o}},
  async backup(){try{if(window.save)save()}catch(e){}const d=this.dump();if(!Object.keys(d.data).some(k=>k.indexOf('maxsworld.slot')===0||k==='maxsworld.v1')){alert('There is no saved game to back up yet.');return}
@@ -1194,16 +1194,17 @@ const SEATS={sofa:{y:.45,z:.06,xs:[-.42,.42]},armchair:{y:.45,z:.06},chair:{y:.5
 const BEDS={bed:{y:.12,rz:-.2,cy:.6,cz:.29,cl:1.3,cw:.94},canopybed:{y:.12,rz:-.2,cy:.6,cz:.29,cl:1.28,cw:.94},bunkbed:{y:.02,rz:-.18,cy:.5,cz:.29,cl:1.28,cw:.84},dogbed:{y:-.2,nap:1}};
 let POSE=null;
 const BATHS=new Set(['bathtub']);let SHOWERS=new Set(['shower']),SAUNAS=new Set();
-const poseKind=id=>SEATS[id]?'sit':BEDS[id]?'sleep':BATHS.has(id)?'bath':null;
+const poseKind=id=>HOTTUB[id]?'tub':SEATS[id]?'sit':BEDS[id]?'sleep':BATHS.has(id)?'bath':null;
 function poseOK(it){const k=poseKind(it.id);if(!k||it.buy||roomKey==='tailor'||roomKey==='kitchen'||roomKey==='shop')return false;return k==='sit'||isHome()}
-function poseLabel(it){const k=poseKind(it.id),n=FURN[it.id].name;return k==='sit'?'Jump on the '+n:k==='bath'?(/jacuzzi/.test(it.id)?'Jump in the hot tub':it.id==='plungetub'?'Brave the cold plunge':'Jump in the bubble bath'):it.id==='dogbed'?'Curl up for a nap':'Jump into bed'}
+function poseLabel(it){const k=poseKind(it.id),n=FURN[it.id].name;return k==='tub'?(HOTTUB[it.id].cold?'Brave the cold plunge':'Jump in the hot tub'):k==='sit'?'Jump on the '+n:k==='bath'?(/jacuzzi/.test(it.id)?'Jump in the hot tub':it.id==='plungetub'?'Brave the cold plunge':'Jump in the bubble bath'):it.id==='dogbed'?'Curl up for a nap':'Jump into bed'}
 const lerpA=(a,b,t)=>{const d=((b-a+Math.PI)%(Math.PI*2)+Math.PI*2)%(Math.PI*2)-Math.PI;return a+d*t};
 function startPose(it){const g=FM.get(it);if(!g||POSE)return;const k=poseKind(it.id);g.updateMatrixWorld(true);
   const W=(x,y,z)=>new THREE.Vector3(x,y,z).applyMatrix4(g.matrixWorld),dir=(x,z)=>{const v=new THREE.Vector3(x,0,z).transformDirection(g.matrixWorld);return Math.atan2(v.x,v.z)};let b,face=dir(0,1);
   if(k==='sit'){const s=SEATS[it.id];(s.xs||[0]).forEach(x=>{const p=W(x,s.y,s.z);if(!b||Math.hypot(p.x-P.x,p.z-P.z)<Math.hypot(b.x-P.x,b.z-P.z))b=p});b.y-=.17}
   else if(k==='sleep'){const s=BEDS[it.id];if(s.nap){b=W(0,s.y,0);face=P.face}else{b=W(0,s.y,s.rz);face=dir(0,-1)}}
+  else if(k==='tub'){const h=HOTTUB[it.id];b=W(0,h.y,h.z);face=dir(0,1)}
   else{b=W(.08,.16,0);face=dir(-1,0)}
-  POSE={k,it,g,ph:'in',t:0,a:{x:P.x,z:P.z,y:0,face:P.face},b:{x:b.x,y:b.y,z:b.z,face},dur:k==='bath'?.6:.5,objs:[],zt:0,bt:0};
+  POSE={k,it,g,ph:'in',t:0,a:{x:P.x,z:P.z,y:0,face:P.face},b:{x:b.x,y:b.y,z:b.z,face},dur:k==='bath'||k==='tub'?.6:.5,objs:[],zt:0,bt:0};
   max.rotation.order='YXZ';if(F.on)reel();sfx.swish()}
 function poseObj(o,par){(par||POSE.g).add(o);POSE.objs.push(o);return o}
 function onPoseLand(p){
@@ -1213,6 +1214,8 @@ function onPoseLand(p){
       RB(cv,s.cw,.07,s.cl,qm,0,s.cy,s.cl/2,.03);RB(cv,s.cw+.012,.08,.17,wm,0,s.cy+.008,.085,.03);
       const bl=SPH(cv,.25,qm,0,s.cy+.06,.56,1.45,.8,1.8);tail.visible=false;p.bulge=bl;p.bly=bl.scale.y;
       [-1,1].forEach(e=>{const d=RB(cv,.05,.24,s.cl-.06,qm,e*(s.cw/2+.005),s.cy-.1,s.cl/2+.01,.02)});cv.scale.z=.2;p.cov=cv}}
+  else if(p.k==='tub'){sfx.splash();tubLand(p)}
+  else if(p.k==='warm'){warmLand(p)}
   else{sfx.splash();const fm=M(0xffffff,{roughness:.35}),fm2=M(0xeef8ff,{roughness:.3});
     for(let i=0;i<22;i++){const a=Math.random()*6.28,r=Math.sqrt(Math.random()),x=Math.cos(a)*r*.62,z=Math.sin(a)*r*.27;const q=SPH(new THREE.Group(),.07+Math.random()*.07,i%3?fm:fm2,x,.5+Math.random()*.05,z,1,.75,1);poseObj(q)}
     [[-.12,.08],[.12,.08],[-.1,-.1],[.14,-.08],[0,.13],[0,-.14]].forEach(([x,z])=>poseObj(SPH(new THREE.Group(),.11,fm,x+.08,.6,z,1,.8,1)));
@@ -1220,14 +1223,15 @@ function onPoseLand(p){
 function endPose(){const p=POSE;if(!p||p.ph!=='hold')return;
   if(p.k==='sleep'&&!BEDS[p.it.id].nap||p.k==='bath')p.objs.forEach(o=>o.parent&&o.parent.remove(o));
   if(p.k==='sleep'){p.objs.forEach(o=>o.parent&&o.parent.remove(o));if(p.t>6){const now=performance.now()/1000;EATB={until:Math.max(EATB.until,now)+90,k:Math.max(1.2,EATB.until>now?EATB.k:1)};hudBuff();toast(PNAME()+' feels well rested and full of energy!')}else toast('A quick doze. '+PNAME()+' is up again!')}
-  if(p.k==='bath'){sfx.splash();const par=max.parent;for(let i=0;i<10;i++){const d=SPH(new THREE.Group(),.035,GLO(0x9fdcf4,.3),0,0,0);d.position.set(max.position.x,max.position.y+.6,max.position.z);par.add(d);const a=Math.random()*6.28;fxAdd(d,new THREE.Vector3(Math.cos(a)*1.6,1+Math.random()*1.4,Math.sin(a)*1.6),.6,{g:-8})}}
+  if(p.k==='tub'||p.k==='warm')poseEndExtra(p);
+  if(p.k==='bath'||p.k==='tub'){sfx.splash();const par=max.parent;for(let i=0;i<10;i++){const d=SPH(new THREE.Group(),.035,GLO(0x9fdcf4,.3),0,0,0);d.position.set(max.position.x,max.position.y+.6,max.position.z);par.add(d);const a=Math.random()*6.28;fxAdd(d,new THREE.Vector3(Math.cos(a)*1.6,1+Math.random()*1.4,Math.sin(a)*1.6),.6,{g:-8})}}
   p.ph='out';p.t=0;sfx.swish()}
 function poseCancel(){const p=POSE;if(!p)return;tail.visible=true;p.objs.forEach(o=>o.parent&&o.parent.remove(o));POSE=null;max.rotation.x=0;max.rotation.z=0;headG.rotation.y=0;headG.rotation.z=0;P.x=p.a.x;P.z=p.a.z}
 function finishPose(p){POSE=null;tail.visible=true;max.rotation.x=0;max.rotation.z=0;headG.rotation.y=0;headG.rotation.z=0;P.x=p.a.x;P.z=p.a.z;P.face=p.a.face;
   if(p.k==='bath'){S.st.baths=(S.st.baths||0)+1;smileT=3;sparkleFx(max.parent,P.x,.25,P.z,16);sfx.fanfare();save();setTimeout(()=>{if(!dlg)say('max',["That's me nice and clean!"])},250)}}
-function poseStep(dt,now){const p=POSE;if(!p)return;p.t+=dt;const A=p.a,B=p.b,sitP=p.k==='sit'||p.k==='bath';const pitch=sitP?-.42:0;
+function poseStep(dt,now){const p=POSE;if(!p)return;p.t+=dt;const A=p.a,B=p.b,sitP=p.k==='sit'||p.k==='bath'||p.k==='tub';const pitch=sitP?-.42:0;
   if(p.ph==='in'||p.ph==='out'){const u=Math.min(1,p.t/p.dur),e=u*u*(3-2*u),fr=p.ph==='in'?A:B,to=p.ph==='in'?B:A;
-    const x=fr.x+(to.x-fr.x)*e,z=fr.z+(to.z-fr.z)*e,y=fr.y+(to.y-fr.y)*e+Math.sin(u*Math.PI)*(p.k==='bath'?.75:.55);
+    const x=fr.x+(to.x-fr.x)*e,z=fr.z+(to.z-fr.z)*e,y=fr.y+(to.y-fr.y)*e+Math.sin(u*Math.PI)*(p.k==='bath'?.75:p.k==='tub'?1.0:.55);
     max.position.set(x,y,z);max.rotation.y=lerpA(fr.face,to.face,e);max.rotation.x=(p.ph==='in'?e:1-e)*(p.k==='sleep'?0:pitch);max.rotation.z=0;
     legs.forEach(l=>{l.lg.rotation.x=(l.lg.position.z>0?-.7:.8)*Math.sin(u*Math.PI)});P.x=x;P.z=z;
     if(u>=1){if(p.ph==='in'){p.ph='hold';p.t=0;onPoseLand(p)}else finishPose(p)}return}
@@ -1238,8 +1242,9 @@ function poseStep(dt,now){const p=POSE;if(!p)return;p.t+=dt;const A=p.a,B=p.b,si
       p.bt-=dt;if(p.bt<=0){p.bt=.12;const bs=fxSprite(BUBT(),.1+Math.random()*.12,.9);const a=Math.random()*6.28;bs.position.set(B.x+Math.cos(a)*.45,B.y+.42,B.z+Math.sin(a)*.25);max.parent.add(bs);fxAdd(bs,new THREE.Vector3(0,.45+Math.random()*.4,0),1.3+Math.random()*.8,{g:.05,fade:.9,grow:.6,wob:.25});if(Math.random()<.3)sfx.bubble()}
       p.objs.forEach((o,i)=>{o.position.y+=Math.sin(now*3+i)*.0006});
       if(p.t>3.9){const k=p.t-3.9;max.rotation.z=Math.sin(k*40)*.32*Math.min(1,k*4);headG.rotation.y=Math.sin(k*40)*.4;if(!p.shk){p.shk=1;sfx.swish();toast('Scrub-a-dub! Shake, shake, shake!')}}
-      if(p.t>4.7)endPose()}}
-  else{const s=BEDS[p.it.id];legs.forEach(l=>{const fr=l.lg.position.z>0;l.lg.rotation.x=fr?-1.45:1.45;l.lg.position.y=l.y0});
+      if(p.t>4.7)endPose()}
+    if(p.k==='tub')tubStep(p,dt,now)}
+  else{const s=BEDS[p.it.id]||{nap:1,y:0};legs.forEach(l=>{const fr=l.lg.position.z>0;l.lg.rotation.x=fr?-1.45:1.45;l.lg.position.y=l.y0});
     if(s.nap){headG.rotation.x=.45;headG.rotation.y=p.side*.9;headG.rotation.z=p.side*.2;max.position.y=B.y}
     else{headG.rotation.x=-.1;headG.rotation.y=p.side*1.45;headG.rotation.z=p.side*.35;if(p.cov)p.cov.scale.z=Math.min(1,p.cov.scale.z+dt*3);if(p.bulge)p.bulge.scale.y=p.bly*(1+Math.sin(now*1.7)*.05)}
     eyes.forEach(e=>e.scale.y=.1);tailSeg.forEach(sg=>sg.rotation.z*=.2);
@@ -3666,7 +3671,7 @@ function getAction(){
   if(!inside&&!TRIP&&window.TJON&&onTJ(P.x,P.z)&&P.z-TKZ>TJ.z1-2.6)return{t:'Board the Island Hopper',f:openTravel};
   if(placing)return{t:'Place '+FURN[placing.id].name,f:doPlace};
   if(SURF)return surfAction();
-  if(POSE)return POSE.ph==='hold'&&POSE.k!=='bath'?{t:POSE.k==='sleep'?'Wake up':'Get up',f:endPose}:null;
+  if(POSE)return POSE.ph==='hold'&&POSE.k!=='bath'?{t:POSE.k==='sleep'?'Wake up':POSE.k==='tub'?'Get out':'Get up',f:endPose}:null;
   if(inside){const N=RM().n;
     for(const pt of portals()){const cx=-N/2+pt.i+.5,cz=-N/2+pt.j+.5;if(Math.hypot(P.x-cx,P.z-cz)<1.1)return{t:pt.label,f:()=>goRoom(pt.to,roomKey)}}
     if(P.z>N/2-1.1&&Math.abs(P.x)<.8&&(!roomKey.startsWith('home')||roomKey==='home'))return{t:'Go outside',f:exitHouse};
@@ -3674,7 +3679,7 @@ function getAction(){
     const[i,j]=frontCell();const its=itemsAt(i,j);const it=its.find(o=>!FURN[o.id].rug)||its[0];
     if(it&&it.fixed)return it.id==='stairs'?{t:'Go upstairs',f:()=>goRoom('home:up','home')}:{t:'Go downstairs',f:()=>goRoom('home','home:up')};
     if(it&&poseOK(it))return{t:poseLabel(it),f:()=>startPose(it)};
-    if(it){if(isHome()&&BOXES[it.id])return{t:'Open the '+FURN[it.id].name,f:()=>openBox(it)};if(isHome()&&CASHOME[it.id])return{t:CASHOME[it.id][0],f:()=>casOpen(CASHOME[it.id][1])};if(isHome()&&SHOWERS.has(it.id))return{t:'Have a shower',f:()=>showerUse(it)};if(isHome()&&SAUNAS.has(it.id))return{t:'Relax in the sauna',f:()=>saunaUse(it)};if(isHome())return{t:(COOKERS.has(it.id)?'Cook at the ':MIRRORS.has(it.id)?'Use the ':'Check ')+FURN[it.id].name,f:()=>furnMenu(it)};return{t:lookLabel(it),f:()=>lookAt(it)}}return null}
+    if(it){if(isHome()&&BOXES[it.id])return{t:'Open the '+FURN[it.id].name,f:()=>openBox(it)};if(isHome()&&CASHOME[it.id])return{t:CASHOME[it.id][0],f:()=>casOpen(CASHOME[it.id][1])};if(isHome()&&SHOWERS.has(it.id))return{t:'Have a shower',f:()=>showerUse(it)};if(isHome()&&SAUNAS.has(it.id))return{t:'Relax in the sauna',f:()=>saunaUse(it)};if(isHome()&&FIRES[it.id])return{t:it.lit?(it.id==='woodstove'?'Sit by the stove':'Sit by the fire'):(it.id==='woodstove'?'Light the stove':'Light the fire'),f:()=>fireUse(it)};if(isHome())return{t:(COOKERS.has(it.id)?'Cook at the ':MIRRORS.has(it.id)?'Use the ':'Check ')+FURN[it.id].name,f:()=>furnMenu(it)};return{t:lookLabel(it),f:()=>lookAt(it)}}return null}
   const fp=front();
   const n=nearestIn(Object.values(NPC),P.x,P.z,2,o=>!o.trip||((o.x-P.x)*Math.sin(P.face)+(o.z-P.z)*Math.cos(P.face))>Math.hypot(o.x-P.x,o.z-P.z)*.7),nd=BLD.reduce((m,b)=>Math.min(m,Math.hypot(P.x-b.door[0],P.z-b.door[1])),9);if(n&&!(nd<1.4&&nd<Math.hypot(P.x-n.o.x,P.z-n.o.z)))return{t:'Talk to '+FR[n.o.k].name,f:()=>talkTo(n.o.k)};
   for(const b of BLD){if(Math.hypot(P.x-b.door[0],P.z-b.door[1])<1.4){if(b.label)return{t:b.label,f:b.enter};if(b.key==='home')return{t:'Go inside',f:enterHouse};if(b.key==='shop')return{t:'Go into Paw Mart',f:()=>enterRoom('shop')};if(b.key==='museum')return{t:'Go into the museum',f:()=>enterRoom('museum')};if(b.key==='tailor')return{t:"Go into Bella's Boutique",f:()=>enterRoom('tailor')};if(b.key==='kitchen')return{t:'Go into Copper Pot Kitchens',f:()=>enterRoom('kitchen')};
@@ -4349,7 +4354,7 @@ function frame0(t){const dt=Math.min(.1,(t-last)/1000||.016);last=t;const now=t/
   tailSeg.forEach((sg,i)=>sg.rotation.z=Math.sin(t/(bk||sm?60:mvg?85:110)-i*.55)*(.08+i*.015));
   const blk=(t%3600)<130?.12:1;eyes.forEach(e=>e.scale.y=blk*(1-.6*sm));if(show&&show.t<3.2)headG.rotation.x-=.25;ears.forEach(e=>e.eg.rotation.z=-e.s*(e.b+Math.sin(t/900+e.s)*.03+(mvg?e.m:0)));
   tongue.visible=bk>0;jaw.position.y=-.115-(bk>0?Math.abs(Math.sin((now-barkT)*14))*.04:0);if(munchT>0){munchT-=dt;headG.rotation.x+=.2+Math.sin(munchT*15)*.12;jaw.position.y=-.115-Math.abs(Math.sin(munchT*17))*.04}
-  Object.entries(toolG).forEach(([k,g])=>g.visible=!inside&&!POSE&&!SURF&&!PLAY&&(SEA.on?k==='rod':S.tool===k));rodStep(dt);poseStep(dt,now);islStep(dt,now);playStep(dt,now);tripStep(dt,now);lighthouseStep(now);bizStep(dt);gfx63Step(dt,now);try{nightSkyStep(dt);season69()}catch(e){}cruStep(dt);casinoStep(dt);spaStep(dt);poolStep(dt);gardenStep(dt);decorStep(dt);treeMoveStep(dt);if(SURF){surfStep(dt,now);P.y=WL}redecStep(dt);chStep(dt);elecStep(dt);shellWash(dt);fxStepFX(dt);emoStep(dt);if(!inside)dropFallStep(now);fallStep(dt,now);
+  Object.entries(toolG).forEach(([k,g])=>g.visible=!inside&&!POSE&&!SURF&&!PLAY&&(SEA.on?k==='rod':S.tool===k));rodStep(dt);poseStep(dt,now);islStep(dt,now);playStep(dt,now);tripStep(dt,now);lighthouseStep(now);bizStep(dt);gfx63Step(dt,now);try{nightSkyStep(dt);season69()}catch(e){}cruStep(dt);casinoStep(dt);spaStep(dt);poolStep(dt);gardenStep(dt);decorStep(dt);treeMoveStep(dt);homeFxStep(dt);if(SURF){surfStep(dt,now);P.y=WL}redecStep(dt);chStep(dt);elecStep(dt);shellWash(dt);fxStepFX(dt);emoStep(dt);if(!inside)dropFallStep(now);fallStep(dt,now);
   if(!inside){
     Object.values(NPC).forEach(n=>{const m=n.m;if(n.surf||n.play){m.g.position.set(n.x,n.play?n.sy:(n.sy||WL),n.z);m.g.rotation.y=n.face;return}n.y=(n.y??0)+(gy(n.x,n.z)-(n.y??0))*Math.min(1,dt*12);m.g.position.set(n.x,n.y+(n.hop||0),n.z);m.g.rotation.y=n.face;n.gt+=n.spd*dt*2.4;const mv=n.spd>.3;
       m.legs.forEach(l=>{if(mv){const q=n.gt+l.ph;l.lg.rotation.x=Math.sin(q)*.6;l.lg.position.y=l.y0+Math.max(0,Math.cos(q))*.04}else{l.lg.rotation.x*=.8;l.lg.position.y+=(l.y0-l.lg.position.y)*.3}});
@@ -6555,6 +6560,61 @@ function treeMoveStep(dt){for(let k=TGROW.length-1;k>=0;k--){const a=TGROW[k];a.
   if(a.dir<0)a.t.g.position.y=hL(a.t.g.position.x,a.t.g.position.z)-(1-e)*.6;
   if((a.dir>0&&a.k>=1)||(a.dir<0&&a.k<=0)){a.t.g.scale.setScalar(a.dir>0?1:.01);TGROW.splice(k,1);a.done&&a.done()}}}
 function treeSpotFront(){for(const d of[1.7,2.1,1.4,2.5]){const p=front(d);if(treeSpotOK(p.x,p.z))return p}return null}
+
+// ================= WORKING FIREPLACES, HOT TUBS AND SAUNAS AT HOME =================
+// Hot tubs and the cold plunge: Max sits in the water until you press A. [local seat x, y, z]
+var HOTTUB={jacuzzi:{y:.25,z:.2},jacuzziround:{y:.21,z:.15},plungetub:{y:.37,z:0,cold:1}};
+// Fires: where the flames sit in the model, and how big they are
+var FIRES={fireplace:{p:[0,.07,.02],s:1,light:[0,.55,.55],name:'fire',warm:[0,.95]},woodstove:{p:[0,.3,.13],s:.45,light:[0,.6,.5],name:'stove',warm:[0,.9],smoke:[0,2.32,-.32]}};
+const FIRELIT=[];
+function fireGroup(it){const f=FIRES[it.id],g=new THREE.Group();g.position.set(...f.p);g.scale.setScalar(f.s);
+  const logM=WD(0x5a3a22,.9),emb=new THREE.MeshBasicMaterial({color:0xff5a1a});
+  [[-.12,.04,.4],[.12,.04,-.4],[0,.1,0]].forEach(([x,y,a])=>{const l=CY(g,.055,.055,.5,logM,x,y,0,8);l.rotation.z=Math.PI/2;l.rotation.y=a});
+  for(let i=0;i<7;i++){const e=SPH(g,.03,emb,(Math.random()-.5)*.4,.03,(Math.random()-.5)*.12,1,.6,1)}
+  const fl=[];[[0,.24,.5,0xffa030],[-.13,.17,.36,0xff7a1a],[.13,.18,.38,0xff8a20],[0,.14,.3,0xffe070]].forEach(([x,h,s,c],i)=>{const m=new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:i===3?.95:.85,blending:THREE.AdditiveBlending,depthWrite:false});
+    const k=mesh(coneG,m,x,.1+h*.5,i===3?.03:0);k.scale.set(.16*s/.4,h*2.2,.12*s/.4);k.userData.h=h*2.2;k.userData.ph=Math.random()*6;g.add(k);fl.push(k)});
+  const gs=glowSprite(0xff8a3a,1.6,.85);gs.position.y=.25;g.add(gs);
+  const L=new THREE.PointLight(0xff8a3a,1.3,5,2);L.position.set(f.light[0]/f.s,f.light[1]/f.s,f.light[2]/f.s);g.add(L);
+  g.userData.fire={fl,gs,L};g.traverse(o=>{if(o.isMesh)o.castShadow=false});return g}
+const addFurnMesh0=addFurnMesh;
+addFurnMesh=function(it){addFurnMesh0(it);try{if(FIRES[it.id]&&it.lit&&isHomeKey(roomKey)){const g=FM.get(it);if(g){const f=fireGroup(it);g.add(f);FIRELIT.push(f)}}}catch(e){console.warn('fire',e)}};
+function isHomeKey(k){return typeof k==='string'&&k.startsWith('home')}
+function fireRebuild(it){const g=FM.get(it);if(g)roomG.remove(g);addFurnMesh(it)}
+function fireUse(it){const f=FIRES[it.id];if(!it.lit){it.lit=1;fireRebuild(it);sfx.swish();tone&&tone(180,.25,'sawtooth',.04);smileT=2;const g=FM.get(it);if(g){g.updateMatrixWorld(true);const p=new THREE.Vector3(f.p[0],f.p[1]+.3,f.p[2]+.1).applyMatrix4(g.matrixWorld);fxBits(p,0xffb040,14,1.2)}
+    toast(it.id==='woodstove'?'The wood stove is lit. Toasty!':'Whoosh! The fire crackles into life. So cosy!');S.st.fires=(S.st.fires||0)+1;save();return}
+  say('max',[it.id==='woodstove'?'The wood stove is glowing away.':'The fire is crackling away. So cosy!'],[{t:'Curl up by the '+f.name,f:()=>{unbusy();warmStart(it)}},{t:'Put out the '+f.name,f:()=>{it.lit=undefined;delete it.lit;fireRebuild(it);sfx.splash&&sfx.splash();toast('Psssh! The '+f.name+' is out.');save();unbusy()}},{t:'Move or rotate it',f:()=>furnMenu(it)},{t:'Never mind',f:()=>unbusy()}])}
+function warmStart(it){const g=FM.get(it);if(!g||POSE)return;g.updateMatrixWorld(true);const v=new THREE.Vector3(0,0,1).transformDirection(g.matrixWorld),face=Math.atan2(-v.x,-v.z);
+  POSE={k:'warm',it,g,ph:'in',t:0,a:{x:P.x,z:P.z,y:0,face:P.face},b:{x:P.x,y:-.12,z:P.z,face},dur:.45,objs:[],zt:0,bt:0};max.rotation.order='YXZ';sfx.swish()}
+function tubLand(p){const h=HOTTUB[p.it.id];p.jt=0;if(h.cold){fxBits(max.position.clone().add(V3(0,.5,0)),0xe8f8ff,12,1.4);setTimeout(()=>POSE===p&&toast('Brrrrr! That is ICE cold! Press A to hop out.'),500)}
+  else{for(let i=0;i<6;i++)setTimeout(()=>POSE===p&&sfx.bubble&&sfx.bubble(),i*140);setTimeout(()=>POSE===p&&toast('Ahh, warm bubbles! Press A to get out.'),700)}}
+function warmLand(p){p.side=1;sfx.place();setTimeout(()=>POSE===p&&toast(PNAME()+' curls up by the warm '+FIRES[p.it.id].name+'. Press A to get up.'),400)}
+function tubStep(p,dt,now){const h=HOTTUB[p.it.id];
+  if(h.cold){max.rotation.z=Math.sin(now*38)*.05;max.position.y+=Math.sin(now*30)*.006;p.jt-=dt;if(p.jt<=0){p.jt=.35;const b=max.position.clone();b.y+=.75;b.z+=.15;puff(max.parent,b,0xffffff,.22,.16,.3)}return}
+  max.position.y+=Math.sin(now*1.6)*.018;max.rotation.z=Math.sin(now*.9)*.045;headG.rotation.x-=.1;
+  p.jt-=dt;if(p.jt<=0){p.jt=.09;spaFxOne(p.g,'jets');if(Math.random()<.18){const q=max.position.clone();q.x+=(Math.random()-.5)*1.2;q.z+=(Math.random()-.5)*1.2;q.y+=.5;puff(max.parent,q,0xffffff,.2,.4,.4)}if(Math.random()<.05&&sfx.bubble)sfx.bubble()}}
+function poseEndExtra(p){const now=performance.now()/1000,buff=(s,k)=>{EATB={until:Math.max(EATB.until,now)+s,k:Math.max(k,EATB.until>now?EATB.k:1)};hudBuff()};
+  if(p.k==='tub'){const h=HOTTUB[p.it.id];if(h.cold){S.st.plunges=(S.st.plunges||0)+1;if(p.t>3){buff(75,1.18);toast('Brrr! '+PNAME()+' feels super refreshed and zippy!')}else toast('Too cold, too cold!')}
+    else{S.st.soaks=(S.st.soaks||0)+1;if(p.t>4){buff(60,1.12);toast(PNAME()+' feels warm, relaxed and full of beans!')}else toast('Ahh, lovely and warm!')}}
+  if(p.k==='warm'){S.st.firenaps=(S.st.firenaps||0)+1;if(p.t>3){buff(60,1.12);toast(PNAME()+' is toasty warm from nose to tail!')}else toast('Nice and warm!')}save()}
+// Saunas: Max steps inside, steam puffs out, and he comes out glowing
+let SAUN=null;
+saunaUse=function(it){const g=FM.get(it);if(!g||SAUN||POSE)return;busy();g.updateMatrixWorld(true);const W=(x,y,z)=>new THREE.Vector3(x,y,z).applyMatrix4(g.matrixWorld);
+  const d=W(-.4,0,.75),o=W(-.4,0,1.45);SAUN={it,g,t:0,ph:'walk',a:{x:P.x,z:P.z,face:P.face},d,o,face:Math.atan2(d.x-P.x,d.z-P.z)};sfx.door&&sfx.door()};
+function saunaStep(dt){const s=SAUN;if(!s)return;s.t+=dt;
+  if(!s.g.parent){max.visible=true;SAUN=null;unbusy();return}
+  if(s.ph==='walk'){const u=Math.min(1,s.t/.45);P.x=s.a.x+(s.d.x-s.a.x)*u;P.z=s.a.z+(s.d.z-s.a.z)*u;P.face=s.face;max.position.set(P.x,Math.sin(u*Math.PI)*.25,P.z);max.rotation.y=s.face;
+    if(u>=1){s.ph='in';s.t=0;max.visible=false;const gl=glowSprite(0xffb060,1.6,.55);gl.position.copy(s.d);gl.position.y=1;s.g.parent.add(gl);s.gl=gl;tone&&tone(320,.5,'sine',.03)}return}
+  if(s.ph==='in'){s.acc=(s.acc||0)+dt;if(s.acc>.13){s.acc=0;spaFxOne(s.g,'steam');spaFxOne(s.g,'steam')}if(s.gl)s.gl.material.opacity=.45+Math.sin(s.t*6)*.1;
+    if(s.t>.9&&!s.said){s.said=1;toast('Sssss... '+PNAME()+' pours water on the hot coals. Lovely and steamy!');tone&&tone(900,.4,'sine',.012)}
+    if(s.t>4.2){s.ph='out';s.t=0;if(s.gl){s.gl.parent&&s.gl.parent.remove(s.gl);s.gl=null}max.visible=true}return}
+  if(s.ph==='out'){const u=Math.min(1,s.t/.45);P.x=s.d.x+(s.a.x-s.d.x)*u;P.z=s.d.z+(s.a.z-s.d.z)*u;P.face=s.face+Math.PI;max.position.set(P.x,Math.sin(u*Math.PI)*.25,P.z);max.rotation.y=P.face;
+    if(u>=1){SAUN=null;P.x=s.a.x;P.z=s.a.z;sparkleFx(max.parent,P.x,.3,P.z,16);smileT=3;const now=performance.now()/1000;EATB={until:Math.max(EATB.until,now)+75,k:Math.max(1.15,EATB.until>now?EATB.k:1)};hudBuff();
+      S.st.saunas=(S.st.saunas||0)+1;toast(PNAME()+' had a lovely hot sauna. Relaxed, rosy and full of energy!');save();unbusy()}}}
+let HFXT=0;
+function homeFxStep(dt){saunaStep(dt);for(let i=FIRELIT.length-1;i>=0;i--){const f=FIRELIT[i];let r=f;while(r.parent)r=r.parent;if(!f.parent||(r!==sceneIn&&r!==scene)){FIRELIT.splice(i,1);continue}
+    const u=f.userData.fire,t=performance.now()/1000;u.fl.forEach(k=>{const n=Math.sin(t*9+k.userData.ph)*.5+Math.sin(t*23+k.userData.ph*2)*.3;k.scale.y=k.userData.h*(1+n*.18);k.rotation.y=t*.8+k.userData.ph});u.L.intensity=1.15+Math.sin(t*11)*.15+Math.sin(t*27)*.1;u.gs.material.opacity=.75+Math.sin(t*13)*.1}
+  if(!inside)return;HFXT+=dt;if(HFXT<.3)return;HFXT=0;FIRELIT.forEach(f=>{const it=[...FM.entries()].find(([k,g])=>g===f.parent);if(!it)return;const fd=FIRES[it[0].id];if(fd.smoke&&Math.random()<.5){f.parent.updateMatrixWorld(true);const p=new THREE.Vector3(...fd.smoke).applyMatrix4(f.parent.matrixWorld);puff(f.parent.parent,p,0xc8c8cc,.18,.22,.4)}
+    else if(!fd.smoke&&Math.random()<.4){f.updateMatrixWorld(true);const p=new THREE.Vector3((Math.random()-.5)*.3,.3,0).applyMatrix4(f.matrixWorld);fxBits(p,0xffa040,1,.5)}})}
 
 // ================= MAIN ISLAND EXPANSION: new land, plots, nature and a lighthouse =================
 // new land is added to the island shape (see ISL); this fills it with trees, flowers, grass, rocks and palms
